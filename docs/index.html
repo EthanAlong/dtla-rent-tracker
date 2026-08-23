@@ -153,6 +153,7 @@
       <select id="metricSel">
         <option value="rent">月租金 ($)</option>
         <option value="psf">单价 ($/sqft)</option>
+        <option value="eff">实际租金（摊薄优惠）</option>
       </select>
     </div>
     <div class="fgroup" style="margin-left:auto">
@@ -182,9 +183,15 @@
 
   <div class="tiles" id="tiles"></div>
 
+  <div class="card" id="concCard" hidden>
+    <h2>各楼盘当前优惠</h2>
+    <p class="hint">广告原文照录。这些都是<strong>上限</strong>（“up to”“select homes”），不是每套都给——引用前请自己跟租赁办确认。</p>
+    <div class="scroll-x"><table id="concTable"></table></div>
+  </div>
+
   <div class="card">
     <h2>挂牌价历史</h2>
-    <p class="hint">每栋楼在筛选条件下的<strong>中位挂牌价</strong>。滚轮缩放、拖动平移，下方滑块选区间。</p>
+    <p class="hint" id="trendHint">每栋楼在筛选条件下的<strong>中位挂牌价</strong>。滚轮缩放、拖动平移，下方滑块选区间。</p>
     <div class="chart" id="trendChart"></div>
   </div>
 
@@ -216,7 +223,7 @@
 
   <footer>
     数据每天抓 2 次，直接来自各楼盘官网的公开在租列表（825 South Hill 显示的是不同租期的价格区间，图表取区间下限＝最长租期价；SightMap 楼盘显示基础租金，另有 all-in 含杂费价）。
-    这是挂牌价（asking rent），不是成交价，也不含 concession（免租月）——谈判时记得把 “2.5 个月免租” 这类优惠折算进去。
+    这是挂牌价（asking rent），不是成交价。优惠（免租月）单独抓在 <code>data/concessions.csv</code> 里，是一份变更日志——只在广告文案变化时记一行，所以能看出某栋楼是<em>什么时候</em>开始加码的。切到“实际租金（摊薄优惠）”指标即可把优惠折算进价格。
   </footer>
 </div>
 
@@ -226,6 +233,7 @@ const CSV_URL = "./data/prices.csv?t=" + Math.floor(Date.now() / 60000);
 // docs/me.json is still honoured as a local-only fallback.
 const ME_URL  = "./me.json?t=" + Math.floor(Date.now() / 60000);
 const ME_KEY  = "dtla-rent-tracker:lease";
+const CONC_URL = "./data/concessions.csv?t=" + Math.floor(Date.now() / 60000);
 
 // Color follows the entity: this order is fixed, so filtering a building out
 // never repaints the survivors.
@@ -236,7 +244,7 @@ const colorFor = (id) => {
   return cssVar("--series-" + (i >= 0 ? i + 1 : 1));
 };
 
-const state = { rows: [], dom: new Map(), me: null, props: [], active: new Set(), beds: "", sqftMin: null, sqftMax: null, metric: "rent", sort: { key: "rent_min", dir: 1 } };
+const state = { rows: [], conc: new Map(), dom: new Map(), me: null, props: [], active: new Set(), beds: "", sqftMin: null, sqftMax: null, metric: "rent", sort: { key: "rent_min", dir: 1 } };
 let charts = {};
 
 /* ---------- CSV ---------- */
@@ -269,6 +277,59 @@ function splitRow(line) {
   return out;
 }
 
+/* ---------- concessions ---------- */
+// concessions.csv is a change log: one row per property per change. The offer
+// in force at time T is the newest row at or before T.
+function parseConcessions(text) {
+  const byProp = new Map();
+  if (!text.trim()) return byProp;
+  const lines = text.trim().split(/\r?\n/);
+  const cols = splitRow(lines[0]);
+  lines.slice(1).forEach((line) => {
+    const cells = splitRow(line);
+    const o = {};
+    cols.forEach((c, i) => { o[c] = cells[i] ?? ""; });
+    o.months_free = o.months_free === "" ? null : Number(o.months_free);
+    o.min_lease_months = o.min_lease_months === "" ? null : Number(o.min_lease_months);
+    o.look_lease_usd = o.look_lease_usd === "" ? null : Number(o.look_lease_usd);
+    // Every CSV field arrives as a string and "false" is truthy — coerce it or
+    // a building with no "up to" in its banner renders as "≤".
+    o.up_to = o.up_to === "true";
+    if (!byProp.has(o.property_id)) byProp.set(o.property_id, []);
+    byProp.get(o.property_id).push(o);
+  });
+  byProp.forEach((list) => list.sort((a, b) => a.timestamp.localeCompare(b.timestamp)));
+  return byProp;
+}
+
+function concessionAt(propertyId, ts) {
+  const list = state.conc.get(propertyId);
+  if (!list) return null;
+  let found = null;
+  for (const c of list) {
+    if (c.timestamp <= ts) found = c; else break;
+  }
+  return found && found.raw_text ? found : null;
+}
+
+// "on Skyhomes" can be matched against plan_cat, so the discount lands only on
+// those units. "on select homes" can't be resolved from public data — it's
+// counted in, which is why the metric is labelled an upper bound.
+function scopeApplies(scope, r) {
+  if (!scope) return true;
+  if (scope.includes("select")) return true;
+  const needle = scope.replace(/s$/, "");
+  return (r.plan_cat || "").toLowerCase().includes(needle) ||
+         (r.bed_label || "").toLowerCase().includes(needle);
+}
+
+function effectiveRent(r) {
+  const c = concessionAt(r.property_id, r.timestamp);
+  if (!c || !c.months_free || !scopeApplies(c.scope, r)) return r.rent_min;
+  const term = c.min_lease_months || 12;
+  return term > 0 ? (r.rent_min * Math.max(0, term - c.months_free)) / term : r.rent_min;
+}
+
 /* ---------- helpers ---------- */
 const money = (n) => n == null ? "—" : "$" + Math.round(n).toLocaleString("en-US");
 const psf = (n) => n == null ? "—" : "$" + n.toFixed(2);
@@ -278,8 +339,11 @@ function median(arr) {
   const m = a.length >> 1;
   return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2;
 }
-const metricOf = (r) => state.metric === "psf" ? (r.sqft ? r.rent_min / r.sqft : null) : r.rent_min;
+const metricOf = (r) => state.metric === "psf" ? (r.sqft ? r.rent_min / r.sqft : null)
+  : state.metric === "eff" ? effectiveRent(r)
+  : r.rent_min;
 const fmtMetric = (v) => state.metric === "psf" ? psf(v) : money(v);
+const metricLabel = () => ({ rent: "中位挂牌价", psf: "中位 $/sqft", eff: "中位实际租金" })[state.metric];
 function matches(r) {
   if (!state.active.has(r.property_id)) return false;
   if (state.beds !== "" && String(r.beds) !== state.beds) return false;
@@ -392,7 +456,7 @@ function renderTiles() {
     return '<div class="d ' + cls + '">' + (d > 0 ? "▲ " : "▼ ") + fmtMetric(Math.abs(d)) + " (" + pct.toFixed(1) + "%) 较上次抓取</div>";
   };
 
-  tiles.push('<div class="tile"><div class="k">自家楼中位挂牌价</div><div class="v">' + fmtMetric(homeMed) + "</div>" + delta(homeMed, homeMedPrev) + "</div>");
+  tiles.push('<div class="tile"><div class="k">自家楼' + metricLabel() + '</div><div class="v">' + fmtMetric(homeMed) + "</div>" + delta(homeMed, homeMedPrev) + "</div>");
 
   if (me.current_rent) {
     const mine = state.metric === "psf" && me.sqft ? me.current_rent / me.sqft : me.current_rent;
@@ -454,6 +518,11 @@ function tooltipStyle() {
 
 function renderTrend() {
   const snaps = snapshots();
+  document.getElementById("trendHint").innerHTML = {
+    rent: "每栋楼在筛选条件下的<strong>中位挂牌价</strong>。滚轮缩放、拖动平移，下方滑块选区间。",
+    psf: "每栋楼在筛选条件下的<strong>中位 $/sqft</strong>。滚轮缩放、拖动平移，下方滑块选区间。",
+    eff: "挂牌价按当时广告优惠的<strong>上限</strong>摊薄到整个租期后的中位数——广告写“up to”“select homes”，所以这是最乐观的一版，实际大概率拿不到这么多。",
+  }[state.metric];
   const homeId = (state.me || {}).property_id || SERIES_ORDER[0];
   const shown = state.props.filter((id) => state.active.has(id));
 
@@ -583,6 +652,34 @@ function renderScatter() {
 }
 
 /* ---------- tables ---------- */
+function renderConcessions() {
+  const last = snapshots().at(-1);
+  const rows = state.props
+    .filter((id) => state.active.has(id))
+    .map((id) => ({ id, name: (state.rows.find((r) => r.property_id === id) || {}).property_name || id, c: concessionAt(id, last) }))
+    .filter((d) => d.c);
+
+  const card = document.getElementById("concCard");
+  card.hidden = rows.length === 0;
+  if (!rows.length) return;
+
+  document.getElementById("concTable").innerHTML =
+    "<thead><tr><th>楼盘</th><th>广告原文</th><th>折合免租</th><th>摊薄后</th><th>适用范围</th><th>截止</th></tr></thead><tbody>" +
+    rows.map(({ id, name, c }) => {
+      const term = c.min_lease_months || 12;
+      const cut = c.months_free ? c.months_free / term : 0;
+      const scope = c.scope ? (c.scope.includes("select") ? "部分房源（未公开是哪些）" : c.scope) : "全部房源";
+      return "<tr" + (id === ((state.me || {}).property_id || SERIES_ORDER[0]) ? ' class="home"' : "") + ">" +
+        '<td class="name"><span class="swatch" style="background:' + colorFor(id) + '"></span>' + name + "</td>" +
+        '<td class="name" style="white-space:normal;max-width:420px;font-size:12.5px;color:var(--text-2)">' + c.raw_text +
+          (c.look_lease_usd ? "" : "") + "</td>" +
+        "<td>" + (c.months_free ? (c.up_to ? "≤" : "") + c.months_free + " 个月" : "—") + "</td>" +
+        '<td class="' + (cut ? "down" : "") + '">' + (cut ? "-" + (cut * 100).toFixed(1) + "% (按 " + term + " 个月)" : "—") + "</td>" +
+        '<td style="text-align:left">' + scope + "</td>" +
+        "<td>" + (c.move_in_by || "—") + "</td></tr>";
+    }).join("") + "</tbody>";
+}
+
 function renderDiff() {
   const snaps = snapshots();
   const last = snaps.at(-1), prev = snaps.at(-2);
@@ -734,7 +831,7 @@ function initLeaseForm() {
 }
 
 /* ---------- boot ---------- */
-function renderAll() { renderTiles(); renderTrend(); renderPsf(); renderScatter(); renderDiff(); renderTable(); }
+function renderAll() { renderTiles(); renderConcessions(); renderTrend(); renderPsf(); renderScatter(); renderDiff(); renderTable(); }
 
 function initTheme() {
   const saved = (() => { try { return localStorage.getItem("theme"); } catch { return null; } })();
@@ -772,11 +869,13 @@ function initCharts() {
   initCharts();
   addEventListener("resize", () => Object.values(charts).forEach((c) => c.resize()));
 
-  const [csv, fileMe] = await Promise.all([
+  const [csv, concCsv, fileMe] = await Promise.all([
     fetch(CSV_URL).then((r) => r.text()),
+    fetch(CONC_URL).then((r) => r.ok ? r.text() : "").catch(() => ""),
     fetch(ME_URL).then((r) => r.ok ? r.json() : null).catch(() => null),
   ]);
   state.rows = parseCSV(csv);
+  state.conc = parseConcessions(concCsv);
   state.dom = computeDom();
   const me = loadMe() || (fileMe && fileMe.property_id ? fileMe : null);
   state.me = me && me.property_id ? me : null;

@@ -35,6 +35,8 @@ ECharts dashboard: trend + dataZoom · $/sqft bar · sqft-vs-rent scatter · dif
 | `scraper/adapters/sightmap.js` | Any building embedding an Engrain SightMap — Atelier, Eighth & Grand, Beaudry, Circa LA. Reads the schema.org JSON-LD off `sightmap.com/embed/<id>`. |
 | `scraper/lib/util.js` | fetch-with-retry, int/date coercion, CSV escaping. |
 | `scraper/lib/floor.js` | Floor number derived from the unit label, guarded by the building's storey count. |
+| `scraper/lib/concession.js` | Fetches each building's marketing banner (url + CSS selector from config) and parses "up to 2.5 months free" into months, scope, look-&-lease bonus, move-in deadline. |
+| `docs/data/concessions.csv` | Change log of those banners — a row only when the text changes. |
 | `docs/index.html` | Single-file dashboard. ECharts from CDN. |
 | `docs/me.json` | **Gitignored.** Optional local-only copy of your lease. The published dashboard reads the lease from browser `localStorage` (edited via the 我的租约 form) so the repo can stay public without publishing your unit number and rent. |
 | `docs/data/prices.csv` | Append-only history. |
@@ -72,6 +74,18 @@ ECharts dashboard: trend + dataZoom · $/sqft bar · sqft-vs-rent scatter · dif
 - **Lease details never enter git.** The repo is public so Pages is free; the
   dashboard's 我的租约 form writes to `localStorage`. Don't "simplify" this back
   into a committed JSON file.
+- **Concessions are a change log, not a snapshot.** They move maybe monthly, so
+  `concessions.csv` gets a row only when a building's banner text changes —
+  which makes it directly readable as "Beaudry went to 2 months free on
+  2026-08-14". The dashboard resolves "offer in force at time T" as the newest
+  row at or before T.
+- **Concession numbers are advertised MAXIMA.** "Up to", "on select homes" —
+  `raw_text` is always stored verbatim and the derived discount is labelled an
+  upper bound in the UI. Where a scope names a floorplan category (825's offer
+  is Skyhomes-only) it's matched against `plan_cat` so it doesn't leak onto
+  other units; a vague "select homes" can't be resolved and is counted in,
+  which is exactly why the metric is called an upper bound. Don't quietly
+  promote these to "the discount".
 - **Two scrapes a day is enough.** These are all Yardi/RentCafe-backed;
   pricing updates overnight. 2x/day ≈ 135k rows/year, still trivial to load.
 
@@ -113,6 +127,7 @@ cd docs && python3 -m http.server 8731    # → http://127.0.0.1:8731
   form; the sqft filter then defaults to ±10% of that unit's size. **Never
   write the actual unit number, rent, or lease dates into a tracked file —
   this repo is public.** That includes docs, comments, and form placeholders.
+- ✅ Concessions tracked (all five buildings had an offer up on 2026-08-23)
 - ✅ Days on market per unit, derived from our own scrape history (one-scrape gaps tolerated; `≥` marks units already listed before tracking began)
 - ✅ Live: https://github.com/EthanAlong/dtla-rent-tracker → https://ethanalong.github.io/dtla-rent-tracker/
 - ✅ Public repo (Pages on a private repo needs Pro), which is why the lease
@@ -124,14 +139,11 @@ cd docs && python3 -m http.server 8731    # → http://127.0.0.1:8731
 
 ## Backlog (rough priority)
 
-1. **Concession tracking.** "2.5 months free" swings effective rent 15–20% and
-   is currently invisible. Both platforms show specials as marketing text near
-   the listings; needs a text parse plus an `effective_rent` column.
-2. **Lease-term matrix for 825.** The min–max range hides the actual 12-month
+1. **Lease-term matrix for 825.** The min–max range hides the actual 12-month
    price. It lives inside the securecafe application flow
    (`oleapplication.aspx?stepname=RentalOptions`), which 403s a plain fetch —
    would need a browser session. High negotiation value, medium cost.
-3. **More comps.** Perla on Broadway (Cloudflare), Hope + Flower, Metropolis.
-4. **Retention pruning** if the CSV crosses a few MB.
-5. **Weekly digest email** in the 90 days before the lease ends (the user
+2. **More comps.** Perla on Broadway (Cloudflare), Hope + Flower, Metropolis.
+3. **Retention pruning** if the CSV crosses a few MB.
+4. **Weekly digest email** in the 90 days before the lease ends (the user
    declined notifications for now — revisit near renewal).

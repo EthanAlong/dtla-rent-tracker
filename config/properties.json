@@ -1,5 +1,5 @@
 {
-  "$comment": "One entry per building. `home: true` is the user's own building — the dashboard defaults to it. `adapter` names a module in scraper/adapters/. For the sightmap adapter, find the id by grepping the building's floorplans page for 'sightmap.com/embed/<id>'.",
+  "$comment": "One entry per building. `home: true` is the user's own building — the dashboard defaults to it. `adapter` names a module in scraper/adapters/. For the sightmap adapter, find the id by grepping the building's floorplans page for 'sightmap.com/embed/<id>'. `concession` points at the marketing banner (url + CSS selector) — concessions aren't in any unit feed, they're a banner on the building's own site.",
   "properties": [
     {
       "id": "825-south-hill",
@@ -10,7 +10,11 @@
       "adapter": "onni-craft",
       "home": true,
       "enabled": true,
-      "floors": 53
+      "floors": 53,
+      "concession": {
+        "url": "https://www.825southhilldtla.com/",
+        "selector": ".popup--promo h1"
+      }
     },
     {
       "id": "atelier",
@@ -21,7 +25,11 @@
       "source_url": "https://rent.brookfieldproperties.com/property/atelier/",
       "adapter": "sightmap",
       "enabled": true,
-      "floors": 33
+      "floors": 33,
+      "concession": {
+        "url": "https://rent.brookfieldproperties.com/property/atelier/",
+        "selector": ".promo-banner .promo-text"
+      }
     },
     {
       "id": "eighth-and-grand",
@@ -31,7 +39,11 @@
       "sightmap_id": "l27vq659pox",
       "source_url": "https://rent.brookfieldproperties.com/property/eighth-and-grand/",
       "adapter": "sightmap",
-      "enabled": true
+      "enabled": true,
+      "concession": {
+        "url": "https://rent.brookfieldproperties.com/property/eighth-and-grand/",
+        "selector": ".promo-banner .promo-text"
+      }
     },
     {
       "id": "beaudry",
@@ -42,7 +54,11 @@
       "source_url": "https://rent.brookfieldproperties.com/property/beaudry/",
       "adapter": "sightmap",
       "enabled": true,
-      "floors": 64
+      "floors": 64,
+      "concession": {
+        "url": "https://rent.brookfieldproperties.com/property/beaudry/",
+        "selector": ".promo-banner .promo-text"
+      }
     },
     {
       "id": "circa-la",
@@ -53,7 +69,11 @@
       "source_url": "https://circala.com/plans/",
       "adapter": "sightmap",
       "enabled": true,
-      "floors": 35
+      "floors": 35,
+      "concession": {
+        "url": "https://circala.com/",
+        "selector": ".home-cta-bar-txt"
+      }
     }
   ]
 }
