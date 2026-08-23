@@ -1,0 +1,54 @@
+name: Track rents
+
+on:
+  # Twice a day. Yardi/RentCafe-backed pricing (which is what all five
+  # buildings run on) refreshes overnight; the morning run catches that and the
+  # afternoon run catches same-day adjustments.
+  #   14:20 UTC = 07:20 PT · 23:20 UTC = 16:20 PT   (during PDT; +1h in PST,
+  #   which still lands inside the same windows — not worth DST-aware logic)
+  schedule:
+    - cron: "20 14 * * *"
+    - cron: "20 23 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: track-rents
+  cancel-in-progress: false
+
+jobs:
+  track:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Scrape
+        run: npm run track
+
+      - name: Commit if the CSV changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ -z "$(git status --porcelain docs/data/prices.csv)" ]]; then
+            echo "No new rows."
+            exit 0
+          fi
+          git add docs/data/prices.csv
+          git commit -m "data: scrape $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+          # Two runs can overlap after a retry; rebase and retry rather than fail.
+          for i in 1 2 3; do
+            git push && exit 0
+            echo "push failed (attempt $i), rebasing…"
+            git pull --rebase origin main
+          done
+          exit 1

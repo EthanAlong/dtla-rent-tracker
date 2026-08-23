@@ -1,0 +1,796 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DTLA Rent Tracker — 825 South Hill + comps</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+  /* Light is the base definition; dark redefines the same tokens under both
+     the OS media query and an explicit [data-theme] stamp so the toggle wins. */
+  :root {
+    color-scheme: light;
+    --surface-0: #f6f5f2;
+    --surface-1: #fcfcfb;
+    --border:    #e3e1db;
+    --grid:      #edebe5;
+    --text-1:    #0b0b0b;
+    --text-2:    #52514e;
+    --text-3:    #83817a;
+    --accent:    #2a78d6;
+    --good:      #1a7f4b;
+    --bad:       #c0362f;
+    --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a;
+    --series-4: #eda100; --series-5: #e87ba4;
+    --muted-mark: #b9b6ae;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --surface-0: #131312; --surface-1: #1a1a19; --border: #33322f;
+      --grid: #2a2a28; --text-1: #ffffff; --text-2: #c3c2b7; --text-3: #8f8d84;
+      --accent: #3987e5; --good: #4bb07a; --bad: #e66767;
+      --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70;
+      --series-4: #c98500; --series-5: #d55181;
+      --muted-mark: #56554f;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --surface-0: #131312; --surface-1: #1a1a19; --border: #33322f;
+    --grid: #2a2a28; --text-1: #ffffff; --text-2: #c3c2b7; --text-3: #8f8d84;
+    --accent: #3987e5; --good: #4bb07a; --bad: #e66767;
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70;
+    --series-4: #c98500; --series-5: #d55181;
+    --muted-mark: #56554f;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--surface-0); color: var(--text-1);
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 20px 72px; }
+
+  header { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 4px; }
+  h1 { font-size: 21px; font-weight: 620; margin: 0; letter-spacing: -0.01em; }
+  .sub { color: var(--text-3); font-size: 13px; }
+  .theme-btn {
+    margin-left: auto; background: none; border: 1px solid var(--border);
+    color: var(--text-2); border-radius: 7px; padding: 5px 11px; font-size: 13px; cursor: pointer;
+  }
+  .theme-btn:hover { color: var(--text-1); border-color: var(--text-3); }
+
+  /* Filters: one row above the charts. */
+  .filters {
+    display: flex; gap: 18px; flex-wrap: wrap; align-items: flex-end;
+    background: var(--surface-1); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 16px; margin: 20px 0 22px;
+  }
+  .fgroup { display: flex; flex-direction: column; gap: 7px; }
+  .flabel { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px; cursor: pointer; user-select: none;
+    border: 1px solid var(--border); background: var(--surface-0); color: var(--text-2);
+    border-radius: 999px; padding: 5px 11px; font-size: 13px; line-height: 1;
+  }
+  .chip:hover { border-color: var(--text-3); }
+  .chip[aria-pressed="true"] { color: var(--text-1); border-color: currentColor; }
+  .chip .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted-mark); flex: none; }
+  .chip[aria-pressed="true"] .dot { background: var(--chip-color, var(--accent)); }
+  select, input[type="number"], input[type="text"], input[type="date"], input:not([type]) {
+    background: var(--surface-0); color: var(--text-1); border: 1px solid var(--border);
+    border-radius: 7px; padding: 6px 9px; font: inherit; font-size: 13px;
+  }
+  .range { display: flex; align-items: center; gap: 6px; }
+  .range input { width: 78px; }
+  .filters.lease { padding-top: 12px; }
+
+  /* Stat tiles — the headline numbers, no plot. */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-bottom: 22px; }
+  .tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 15px 17px; }
+  .tile .k { font-size: 11.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--text-3); margin-bottom: 9px; }
+  .tile .v { font-size: 27px; font-weight: 640; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .tile .d { font-size: 12.5px; color: var(--text-2); margin-top: 5px; font-variant-numeric: tabular-nums; }
+  .up { color: var(--bad); } .down { color: var(--good); }
+
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px 8px; margin-bottom: 20px; }
+  .card h2 { font-size: 14.5px; font-weight: 600; margin: 0 0 2px; }
+  .card .hint { font-size: 12.5px; color: var(--text-3); margin: 0 0 10px; }
+  .chart { width: 100%; height: 400px; }
+  .chart.short { height: 320px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 860px) { .two-col { grid-template-columns: 1fr; } .chart { height: 320px; } }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .scroll-x { overflow-x: auto; margin: 0 -18px; padding: 0 18px 14px; }
+  th, td { text-align: right; padding: 7px 10px; white-space: nowrap; border-bottom: 1px solid var(--grid); }
+  th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) { text-align: left; }
+  th { color: var(--text-3); font-weight: 550; font-size: 11.5px; letter-spacing: .04em;
+       text-transform: uppercase; cursor: pointer; position: sticky; top: 0; background: var(--surface-1); }
+  th:hover { color: var(--text-1); }
+  td { font-variant-numeric: tabular-nums; color: var(--text-2); }
+  td.name { color: var(--text-1); }
+  tr.home td { background: color-mix(in srgb, var(--series-1) 7%, transparent); }
+  .swatch { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 7px; vertical-align: baseline; }
+  .tag { font-size: 11.5px; padding: 2px 7px; border-radius: 5px; border: 1px solid var(--border); color: var(--text-2); }
+  .empty { color: var(--text-3); font-size: 13.5px; padding: 18px 0 24px; }
+  footer { color: var(--text-3); font-size: 12.5px; margin-top: 26px; line-height: 1.7; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px;
+         background: var(--surface-1); border: 1px solid var(--border); border-radius: 5px; padding: 1px 5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>DTLA Rent Tracker</h1>
+    <span class="sub" id="freshness">加载中…</span>
+    <button class="theme-btn" id="themeBtn" type="button">切换深色</button>
+  </header>
+
+  <div class="filters">
+    <div class="fgroup" style="flex:1 1 320px">
+      <span class="flabel">楼盘</span>
+      <div class="chips" id="propChips"></div>
+    </div>
+    <div class="fgroup">
+      <span class="flabel">卧室</span>
+      <select id="bedsSel"><option value="">全部</option></select>
+    </div>
+    <div class="fgroup">
+      <span class="flabel">面积 sqft</span>
+      <div class="range">
+        <input type="number" id="sqftMin" placeholder="min" step="25">
+        <span class="sub">–</span>
+        <input type="number" id="sqftMax" placeholder="max" step="25">
+      </div>
+    </div>
+    <div class="fgroup">
+      <span class="flabel">指标</span>
+      <select id="metricSel">
+        <option value="rent">月租金 ($)</option>
+        <option value="psf">单价 ($/sqft)</option>
+      </select>
+    </div>
+    <div class="fgroup" style="margin-left:auto">
+      <span class="flabel">&nbsp;</span>
+      <button class="theme-btn" id="leaseBtn" type="button" style="margin:0">我的租约</button>
+    </div>
+  </div>
+
+  <!-- Lease details live in this browser only (localStorage) — never in the
+       repo, so the repo can stay public without publishing where you live. -->
+  <form class="filters lease" id="leaseForm" hidden>
+    <div class="fgroup"><span class="flabel">楼盘</span><select id="mePropSel"></select></div>
+    <div class="fgroup"><span class="flabel">Unit</span><input id="meUnit" style="width:88px" placeholder="门牌号"></div>
+    <div class="fgroup"><span class="flabel">Floorplan</span><input id="mePlan" style="width:88px" placeholder="如 N1"></div>
+    <div class="fgroup"><span class="flabel">户型</span><input id="meBedLabel" style="width:110px" placeholder="如 1 Bed"></div>
+    <div class="fgroup"><span class="flabel">面积 sqft</span><input type="number" id="meSqft" style="width:92px" placeholder="面积"></div>
+    <div class="fgroup"><span class="flabel">现在月租</span><input type="number" id="meRent" style="width:104px" placeholder="月租"></div>
+    <div class="fgroup"><span class="flabel">租约到期</span><input type="date" id="meEnds"></div>
+    <div class="fgroup" style="flex-direction:row;gap:8px;align-items:flex-end">
+      <button class="theme-btn" type="submit" style="margin:0">保存</button>
+      <button class="theme-btn" type="button" id="meClear" style="margin:0">清除</button>
+    </div>
+    <p class="hint" style="flex-basis:100%;margin:2px 0 0;color:var(--text-3);font-size:12.5px">
+      只存在这台浏览器里（localStorage），不会提交到仓库、也不会上传到任何地方。
+    </p>
+  </form>
+
+  <div class="tiles" id="tiles"></div>
+
+  <div class="card">
+    <h2>挂牌价历史</h2>
+    <p class="hint">每栋楼在筛选条件下的<strong>中位挂牌价</strong>。滚轮缩放、拖动平移，下方滑块选区间。</p>
+    <div class="chart" id="trendChart"></div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <h2>当前单价对比</h2>
+      <p class="hint">最新一次抓取的中位 $/sqft。</p>
+      <div class="chart short" id="psfChart"></div>
+    </div>
+    <div class="card">
+      <h2>面积 vs 租金</h2>
+      <p class="hint">最新一次抓取的每个在租 unit，看自家楼在市场上的位置。</p>
+      <div class="chart short" id="scatterChart"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>最近一次变动</h2>
+    <p class="hint">最新一次抓取 vs 上一次：调价、新上架、已租出。</p>
+    <div class="scroll-x"><table id="diffTable"></table></div>
+    <div class="empty" id="diffEmpty" hidden>还只有一次抓取记录，等下一次跑完就有对比了。</div>
+  </div>
+
+  <div class="card">
+    <h2>当前在租房源</h2>
+    <p class="hint">最新一次抓取的全部房源，点表头排序。</p>
+    <div class="scroll-x"><table id="unitTable"></table></div>
+  </div>
+
+  <footer>
+    数据每天抓 2 次，直接来自各楼盘官网的公开在租列表（825 South Hill 显示的是不同租期的价格区间，图表取区间下限＝最长租期价；SightMap 楼盘显示基础租金，另有 all-in 含杂费价）。
+    这是挂牌价（asking rent），不是成交价，也不含 concession（免租月）——谈判时记得把 “2.5 个月免租” 这类优惠折算进去。
+  </footer>
+</div>
+
+<script>
+const CSV_URL = "./data/prices.csv?t=" + Math.floor(Date.now() / 60000);
+// Your lease never leaves this browser — see loadMe/saveMe. A gitignored
+// docs/me.json is still honoured as a local-only fallback.
+const ME_URL  = "./me.json?t=" + Math.floor(Date.now() / 60000);
+const ME_KEY  = "dtla-rent-tracker:lease";
+
+// Color follows the entity: this order is fixed, so filtering a building out
+// never repaints the survivors.
+const SERIES_ORDER = ["825-south-hill", "atelier", "eighth-and-grand", "beaudry", "circa-la"];
+const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const colorFor = (id) => {
+  const i = SERIES_ORDER.indexOf(id);
+  return cssVar("--series-" + (i >= 0 ? i + 1 : 1));
+};
+
+const state = { rows: [], dom: new Map(), me: null, props: [], active: new Set(), beds: "", sqftMin: null, sqftMax: null, metric: "rent", sort: { key: "rent_min", dir: 1 } };
+let charts = {};
+
+/* ---------- CSV ---------- */
+function parseCSV(text) {
+  const lines = text.trim().split(/\r?\n/);
+  const cols = splitRow(lines[0]);
+  return lines.slice(1).map((line) => {
+    const cells = splitRow(line);
+    const o = {};
+    cols.forEach((c, i) => { o[c] = cells[i] ?? ""; });
+    ["beds", "baths", "sqft", "rent_min", "rent_max", "rent_all_in", "floor"].forEach((k) => {
+      o[k] = o[k] === "" ? null : Number(o[k]);
+    });
+    return o;
+  });
+}
+function splitRow(line) {
+  const out = []; let cur = "", q = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (q) {
+      if (ch === '"' && line[i + 1] === '"') { cur += '"'; i++; }
+      else if (ch === '"') q = false;
+      else cur += ch;
+    } else if (ch === '"') q = true;
+    else if (ch === ",") { out.push(cur); cur = ""; }
+    else cur += ch;
+  }
+  out.push(cur);
+  return out;
+}
+
+/* ---------- helpers ---------- */
+const money = (n) => n == null ? "—" : "$" + Math.round(n).toLocaleString("en-US");
+const psf = (n) => n == null ? "—" : "$" + n.toFixed(2);
+function median(arr) {
+  const a = arr.filter((x) => x != null).sort((x, y) => x - y);
+  if (!a.length) return null;
+  const m = a.length >> 1;
+  return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2;
+}
+const metricOf = (r) => state.metric === "psf" ? (r.sqft ? r.rent_min / r.sqft : null) : r.rent_min;
+const fmtMetric = (v) => state.metric === "psf" ? psf(v) : money(v);
+function matches(r) {
+  if (!state.active.has(r.property_id)) return false;
+  if (state.beds !== "" && String(r.beds) !== state.beds) return false;
+  if (state.sqftMin != null && !(r.sqft >= state.sqftMin)) return false;
+  if (state.sqftMax != null && !(r.sqft <= state.sqftMax)) return false;
+  return true;
+}
+const snapshots = () => [...new Set(state.rows.map((r) => r.timestamp))].sort();
+const unitKey = (r) => r.property_id + "|" + r.unit;
+
+// Days on market: how long a unit has been continuously listed, measured from
+// our own scrape history. A one-scrape gap is tolerated (sites blip); anything
+// longer counts as re-listed and restarts the clock.
+//
+// `censored` means the streak runs back to the very first scrape we have — the
+// unit was already listed before tracking began, so the real number is at
+// least this. Shown as "≥N".
+function computeDom() {
+  const snaps = snapshots();
+  const at = new Map(snaps.map((t, i) => [t, i]));
+  const seen = new Map();
+  state.rows.forEach((r) => {
+    const k = unitKey(r);
+    if (!seen.has(k)) seen.set(k, new Set());
+    seen.get(k).add(at.get(r.timestamp));
+  });
+  const last = snaps.length - 1;
+  const out = new Map();
+  seen.forEach((set, k) => {
+    if (!set.has(last)) return;
+    let i = last;
+    while (i > 0) {
+      if (set.has(i - 1)) { i -= 1; continue; }
+      if (i > 1 && set.has(i - 2)) { i -= 2; continue; }
+      break;
+    }
+    out.set(k, { days: (new Date(snaps[last]) - new Date(snaps[i])) / 86400000, censored: i === 0 });
+  });
+  return out;
+}
+// "≥" only means something once there's at least a day of history behind it.
+const fmtDom = (d) => d == null ? "—"
+  : d.days < 1 ? "<1 天"
+  : (d.censored ? "≥" : "") + Math.round(d.days) + " 天";
+
+/* ---------- filters UI ---------- */
+function buildFilters() {
+  const seen = new Map();
+  state.rows.forEach((r) => { if (!seen.has(r.property_id)) seen.set(r.property_id, r.property_name); });
+  state.props = SERIES_ORDER.filter((id) => seen.has(id)).concat([...seen.keys()].filter((id) => !SERIES_ORDER.includes(id)));
+  state.active = new Set(state.props);
+
+  const box = document.getElementById("propChips");
+  box.innerHTML = "";
+  state.props.forEach((id) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.setAttribute("aria-pressed", "true");
+    b.style.setProperty("--chip-color", colorFor(id));
+    b.innerHTML = '<span class="dot"></span>' + seen.get(id) + (state.me && state.me.property_id === id ? " ★" : "");
+    b.onclick = () => {
+      const on = b.getAttribute("aria-pressed") === "true";
+      if (on && state.active.size === 1) return; // never filter down to nothing
+      b.setAttribute("aria-pressed", String(!on));
+      on ? state.active.delete(id) : state.active.add(id);
+      renderAll();
+    };
+    box.appendChild(b);
+  });
+
+  const bedsSel = document.getElementById("bedsSel");
+  [...new Set(state.rows.map((r) => r.beds).filter((b) => b != null))].sort((a, b) => a - b)
+    .forEach((b) => bedsSel.add(new Option(b === 0 ? "Studio" : b + " Bed", String(b))));
+  if (state.me && state.me.beds != null) { bedsSel.value = String(state.me.beds); state.beds = String(state.me.beds); }
+  if (state.me && state.me.sqft) {
+    const round25 = (x) => Math.round(x / 25) * 25;
+    state.sqftMin = round25(state.me.sqft * 0.9);
+    state.sqftMax = round25(state.me.sqft * 1.1);
+    document.getElementById("sqftMin").value = state.sqftMin;
+    document.getElementById("sqftMax").value = state.sqftMax;
+  }
+
+  bedsSel.onchange = (e) => { state.beds = e.target.value; renderAll(); };
+  document.getElementById("metricSel").onchange = (e) => { state.metric = e.target.value; renderAll(); };
+  const num = (v) => v === "" ? null : Number(v);
+  document.getElementById("sqftMin").oninput = (e) => { state.sqftMin = num(e.target.value); renderAll(); };
+  document.getElementById("sqftMax").oninput = (e) => { state.sqftMax = num(e.target.value); renderAll(); };
+}
+
+/* ---------- tiles ---------- */
+function renderTiles() {
+  const snaps = snapshots();
+  const last = snaps.at(-1), prev = snaps.at(-2);
+  const cur = state.rows.filter((r) => r.timestamp === last && matches(r));
+  const before = prev ? state.rows.filter((r) => r.timestamp === prev && matches(r)) : [];
+  const me = state.me || {};
+  const homeId = me.property_id || SERIES_ORDER[0];
+  const homeCur = cur.filter((r) => r.property_id === homeId);
+  const compCur = cur.filter((r) => r.property_id !== homeId);
+
+  const homeMed = median(homeCur.map(metricOf));
+  const homeMedPrev = median(before.filter((r) => r.property_id === homeId).map(metricOf));
+  const compMed = median(compCur.map(metricOf));
+
+  const tiles = [];
+  const delta = (now, was) => {
+    if (now == null || was == null || was === 0) return '<div class="d">上次抓取无对比数据</div>';
+    const d = now - was, pct = (d / was) * 100;
+    if (Math.abs(d) < 0.005) return '<div class="d">较上次抓取持平</div>';
+    const cls = d > 0 ? "up" : "down";
+    return '<div class="d ' + cls + '">' + (d > 0 ? "▲ " : "▼ ") + fmtMetric(Math.abs(d)) + " (" + pct.toFixed(1) + "%) 较上次抓取</div>";
+  };
+
+  tiles.push('<div class="tile"><div class="k">自家楼中位挂牌价</div><div class="v">' + fmtMetric(homeMed) + "</div>" + delta(homeMed, homeMedPrev) + "</div>");
+
+  if (me.current_rent) {
+    const mine = state.metric === "psf" && me.sqft ? me.current_rent / me.sqft : me.current_rent;
+    const gap = homeMed != null ? mine - homeMed : null;
+    const cls = gap > 0 ? "up" : "down";
+    tiles.push('<div class="tile"><div class="k">我现在付的</div><div class="v">' + fmtMetric(mine) + "</div>" +
+      (gap == null ? "" : '<div class="d ' + cls + '">' + (gap > 0 ? "比同楼中位高 " : "比同楼中位低 ") + fmtMetric(Math.abs(gap)) + "</div>") +
+      '<div class="d" style="color:var(--text-3)">' + [me.unit ? "#" + me.unit : "", me.floorplan ? "plan " + me.floorplan : "",
+        me.bed_label || "", me.sqft ? me.sqft + " sqft" : ""].filter(Boolean).join(" · ") + "</div></div>");
+  }
+
+  tiles.push('<div class="tile"><div class="k">自家楼在租套数</div><div class="v">' + homeCur.length +
+    '</div><div class="d">符合筛选条件 · 全楼共 ' + state.rows.filter((r) => r.timestamp === last && r.property_id === homeId).length + " 套在租</div></div>");
+
+  if (compMed != null && homeMed != null) {
+    const gap = homeMed - compMed;
+    tiles.push('<div class="tile"><div class="k">竞品中位</div><div class="v">' + fmtMetric(compMed) +
+      '</div><div class="d ' + (gap > 0 ? "up" : "down") + '">自家楼' + (gap > 0 ? "贵 " : "便宜 ") + fmtMetric(Math.abs(gap)) + "</div></div>");
+  }
+
+  const homeDom = homeCur.map((r) => state.dom.get(unitKey(r))).filter(Boolean);
+  if (homeDom.length && snaps.length > 1) {
+    const med = median(homeDom.map((d) => d.days));
+    const anyCensored = homeDom.some((d) => d.censored);
+    const stale = homeDom.filter((d) => d.days >= 30).length;
+    const banded = state.sqftMin != null || state.sqftMax != null || state.beds !== "";
+    tiles.push('<div class="tile"><div class="k">' + (banded ? "同尺寸房源已挂" : "自家楼房源已挂") + '</div><div class="v">' +
+      fmtDom({ days: med, censored: anyCensored }) + '</div><div class="d">中位 · ' +
+      (stale ? stale + " 套挂满 30 天以上" : "暂无挂满 30 天的") + "</div></div>");
+  }
+
+  if (me.lease_ends) {
+    const days = Math.round((new Date(me.lease_ends) - new Date()) / 86400000);
+    tiles.push('<div class="tile"><div class="k">距租约到期</div><div class="v">' + days + ' 天</div><div class="d">' +
+      me.lease_ends + " · 一般提前 60–90 天开始谈</div></div>");
+  }
+  document.getElementById("tiles").innerHTML = tiles.join("");
+}
+
+/* ---------- charts ---------- */
+function baseAxisStyle() {
+  return {
+    axisLine: { lineStyle: { color: cssVar("--border") } },
+    axisTick: { show: false },
+    axisLabel: { color: cssVar("--text-3"), fontSize: 11.5 },
+    splitLine: { lineStyle: { color: cssVar("--grid"), width: 1, type: "solid" } },
+  };
+}
+function tooltipStyle() {
+  return {
+    backgroundColor: cssVar("--surface-1"),
+    borderColor: cssVar("--border"),
+    borderWidth: 1,
+    padding: [9, 12],
+    textStyle: { color: cssVar("--text-1"), fontSize: 12.5 },
+    extraCssText: "box-shadow:0 6px 22px rgba(0,0,0,.13);border-radius:9px",
+  };
+}
+
+function renderTrend() {
+  const snaps = snapshots();
+  const homeId = (state.me || {}).property_id || SERIES_ORDER[0];
+  const shown = state.props.filter((id) => state.active.has(id));
+
+  const series = shown.map((id) => {
+    const data = snaps.map((ts) => {
+      const v = median(state.rows.filter((r) => r.timestamp === ts && r.property_id === id && matches(r)).map(metricOf));
+      return [new Date(ts).getTime(), v == null ? null : Number(v.toFixed(2))];
+    });
+    const isHome = id === homeId;
+    return {
+      name: state.rows.find((r) => r.property_id === id).property_name,
+      type: "line", data, connectNulls: false,
+      color: colorFor(id),
+      lineStyle: { width: 2 },
+      symbol: "circle", symbolSize: 8, showSymbol: snaps.length <= 60,
+      itemStyle: { borderWidth: 2, borderColor: cssVar("--surface-1") },
+      emphasis: { focus: "series" },
+      // Buildings priced within a few dollars would stack their end labels on
+      // one line; shift them apart rather than dropping one.
+      labelLayout: { moveOverlap: "shiftY" },
+      z: isHome ? 3 : 2,
+      // Direct-label the endpoints so identity is never color-alone.
+      endLabel: { show: true, color: cssVar("--text-2"), fontSize: 11.5, distance: 6,
+        formatter: (p) => p.value[1] == null ? "" : (isHome ? "★ " : "") + fmtMetric(p.value[1]) },
+    };
+  });
+
+  const me = state.me || {};
+  const myLine = me.current_rent && state.active.has(me.property_id)
+    ? (state.metric === "psf" ? (me.sqft ? me.current_rent / me.sqft : null) : me.current_rent) : null;
+  if (myLine != null && series.length) {
+    series[0].markLine = {
+      silent: true, symbol: "none",
+      lineStyle: { color: cssVar("--text-3"), width: 1.5, type: "dashed" },
+      label: { formatter: "我现在付 " + fmtMetric(myLine), color: cssVar("--text-2"), fontSize: 11.5, position: "insideStartTop" },
+      data: [{ yAxis: myLine }],
+    };
+  }
+
+  charts.trend.setOption({
+    animationDuration: 300,
+    grid: { left: 8, right: 92, top: 34, bottom: 62, containLabel: true },
+    legend: { top: 0, left: 0, itemGap: 16, itemWidth: 16, itemHeight: 2,
+      textStyle: { color: cssVar("--text-2"), fontSize: 12.5 }, inactiveColor: cssVar("--text-3") },
+    tooltip: Object.assign({ trigger: "axis",
+      axisPointer: { type: "cross", lineStyle: { color: cssVar("--text-3"), width: 1 },
+        crossStyle: { color: cssVar("--text-3") }, label: { backgroundColor: cssVar("--text-2") } },
+      valueFormatter: (v) => v == null ? "—" : fmtMetric(v),
+    }, tooltipStyle()),
+    xAxis: Object.assign({}, baseAxisStyle(), { type: "time" }),
+    yAxis: Object.assign({}, baseAxisStyle(), { type: "value", scale: true,
+      axisLabel: { color: cssVar("--text-3"), fontSize: 11.5,
+        formatter: (v) => state.metric === "psf" ? "$" + v.toFixed(2) : "$" + (v / 1000).toFixed(1) + "k" },
+    }),
+    dataZoom: [
+      { type: "inside", throttle: 40 },
+      { type: "slider", height: 26, bottom: 12, borderColor: cssVar("--border"),
+        backgroundColor: "transparent", fillerColor: cssVar("--grid"),
+        handleStyle: { color: cssVar("--surface-1"), borderColor: cssVar("--text-3") },
+        moveHandleStyle: { color: cssVar("--border") },
+        dataBackground: { lineStyle: { color: cssVar("--text-3") }, areaStyle: { color: cssVar("--grid") } },
+        textStyle: { color: cssVar("--text-3"), fontSize: 11 } },
+    ],
+    series,
+  }, true);
+}
+
+function renderPsf() {
+  const last = snapshots().at(-1);
+  const homeId = (state.me || {}).property_id || SERIES_ORDER[0];
+  const rows = state.props.filter((id) => state.active.has(id)).map((id) => {
+    const units = state.rows.filter((r) => r.timestamp === last && r.property_id === id && matches(r));
+    return { id, name: (state.rows.find((r) => r.property_id === id) || {}).property_name,
+      v: median(units.map((r) => r.sqft ? r.rent_min / r.sqft : null)), n: units.length };
+  }).filter((d) => d.v != null).sort((a, b) => a.v - b.v);
+
+  // Emphasis, not a value ramp: home building carries the accent, comps recede.
+  charts.psf.setOption({
+    animationDuration: 300,
+    grid: { left: 8, right: 58, top: 12, bottom: 8, containLabel: true },
+    tooltip: Object.assign({ trigger: "item",
+      formatter: (p) => p.name + "<br>中位 " + psf(p.value) + " /sqft · " + rows[p.dataIndex].n + " 套" }, tooltipStyle()),
+    xAxis: Object.assign({}, baseAxisStyle(), { type: "value", axisLabel: { color: cssVar("--text-3"), fontSize: 11.5, formatter: (v) => "$" + v } }),
+    yAxis: Object.assign({}, baseAxisStyle(), { type: "category", data: rows.map((d) => d.name), splitLine: { show: false } }),
+    series: [{
+      type: "bar", barWidth: 14, data: rows.map((d) => ({
+        value: Number(d.v.toFixed(2)),
+        itemStyle: { color: d.id === homeId ? colorFor(homeId) : cssVar("--muted-mark"), borderRadius: [0, 4, 4, 0] },
+      })),
+      label: { show: true, position: "right", color: cssVar("--text-2"), fontSize: 11.5, formatter: (p) => psf(p.value) },
+    }],
+  }, true);
+}
+
+function renderScatter() {
+  const last = snapshots().at(-1);
+  const homeId = (state.me || {}).property_id || SERIES_ORDER[0];
+  const cur = state.rows.filter((r) => r.timestamp === last && matches(r));
+  const pt = (r) => [r.sqft, r.rent_min, r.property_name, r.unit, r.bed_label];
+  const comps = cur.filter((r) => r.property_id !== homeId && r.sqft).map(pt);
+  const home = cur.filter((r) => r.property_id === homeId && r.sqft).map(pt);
+  const me = state.me || {};
+
+  charts.scatter.setOption({
+    animationDuration: 300,
+    grid: { left: 8, right: 18, top: 34, bottom: 8, containLabel: true },
+    legend: { top: 0, left: 0, itemGap: 16, textStyle: { color: cssVar("--text-2"), fontSize: 12.5 } },
+    tooltip: Object.assign({ trigger: "item",
+      formatter: (p) => p.value[2] + " #" + p.value[3] + "<br>" + p.value[4] + " · " + p.value[0] + " sqft<br>" +
+        money(p.value[1]) + " · " + psf(p.value[1] / p.value[0]) + "/sqft" }, tooltipStyle()),
+    xAxis: Object.assign({}, baseAxisStyle(), { type: "value", scale: true,
+      axisLabel: { color: cssVar("--text-3"), fontSize: 11.5, formatter: (v) => v + " sf" } }),
+    yAxis: Object.assign({}, baseAxisStyle(), { type: "value", scale: true,
+      axisLabel: { color: cssVar("--text-3"), fontSize: 11.5, formatter: (v) => "$" + (v / 1000).toFixed(1) + "k" } }),
+    series: [
+      { name: "竞品楼盘", type: "scatter", data: comps, symbolSize: 9,
+        itemStyle: { color: cssVar("--muted-mark"), opacity: .85 } },
+      { name: (state.rows.find((r) => r.property_id === homeId) || {}).property_name || "自家楼",
+        type: "scatter", data: home, symbolSize: 11, z: 3,
+        itemStyle: { color: colorFor(homeId), borderColor: cssVar("--surface-1"), borderWidth: 2 },
+        markPoint: me.sqft && me.current_rent ? {
+          symbol: "pin", symbolSize: 46, data: [{ name: "我", coord: [me.sqft, me.current_rent], value: "我" }],
+          itemStyle: { color: cssVar("--text-1") }, label: { color: cssVar("--surface-1"), fontSize: 11 },
+        } : undefined },
+    ],
+  }, true);
+}
+
+/* ---------- tables ---------- */
+function renderDiff() {
+  const snaps = snapshots();
+  const last = snaps.at(-1), prev = snaps.at(-2);
+  const el = document.getElementById("diffTable");
+  const empty = document.getElementById("diffEmpty");
+  if (!prev) { el.innerHTML = ""; empty.hidden = false; return; }
+  empty.hidden = true;
+
+  const key = (r) => r.property_id + "|" + r.unit;
+  const now = new Map(state.rows.filter((r) => r.timestamp === last && matches(r)).map((r) => [key(r), r]));
+  const was = new Map(state.rows.filter((r) => r.timestamp === prev && matches(r)).map((r) => [key(r), r]));
+  const changes = [];
+  now.forEach((r, k) => {
+    const b = was.get(k);
+    if (!b) changes.push({ kind: "新上架", r, delta: null });
+    else if (b.rent_min !== r.rent_min) changes.push({ kind: "调价", r, delta: r.rent_min - b.rent_min, from: b.rent_min });
+  });
+  was.forEach((r, k) => { if (!now.has(k)) changes.push({ kind: "已租出/下架", r, delta: null, from: r.rent_min, gone: true }); });
+  changes.sort((a, b) => Math.abs(b.delta || 0) - Math.abs(a.delta || 0));
+
+  if (!changes.length) {
+    el.innerHTML = "";
+    empty.textContent = "这次抓取和上次相比没有变化。";
+    empty.hidden = false;
+    return;
+  }
+  el.innerHTML = "<thead><tr><th>变动</th><th>楼盘 / Unit</th><th>户型</th><th>sqft</th><th>之前</th><th>现在</th><th>变化</th></tr></thead><tbody>" +
+    changes.map(({ kind, r, delta, from, gone }) => {
+      const cls = delta == null ? "" : delta > 0 ? "up" : "down";
+      return "<tr" + (r.property_id === ((state.me || {}).property_id || SERIES_ORDER[0]) ? ' class="home"' : "") + ">" +
+        '<td style="text-align:left"><span class="tag">' + kind + "</span></td>" +
+        '<td class="name"><span class="swatch" style="background:' + colorFor(r.property_id) + '"></span>' + r.property_name + " #" + r.unit + "</td>" +
+        "<td>" + (r.bed_label || "—") + "</td><td>" + (r.sqft || "—") + "</td>" +
+        "<td>" + (from != null ? money(from) : "—") + "</td><td>" + (gone ? "—" : money(r.rent_min)) + "</td>" +
+        '<td class="' + cls + '">' + (delta == null ? "—" : (delta > 0 ? "▲ " : "▼ ") + money(Math.abs(delta))) + "</td></tr>";
+    }).join("") + "</tbody>";
+}
+
+const COLS = [
+  { key: "property_name", label: "楼盘", type: "s" },
+  { key: "unit", label: "Unit", type: "s" },
+  { key: "floor", label: "楼层", type: "n" },
+  { key: "bed_label", label: "户型", type: "s" },
+  { key: "sqft", label: "sqft", type: "n" },
+  { key: "rent_min", label: "挂牌价", type: "n", fmt: money },
+  { key: "_spread", label: "区间上限", type: "n", fmt: money },
+  { key: "_psf", label: "$/sqft", type: "n", fmt: psf },
+  { key: "available_date", label: "可入住", type: "s" },
+  { key: "_dom", label: "挂牌天数", type: "n", fmt: (v, r) => fmtDom(state.dom.get(unitKey(r))) },
+];
+function renderTable() {
+  const last = snapshots().at(-1);
+  const homeId = (state.me || {}).property_id || SERIES_ORDER[0];
+  const rows = state.rows.filter((r) => r.timestamp === last && matches(r))
+    .map((r) => Object.assign({
+      _psf: r.sqft ? r.rent_min / r.sqft : null,
+      _spread: r.rent_max && r.rent_max !== r.rent_min ? r.rent_max : null,
+      _dom: (state.dom.get(unitKey(r)) || {}).days ?? null,
+    }, r));
+  const { key, dir } = state.sort;
+  rows.sort((a, b) => {
+    const va = a[key], vb = b[key];
+    if (va == null) return 1;
+    if (vb == null) return -1;
+    return (typeof va === "number" ? va - vb : String(va).localeCompare(String(vb))) * dir;
+  });
+
+  const el = document.getElementById("unitTable");
+  el.innerHTML = "<thead><tr>" + COLS.map((c) =>
+    "<th data-k=\"" + c.key + "\">" + c.label + (key === c.key ? (dir === 1 ? " ↑" : " ↓") : "") + "</th>").join("") +
+    "</tr></thead><tbody>" + rows.map((r) =>
+      "<tr" + (r.property_id === homeId ? ' class="home"' : "") + ">" + COLS.map((c, i) => {
+        let v = r[c.key];
+        v = c.fmt ? c.fmt(v, r) : (v == null || v === "" ? "—" : v);
+        if (i === 0) v = '<span class="swatch" style="background:' + colorFor(r.property_id) + '"></span>' + v;
+        return "<td" + (i < 2 ? ' class="name"' : "") + ">" + v + "</td>";
+      }).join("") + "</tr>").join("") + "</tbody>";
+
+  el.querySelectorAll("th").forEach((th) => {
+    th.onclick = () => {
+      const k = th.dataset.k;
+      state.sort = { key: k, dir: state.sort.key === k ? -state.sort.dir : (COLS.find((c) => c.key === k).type === "n" ? 1 : 1) };
+      renderTable();
+    };
+  });
+}
+
+/* ---------- my lease (browser-local) ---------- */
+function loadMe() {
+  try { const raw = localStorage.getItem(ME_KEY); return raw ? JSON.parse(raw) : null; } catch { return null; }
+}
+function saveMe(me) { try { localStorage.setItem(ME_KEY, JSON.stringify(me)); } catch {} }
+
+function initLeaseForm() {
+  const form = document.getElementById("leaseForm");
+  const btn = document.getElementById("leaseBtn");
+  const propSel = document.getElementById("mePropSel");
+  const f = {
+    unit: document.getElementById("meUnit"), plan: document.getElementById("mePlan"),
+    bedLabel: document.getElementById("meBedLabel"), sqft: document.getElementById("meSqft"),
+    rent: document.getElementById("meRent"), ends: document.getElementById("meEnds"),
+  };
+  propSel.innerHTML = "";
+  state.props.forEach((id) => propSel.add(new Option((state.rows.find((r) => r.property_id === id) || {}).property_name || id, id)));
+
+  const me = state.me || {};
+  if (me.property_id) propSel.value = me.property_id;
+  f.unit.value = me.unit || ""; f.plan.value = me.floorplan || "";
+  f.bedLabel.value = me.bed_label || ""; f.sqft.value = me.sqft || "";
+  f.rent.value = me.current_rent || ""; f.ends.value = me.lease_ends || "";
+
+  btn.onclick = () => { form.hidden = !form.hidden; };
+  if (!state.me) { btn.textContent = "填一下我的租约 →"; form.hidden = false; }
+
+  form.onsubmit = (e) => {
+    e.preventDefault();
+    const next = {
+      property_id: propSel.value,
+      unit: f.unit.value.trim() || null,
+      floorplan: f.plan.value.trim() || null,
+      bed_label: f.bedLabel.value.trim() || null,
+      beds: null,
+      sqft: f.sqft.value ? Number(f.sqft.value) : null,
+      current_rent: f.rent.value ? Number(f.rent.value) : null,
+      lease_ends: f.ends.value || null,
+    };
+    saveMe(next);
+    state.me = next;
+    btn.textContent = "我的租约";
+    form.hidden = true;
+    // Re-seed the sqft band from the new unit size.
+    if (next.sqft) {
+      const round25 = (x) => Math.round(x / 25) * 25;
+      state.sqftMin = round25(next.sqft * 0.9);
+      state.sqftMax = round25(next.sqft * 1.1);
+      document.getElementById("sqftMin").value = state.sqftMin;
+      document.getElementById("sqftMax").value = state.sqftMax;
+    }
+    buildFilters();
+    renderAll();
+  };
+  document.getElementById("meClear").onclick = () => {
+    try { localStorage.removeItem(ME_KEY); } catch {}
+    state.me = null;
+    form.reset();
+    btn.textContent = "填一下我的租约 →";
+    renderAll();
+  };
+}
+
+/* ---------- boot ---------- */
+function renderAll() { renderTiles(); renderTrend(); renderPsf(); renderScatter(); renderDiff(); renderTable(); }
+
+function initTheme() {
+  const saved = (() => { try { return localStorage.getItem("theme"); } catch { return null; } })();
+  if (saved) document.documentElement.setAttribute("data-theme", saved);
+  const btn = document.getElementById("themeBtn");
+  const label = () => {
+    const dark = document.documentElement.getAttribute("data-theme") === "dark" ||
+      (!document.documentElement.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    btn.textContent = dark ? "切换浅色" : "切换深色";
+    return dark;
+  };
+  label();
+  btn.onclick = () => {
+    const dark = document.documentElement.getAttribute("data-theme") === "dark" ||
+      (!document.documentElement.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    const next = dark ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem("theme", next); } catch {}
+    label();
+    Object.values(charts).forEach((c) => c.dispose());
+    initCharts();
+    renderAll();
+  };
+}
+function initCharts() {
+  charts = {
+    trend: echarts.init(document.getElementById("trendChart")),
+    psf: echarts.init(document.getElementById("psfChart")),
+    scatter: echarts.init(document.getElementById("scatterChart")),
+  };
+}
+
+(async function main() {
+  initTheme();
+  initCharts();
+  addEventListener("resize", () => Object.values(charts).forEach((c) => c.resize()));
+
+  const [csv, fileMe] = await Promise.all([
+    fetch(CSV_URL).then((r) => r.text()),
+    fetch(ME_URL).then((r) => r.ok ? r.json() : null).catch(() => null),
+  ]);
+  state.rows = parseCSV(csv);
+  state.dom = computeDom();
+  const me = loadMe() || (fileMe && fileMe.property_id ? fileMe : null);
+  state.me = me && me.property_id ? me : null;
+
+  const snaps = snapshots();
+  const first = new Date(snaps[0]), last = new Date(snaps.at(-1));
+  document.getElementById("freshness").textContent =
+    snaps.length + " 次抓取 · " + first.toLocaleDateString("zh-CN") + " 起 · 最近 " +
+    last.toLocaleString("zh-CN", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" });
+
+  buildFilters();
+  initLeaseForm();
+  renderAll();
+})();
+</script>
+</body>
+</html>

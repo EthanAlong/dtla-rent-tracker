@@ -1,0 +1,9 @@
+node_modules/
+scraper/dumps/
+.DS_Store
+*.log
+
+# Lease details are personal and stay out of the public repo — the dashboard
+# keeps them in browser localStorage instead. A local copy here still works as
+# a fallback for offline viewing.
+docs/me.json

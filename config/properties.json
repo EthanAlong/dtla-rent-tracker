@@ -1,0 +1,59 @@
+{
+  "$comment": "One entry per building. `home: true` is the user's own building — the dashboard defaults to it. `adapter` names a module in scraper/adapters/. For the sightmap adapter, find the id by grepping the building's floorplans page for 'sightmap.com/embed/<id>'.",
+  "properties": [
+    {
+      "id": "825-south-hill",
+      "name": "825 South Hill",
+      "address": "825 S Hill St",
+      "note": "Home. Onni, 2019, 53 floors, 516 units.",
+      "url": "https://www.825southhilldtla.com/availability",
+      "adapter": "onni-craft",
+      "home": true,
+      "enabled": true,
+      "floors": 53
+    },
+    {
+      "id": "atelier",
+      "name": "Atelier",
+      "address": "801 S Olive St",
+      "note": "One block away — the closest true comp. Brookfield, 2018, 33 floors.",
+      "sightmap_id": "e8ywkj4gplx",
+      "source_url": "https://rent.brookfieldproperties.com/property/atelier/",
+      "adapter": "sightmap",
+      "enabled": true,
+      "floors": 33
+    },
+    {
+      "id": "eighth-and-grand",
+      "name": "Eighth & Grand",
+      "address": "770 S Grand Ave",
+      "note": "Two blocks. Brookfield, 2016, 7 storeys, 700 units. `floors` omitted on purpose: unit labels like 0-2077 aren't floor-encoded.",
+      "sightmap_id": "l27vq659pox",
+      "source_url": "https://rent.brookfieldproperties.com/property/eighth-and-grand/",
+      "adapter": "sightmap",
+      "enabled": true
+    },
+    {
+      "id": "beaudry",
+      "name": "Beaudry",
+      "address": "1234 W 1st St",
+      "note": "Brookfield, 2022, 64 floors — newest luxury high-rise in DTLA.",
+      "sightmap_id": "n9w6myemv71",
+      "source_url": "https://rent.brookfieldproperties.com/property/beaudry/",
+      "adapter": "sightmap",
+      "enabled": true,
+      "floors": 64
+    },
+    {
+      "id": "circa-la",
+      "name": "Circa LA",
+      "address": "1200 S Figueroa St",
+      "note": "South Park / LA Live. 2018, 35 floors, 648 units.",
+      "sightmap_id": "8xvrk5k6wjk",
+      "source_url": "https://circala.com/plans/",
+      "adapter": "sightmap",
+      "enabled": true,
+      "floors": 35
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "dtla-rent-tracker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Track asking rents at 825 South Hill + DTLA comps over time, for renewal negotiation leverage",
+  "type": "module",
+  "scripts": {
+    "track": "node scraper/track.js",
+    "probe": "node scraper/probe.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  }
+}
