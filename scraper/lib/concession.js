@@ -68,13 +68,42 @@ function normalizeYear(d) {
   return `${m[1]}/${m[2]}/${y}`;
 }
 
-/** Fetch a property's banner and parse it. Returns null when no offer is up. */
+// Any wording that means "there is an offer on this page". Used only to tell a
+// stale selector apart from a genuinely ended promotion — see scrapeConcession.
+const OFFER_HINT =
+  /(?:\d+(?:\.\d+)?|one|two|three|four|five|six|seven|eight|nine|ten)\s*(?:month|week)s?\s*(?:of\s*)?free|free\s*rent|look\s*(?:and|&)\s*lease|move[-\s]?in\s*special|concession/i;
+
+/**
+ * Fetch a property's banner and parse it.
+ *
+ * Returns `{status}` one of:
+ *   active — the selector matched; the offer is in the other fields
+ *   ended  — the selector matched nothing AND the page mentions no offer at
+ *            all, so the promotion really is over
+ *   check  — the selector matched nothing but the page still talks about free
+ *            rent. That means the site moved its banner and our selector is
+ *            stale. Without this distinction a redesign is indistinguishable
+ *            from an offer ending, and we'd silently log a fake "offer ended".
+ */
 export async function scrapeConcession(property) {
   const cfg = property.concession;
   if (!cfg?.url || !cfg?.selector) return null;
   const html = await fetchText(cfg.url);
   const $ = cheerio.load(html);
+
   const raw = squish($(cfg.selector).first().text());
-  if (!raw) return null;
-  return Object.assign({ source_url: cfg.url }, parseConcession(raw));
+  if (raw) return Object.assign({ status: "active", source_url: cfg.url }, parseConcession(raw));
+
+  // Strip scripts before the fallback scan — these sites ship i18n blobs
+  // containing strings like "special_offer", which would fake a hit forever.
+  $("script, style, noscript").remove();
+  const pageText = squish($("body").text());
+  const empty = {
+    raw_text: "", months_free: null, up_to: false, scope: "",
+    look_lease_usd: null, move_in_by: "", min_lease_months: null,
+  };
+  return Object.assign(
+    { status: OFFER_HINT.test(pageText) ? "check" : "ended", source_url: cfg.url },
+    empty,
+  );
 }

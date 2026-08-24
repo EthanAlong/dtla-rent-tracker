@@ -32,7 +32,7 @@ const COLUMNS = [
 ];
 
 const CONC_COLUMNS = [
-  "timestamp", "property_id", "property_name", "raw_text", "months_free",
+  "timestamp", "property_id", "property_name", "status", "raw_text", "months_free",
   "up_to", "scope", "look_lease_usd", "move_in_by", "min_lease_months", "source_url",
 ];
 
@@ -74,8 +74,16 @@ async function main() {
       try {
         const c = await scrapeConcession(property);
         const changed = recordConcession(property, c, timestamp, concessions);
-        if (c) concNote = `  · ${c.months_free ? c.months_free + "mo free" : "offer"}${changed ? " (NEW)" : ""}`;
-        else if (changed) concNote = "  · offer ended";
+        if (c?.status === "active") {
+          concNote = `  · ${c.months_free ? c.months_free + "mo free" : "offer"}${changed ? " (NEW)" : ""}`;
+        } else if (c?.status === "check") {
+          // Loud, but not fatal: losing the concession banner must not cost us
+          // the price data this run just collected.
+          concNote = "  · ⚠ CONCESSION SELECTOR STALE — page still mentions free rent";
+          console.error(`  ${property.id.padEnd(20)} ⚠ concession selector "${property.concession.selector}" matched nothing but ${property.concession.url} still mentions an offer — fix the selector`);
+        } else if (changed) {
+          concNote = "  · offer ended";
+        }
       } catch (err) {
         // A missing banner must never cost us the price data.
         console.error(`  ${property.id.padEnd(20)} concession lookup failed — ${err.message}`);
@@ -115,13 +123,14 @@ async function main() {
 /** Last recorded raw_text per property, so we only log actual changes. */
 function readConcessions() {
   if (!existsSync(CONC_PATH)) return new Map();
-  const lines = readFileSync(CONC_PATH, "utf8").trim().split(/\r?\n/).slice(1);
+  const lines = readFileSync(CONC_PATH, "utf8").trim().split(/\r?\n/);
+  const cols = splitCsvLine(lines[0]);
   const last = new Map();
-  for (const line of lines) {
-    // property_id is field 2 and never contains a comma; raw_text may, so read
-    // it back through a minimal quoted-CSV split.
+  for (const line of lines.slice(1)) {
     const cells = splitCsvLine(line);
-    last.set(cells[1], cells[3] || "");
+    const row = {};
+    cols.forEach((c, i) => { row[c] = cells[i] ?? ""; });
+    last.set(row.property_id, { status: row.status || "active", raw_text: row.raw_text || "" });
   }
   return last;
 }
@@ -144,15 +153,14 @@ function splitCsvLine(line) {
 }
 
 function recordConcession(property, c, timestamp, state) {
+  if (!c) return false;
   const previous = state.existing.get(property.id);
-  const now = c ? c.raw_text : "";
-  if (previous === now) return false;              // nothing changed
-  if (previous === undefined && !c) return false;  // never had an offer
-  state.existing.set(property.id, now);
+  const unchanged = previous && previous.status === c.status && previous.raw_text === c.raw_text;
+  if (unchanged) return false;
+  if (!previous && c.status === "ended") return false; // never had an offer
+  state.existing.set(property.id, { status: c.status, raw_text: c.raw_text });
   state.appended.push(Object.assign(
-    { timestamp, property_id: property.id, property_name: property.name },
-    c || { raw_text: "", months_free: null, up_to: "", scope: "", look_lease_usd: null,
-           move_in_by: "", min_lease_months: null, source_url: property.concession?.url || "" },
+    { timestamp, property_id: property.id, property_name: property.name }, c,
   ));
   return true;
 }

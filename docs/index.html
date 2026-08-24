@@ -295,6 +295,7 @@ function parseConcessions(text) {
     // Every CSV field arrives as a string and "false" is truthy — coerce it or
     // a building with no "up to" in its banner renders as "≤".
     o.up_to = o.up_to === "true";
+    o.status = o.status || "active";
     if (!byProp.has(o.property_id)) byProp.set(o.property_id, []);
     byProp.get(o.property_id).push(o);
   });
@@ -302,15 +303,23 @@ function parseConcessions(text) {
   return byProp;
 }
 
-function concessionAt(propertyId, ts) {
-  const list = state.conc.get(propertyId);
-  if (!list) return null;
-  let found = null;
+// Returns the offer in force at ts, plus whether the scraper currently can't
+// see the banner. `check` means the building's page still advertises something
+// but our selector stopped matching — the offer below is the last one we saw,
+// and it may be out of date. Silently showing it as current would be a lie.
+function concessionState(propertyId, ts) {
+  const list = state.conc.get(propertyId) || [];
+  let latest = null, lastSeen = null;
   for (const c of list) {
-    if (c.timestamp <= ts) found = c; else break;
+    if (c.timestamp > ts) break;
+    latest = c;
+    if (c.raw_text) lastSeen = c;
   }
-  return found && found.raw_text ? found : null;
+  if (!latest) return { offer: null, check: false };
+  if (latest.status === "check") return { offer: lastSeen, check: true };
+  return { offer: latest.raw_text ? latest : null, check: false };
 }
+const concessionAt = (propertyId, ts) => concessionState(propertyId, ts).offer;
 
 // "on Skyhomes" can be matched against plan_cat, so the discount lands only on
 // those units. "on select homes" can't be resolved from public data — it's
@@ -656,8 +665,11 @@ function renderConcessions() {
   const last = snapshots().at(-1);
   const rows = state.props
     .filter((id) => state.active.has(id))
-    .map((id) => ({ id, name: (state.rows.find((r) => r.property_id === id) || {}).property_name || id, c: concessionAt(id, last) }))
-    .filter((d) => d.c);
+    .map((id) => {
+      const st = concessionState(id, last);
+      return { id, name: (state.rows.find((r) => r.property_id === id) || {}).property_name || id, c: st.offer, check: st.check };
+    })
+    .filter((d) => d.c || d.check);
 
   const card = document.getElementById("concCard");
   card.hidden = rows.length === 0;
@@ -665,12 +677,17 @@ function renderConcessions() {
 
   document.getElementById("concTable").innerHTML =
     "<thead><tr><th>楼盘</th><th>广告原文</th><th>折合免租</th><th>摊薄后</th><th>适用范围</th><th>截止</th></tr></thead><tbody>" +
-    rows.map(({ id, name, c }) => {
+    rows.map(({ id, name, c, check }) => {
+      if (!c) {
+        return "<tr><td class=\"name\"><span class=\"swatch\" style=\"background:" + colorFor(id) + "\"></span>" + name + "</td>" +
+          '<td colspan="5" class="up" style="text-align:left;white-space:normal">⚠ 抓不到优惠横幅了（选择器可能失效），但该楼盘页面仍在宣传免租——需要人工去看一眼</td></tr>';
+      }
       const term = c.min_lease_months || 12;
       const cut = c.months_free ? c.months_free / term : 0;
       const scope = c.scope ? (c.scope.includes("select") ? "部分房源（未公开是哪些）" : c.scope) : "全部房源";
       return "<tr" + (id === ((state.me || {}).property_id || SERIES_ORDER[0]) ? ' class="home"' : "") + ">" +
-        '<td class="name"><span class="swatch" style="background:' + colorFor(id) + '"></span>' + name + "</td>" +
+        '<td class="name"><span class="swatch" style="background:' + colorFor(id) + '"></span>' + name +
+          (check ? '<div class="up" style="font-size:11.5px">⚠ 抓取异常，以下为最后一次已知优惠</div>' : "") + "</td>" +
         '<td class="name" style="white-space:normal;max-width:420px;font-size:12.5px;color:var(--text-2)">' + c.raw_text +
           (c.look_lease_usd ? "" : "") + "</td>" +
         "<td>" + (c.months_free ? (c.up_to ? "≤" : "") + c.months_free + " 个月" : "—") + "</td>" +

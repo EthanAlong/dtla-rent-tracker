@@ -74,10 +74,23 @@ ECharts dashboard: trend + dataZoom · $/sqft bar · sqft-vs-rent scatter · dif
 - **Lease details never enter git.** The repo is public so Pages is free; the
   dashboard's 我的租约 form writes to `localStorage`. Don't "simplify" this back
   into a committed JSON file.
+- **A stale selector must not look like an ended offer.** `scrapeConcession`
+  returns three states, not two: `active` (selector matched), `ended` (selector
+  matched nothing AND the page mentions no offer anywhere), and `check`
+  (selector matched nothing but the page still advertises free rent → the site
+  moved its banner). Without the third state a redesign silently writes a fake
+  "offer ended" row and the dashboard quietly under-reports the competition.
+  `check` never fails the run — the price data collected that run is worth more
+  than the banner — but it prints a loud CI error AND renders a red warning on
+  the dashboard's concession card above the last known offer. The fallback scan
+  strips `<script>` first: these sites ship i18n blobs containing
+  `"special_offer"`, which would otherwise match forever.
 - **Concessions are a change log, not a snapshot.** They move maybe monthly, so
   `concessions.csv` gets a row only when a building's banner text changes —
   which makes it directly readable as "Beaudry went to 2 months free on
-  2026-08-14". The dashboard resolves "offer in force at time T" as the newest
+  <date>". How often that actually happens is unmeasured — the Brookfield
+  banners carry month-end move-in deadlines, which *suggests* a monthly
+  campaign cycle, but this log is what will answer it. The dashboard resolves "offer in force at time T" as the newest
   row at or before T.
 - **Concession numbers are advertised MAXIMA.** "Up to", "on select homes" —
   `raw_text` is always stored verbatim and the derived discount is labelled an
