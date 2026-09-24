@@ -4,6 +4,7 @@
 //   node scraper/track.js            scrape all enabled properties
 //   node scraper/track.js 825-south-hill   scrape just one (by id)
 //   DUMP=1 node scraper/track.js     also save raw HTML to scraper/dumps/
+//   DRY=1  node scraper/track.js     scrape + summarize, write nothing
 //
 // Exit codes: 0 all good · 1 unexpected crash · 2 one or more properties
 // returned zero rows (page structure probably changed).
@@ -95,7 +96,11 @@ async function main() {
     }
   }
 
-  if (allRows.length) {
+  if (process.env.DRY) {
+    console.log(`\n(DRY=1) ${allRows.length} rows and ${concessions.appended.length} concession change(s) NOT written`);
+    if (allRows.length) summarize(allRows);
+    concessions.appended.forEach((c) => console.log(`  ${c.property_id}: [${c.status}] ${c.raw_text || "(no offer)"}`));
+  } else if (allRows.length) {
     mkdirSync(dirname(CSV_PATH), { recursive: true });
     if (!existsSync(CSV_PATH)) writeFileSync(CSV_PATH, COLUMNS.join(",") + "\n", "utf8");
     const lines = allRows.map((r) => COLUMNS.map((c) => csvEscape(r[c])).join(","));
@@ -104,7 +109,7 @@ async function main() {
     summarize(allRows);
   }
 
-  if (concessions.appended.length) {
+  if (concessions.appended.length && !process.env.DRY) {
     if (!existsSync(CONC_PATH)) writeFileSync(CONC_PATH, CONC_COLUMNS.join(",") + "\n", "utf8");
     appendFileSync(
       CONC_PATH,

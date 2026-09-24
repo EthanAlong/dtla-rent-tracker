@@ -1,0 +1,45 @@
+name: Probe candidate buildings
+
+# Manual only. Runs scraper/probe.js against a list of leasing sites and
+# prints, per site, which adapter can track it (SightMap embed id, Onni Craft
+# page, server-rendered prices, or "needs a browser") plus any concession
+# banner text with a CSS selector. Useful when your own network can't reach
+# the sites, or just to check a comp before adding it to config.
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: "Space-separated site URLs to probe"
+        required: false
+        default: >-
+          https://hopeflowerdtla.com
+          https://liveatapexalina.com
+          https://www.verdosaapts.com
+          https://theadtla.com
+          https://www.parkfifthtower.com
+          https://www.windsorcommunities.com/properties/olympic-by-windsor/
+          https://www.hollandresidential.com/ca/los-angeles/apex-the-one
+      dry_run_track:
+        description: "Also run the full scraper without writing (DRY=1) to validate config"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - name: Probe
+        run: node scraper/probe.js ${{ inputs.urls }}
+      - name: Dry-run scraper against config
+        if: ${{ inputs.dry_run_track }}
+        run: DRY=1 npm run track
