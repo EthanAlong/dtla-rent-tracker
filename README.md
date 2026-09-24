@@ -1,9 +1,9 @@
 # DTLA Rent Tracker
 
-Asking-rent history for **825 South Hill** and six downtown LA comps —
+Asking-rent history for **825 South Hill** and seven downtown LA comps —
 Atelier, Eighth & Grand, Beaudry, Circa LA, Hope + Flower, THEA at
-Metropolis — scraped twice a day so there's data on the table at renewal
-time.
+Metropolis, Apex & Alina — scraped twice a day so there's data on the table
+at renewal time.
 
 **Dashboard**: enable GitHub Pages on `docs/` and it lives at
 `https://<user>.github.io/<repo>/`
@@ -12,7 +12,7 @@ time.
 
 ```bash
 npm install
-npm run track          # one scrape of all seven buildings (~10s)
+npm run track          # one scrape of all eight buildings (~15s)
 cd docs && python3 -m http.server 8731   # preview at http://127.0.0.1:8731
 ```
 

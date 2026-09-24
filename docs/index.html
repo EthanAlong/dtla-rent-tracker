@@ -392,7 +392,7 @@ function applyI18n() {
 
 // Color follows the entity: this order is fixed, so filtering a building out
 // never repaints the survivors. Buildings added later get the next free slot.
-const SERIES_ORDER = ["825-south-hill", "atelier", "eighth-and-grand", "beaudry", "circa-la", "hope-and-flower", "thea-at-metropolis"];
+const SERIES_ORDER = ["825-south-hill", "atelier", "eighth-and-grand", "beaudry", "circa-la", "hope-and-flower", "thea-at-metropolis", "apex-and-alina"];
 const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const colorFor = (id) => {
   const i = SERIES_ORDER.indexOf(id);
