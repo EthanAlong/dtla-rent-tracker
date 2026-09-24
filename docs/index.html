@@ -392,7 +392,7 @@ function applyI18n() {
 
 // Color follows the entity: this order is fixed, so filtering a building out
 // never repaints the survivors. Buildings added later get the next free slot.
-const SERIES_ORDER = ["825-south-hill", "atelier", "eighth-and-grand", "beaudry", "circa-la"];
+const SERIES_ORDER = ["825-south-hill", "atelier", "eighth-and-grand", "beaudry", "circa-la", "hope-and-flower", "thea-at-metropolis"];
 const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const colorFor = (id) => {
   const i = SERIES_ORDER.indexOf(id);
@@ -477,12 +477,17 @@ const concessionAt = (propertyId, ts) => concessionState(propertyId, ts).offer;
 // "on Skyhomes" can be matched against plan_cat, so the discount lands only on
 // those units. "on select homes" can't be resolved from public data — it's
 // counted in, which is why the metric is labelled an upper bound.
+// Matching is on a punctuation-free form so "2 Bed + Den Homes" hits plan_cat
+// "2-bed-den" and bed_label "2 Bed + Den", but not plain "2 Bed".
+const norm = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
 function scopeApplies(scope, r) {
   if (!scope) return true;
   if (scope.includes("select")) return true;
-  const needle = scope.replace(/s$/, "");
-  return (r.plan_cat || "").toLowerCase().includes(needle) ||
-         (r.bed_label || "").toLowerCase().includes(needle);
+  // "skyhomes" / "townhomes" are categories in their own right; otherwise
+  // drop the trailing "homes"/"apartments" so "2 bed + den homes" → "2 bed + den".
+  const needle = norm(/^(sky|town)homes?$/i.test(scope.trim()) ? scope : scope.replace(/\s*(apartment\s+)?(homes?|apartments?)\s*$/i, ""));
+  if (!needle) return true;
+  return norm(r.plan_cat).includes(needle) || norm(r.bed_label).includes(needle);
 }
 
 // The concession that applies to this unit (at its scrape time), or null.

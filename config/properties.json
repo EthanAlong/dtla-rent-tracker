@@ -74,6 +74,34 @@
         "url": "https://circala.com/",
         "selector": ".home-cta-bar-txt"
       }
+    },
+    {
+      "id": "hope-and-flower",
+      "name": "Hope + Flower",
+      "address": "1201 S Hope St",
+      "note": "Onni sibling of 825 — same Craft CMS site, so the same adapter. 2019, two towers (43 + 31 floors), 666 units, South Park. Verified via the probe workflow 2026-09-24: 55 units on /availability.",
+      "url": "https://hopeflowerdtla.com/availability",
+      "adapter": "onni-craft",
+      "enabled": true,
+      "floors": 43,
+      "concession": {
+        "url": "https://hopeflowerdtla.com/",
+        "selector": ".popup--content .content p"
+      }
+    },
+    {
+      "id": "thea-at-metropolis",
+      "name": "THEA at Metropolis",
+      "address": "1000 W 8th St",
+      "note": "Greystar, 2021, 60 floors, 685 units — newest South Park/Financial District tower. Verified via the probe workflow 2026-09-24: SightMap embed with 19 units. `floors` omitted until the unit-label scheme is confirmed from a real scrape (see deriveFloor); add `\"floors\": 60` once labels are shown to be <floor><line>.",
+      "sightmap_id": "r5v51135wny",
+      "source_url": "https://theadtla.com/floor-plan/",
+      "adapter": "sightmap",
+      "enabled": true,
+      "concession": {
+        "url": "https://theadtla.com/",
+        "selector": ".modal-body p.heading"
+      }
     }
   ]
 }
