@@ -1,6 +1,6 @@
 # dtla-rent-tracker
 
-Tracks asking rents at **825 South Hill** (the home building) plus four DTLA
+Tracks asking rents at **825 South Hill** (the home building) plus six DTLA
 comps, so there's a price history to put on the table at renewal time.
 
 Successor to `ApartmentPriceTracking` (UDR / Westerly on Lincoln, built for a
@@ -33,8 +33,8 @@ ECharts dashboard: trend + dataZoom · $/sqft bar · sqft-vs-rent scatter · dif
 | `scraper/track.js` | Loops the enabled properties, appends rows, prints a summary. `node scraper/track.js <id>` scrapes one. `DRY=1` scrapes without writing. |
 | `scraper/probe.js` | `node scraper/probe.js <url>` — tells you whether a candidate building can be tracked (SightMap id / Onni Craft / server-rendered / needs a browser) and prints concession banner text with a CSS selector. Read-only. |
 | `.github/workflows/probe.yml` | Runs the probe + a `DRY=1` scrape on every push that touches `scraper/` or the building list, and on demand. Use it when your own network can't reach the leasing sites. |
-| `scraper/adapters/onni-craft.js` | 825 South Hill (Onni's in-house Craft CMS site). Reads `data-*` attrs off `.js-plan-row`. |
-| `scraper/adapters/sightmap.js` | Any building embedding an Engrain SightMap — Atelier, Eighth & Grand, Beaudry, Circa LA. Reads the schema.org JSON-LD off `sightmap.com/embed/<id>`. |
+| `scraper/adapters/onni-craft.js` | Onni's in-house Craft CMS sites — 825 South Hill, Hope + Flower. Reads `data-*` attrs off `.js-plan-row`. |
+| `scraper/adapters/sightmap.js` | Any building embedding an Engrain SightMap — Atelier, Eighth & Grand, Beaudry, Circa LA, THEA at Metropolis. Reads the schema.org JSON-LD off `sightmap.com/embed/<id>`. |
 | `scraper/lib/util.js` | fetch-with-retry, int/date coercion, CSV escaping. |
 | `scraper/lib/floor.js` | Floor number derived from the unit label, guarded by the building's storey count. |
 | `scraper/lib/concession.js` | Fetches each building's marketing banner (url + CSS selector from config) and parses "up to 2.5 months free" into months, scope, look-&-lease bonus, move-in deadline. |
@@ -158,9 +158,11 @@ cd docs && python3 -m http.server 8731    # → http://127.0.0.1:8731
    them. The dashboard picks a new building up automatically (colour slot,
    chips, lease form); pin it in `SERIES_ORDER` if you want a specific colour.
 
-## Current state (as of 2026-08-22)
+## Current state (as of 2026-09-24)
 
-- ✅ 5 buildings, 185 units per scrape, ~6s, no browser
+- ✅ 7 buildings (~290 units per scrape), no browser. Hope + Flower and THEA
+  were added 2026-09-24 after the probe workflow confirmed their feeds; THEA's
+  `floors` is deliberately unset until a real scrape shows its label scheme.
 - ✅ Dashboard: zoomable trend, $/sqft comparison, scatter, diff table, unit table, dark mode
 - ✅ Lease details live in browser localStorage, entered through the 我的租约
   form; the sqft filter then defaults to ±10% of that unit's size. **Never
@@ -184,7 +186,19 @@ cd docs && python3 -m http.server 8731    # → http://127.0.0.1:8731
    price. It lives inside the securecafe application flow
    (`oleapplication.aspx?stepname=RentalOptions`), which 403s a plain fetch —
    would need a browser session. High negotiation value, medium cost.
-2. **More comps.** Perla on Broadway (Cloudflare), Hope + Flower, Metropolis.
+2. **More comps.** Probe run of 2026-09-24 (workflow run 36038856169) sorted
+   the candidates:
+   - *Server-rendered, needs a small adapter* — **The Emerson** (225 S Grand,
+     ~26 prices on theemersonla.com, banner selector
+     `.property-flash-message__text h5`), **Olympic by Windsor** (936 S Olive,
+     36 prices on `/properties/olympic-by-windsor/floorplans/`), **Metropolis**
+     (10 prices on `/availability`, behind Cloudflare but served to a plain
+     fetch). The probe now prints the DOM outline of the price elements — run
+     it and write the adapter from that.
+   - *JS-only or 403 to a plain fetch* — Apex/Alina (liveatapexalina.com),
+     Verdosa, Park Fifth, Onyx, Level, Grace/Griffin on Spring, Wren, E on
+     Grand, AVEN. Need a browser; probably not worth it.
+   - *Dead domains* — broadwaypalace.com and perlaonbroadway.com are parked.
 3. **Retention pruning** if the CSV crosses a few MB.
 4. **Weekly digest email** in the 90 days before the lease ends (the user
    declined notifications for now — revisit near renewal).
