@@ -5,24 +5,43 @@ name: Probe candidate buildings
 # page, server-rendered prices, or "needs a browser") plus any concession
 # banner text with a CSS selector. Useful when your own network can't reach
 # the sites, or just to check a comp before adding it to config.
+#
+# Also runs automatically when the probe, the adapters or the building list
+# change, so a config edit gets validated (DRY=1, nothing written) before the
+# next real scrape.
 on:
   workflow_dispatch:
     inputs:
       urls:
-        description: "Space-separated site URLs to probe"
+        description: "Space-separated site URLs to probe (blank = the default candidate list below)"
         required: false
-        default: >-
-          https://hopeflowerdtla.com
-          https://liveatapexalina.com
-          https://www.verdosaapts.com
-          https://theadtla.com
-          https://www.parkfifthtower.com
-          https://www.windsorcommunities.com/properties/olympic-by-windsor/
-          https://www.hollandresidential.com/ca/los-angeles/apex-the-one
-      dry_run_track:
-        description: "Also run the full scraper without writing (DRY=1) to validate config"
-        type: boolean
-        default: true
+        default: ""
+  push:
+    paths:
+      - ".github/workflows/probe.yml"
+      - "scraper/**"
+      - "config/properties.json"
+
+env:
+  DEFAULT_URLS: >-
+    https://hopeflowerdtla.com
+    https://liveatapexalina.com
+    https://www.hollandresidential.com/ca/los-angeles/apex-the-one
+    https://www.verdosaapts.com
+    https://theadtla.com
+    https://www.parkfifthtower.com
+    https://www.windsorcommunities.com/properties/olympic-by-windsor/
+    https://www.theemersonla.com
+    https://www.onyxdtla.com
+    https://www.leveldtla.com
+    https://www.broadwaypalace.com
+    https://www.thegraceonspring.com
+    https://www.griffinonspring.com
+    https://www.wrendtla.com
+    https://www.eongrand.com
+    https://www.avendtla.com
+    https://www.perlaonbroadway.com
+    https://www.metropolislosangeles.com
 
 permissions:
   contents: read
@@ -39,7 +58,6 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Probe
-        run: node scraper/probe.js ${{ inputs.urls }}
+        run: node scraper/probe.js ${{ inputs.urls || env.DEFAULT_URLS }}
       - name: Dry-run scraper against config
-        if: ${{ inputs.dry_run_track }}
         run: DRY=1 npm run track
