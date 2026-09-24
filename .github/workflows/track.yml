@@ -10,6 +10,14 @@ on:
     - cron: "20 14 * * *"
     - cron: "20 23 * * *"
   workflow_dispatch: {}
+  # A building added to the list gets its first rows right away instead of
+  # waiting up to 12h for the next cron. The bot's own data commits carry
+  # [skip ci] and don't touch these paths, so this can't loop.
+  push:
+    branches: [main]
+    paths:
+      - "config/properties.json"
+      - ".github/workflows/track.yml"
 
 permissions:
   contents: write
