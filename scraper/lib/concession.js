@@ -39,10 +39,12 @@ export function parseConcession(raw) {
     monthsFree = w == null ? null : Math.round((w / WEEKS_PER_MONTH) * 100) / 100;
   }
 
-  // "on Skyhomes" / "on Select Apartment Homes" — who the offer actually
-  // applies to. A scope that names a floorplan category can be matched against
-  // plan_cat; "select homes" can't, and stays a warning string.
-  const scope = /\bon\s+(select\s+[a-z ]*homes|skyhomes|townhomes|select\s+apartments?)/i.exec(t);
+  // "on Skyhomes" / "On 2 Bed + Den Homes" / "on Select Apartment Homes" —
+  // who the offer actually applies to. A scope that names a floorplan
+  // category is matched against plan_cat / bed_label downstream; "select
+  // homes" can't be resolved and stays a warning string. Digits and "+" are
+  // allowed so "2 Bed + Den" survives.
+  const scope = /\bon\s+((?:select\s+)?[a-z0-9+ ]*?(?:sky|town)?homes|select\s+apartments?)\b/i.exec(t);
   const lookLease = /\$([\d,]+)\s*(?:look\s*(?:and|&)\s*lease|look\s*&?\s*lease)/i.exec(t)
     || /look\s*(?:and|&)\s*lease[^$]{0,20}\$([\d,]+)/i.exec(t);
   const moveIn = /move[-\s]?in\s*by\s*(\d{1,2}\/\d{1,2}\/\d{2,4})/i.exec(t);

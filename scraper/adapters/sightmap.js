@@ -45,7 +45,8 @@ export function parse(html, property = {}) {
     // Base rent is what a listing advertises; fall back to all-in if the
     // property doesn't break the components out.
     const baseRent = Math.round(components["Rent"] ?? o.price ?? 0) || null;
-    const unit = String(o.name || "").replace(/^APT\s*/i, "").trim();
+    // "APT 0614" (Brookfield), "HOME 0505" (THEA), "UNIT 300" (Apex & Alina)
+    const unit = String(o.name || "").replace(/^(?:APT|UNIT|HOME|RESIDENCE)\.?\s*/i, "").trim();
     const beds = spec.numberOfBedrooms;
 
     return {

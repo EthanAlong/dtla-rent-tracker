@@ -32,23 +32,34 @@ jobs:
 
       - run: npm ci
 
+      # A single broken building must not cost us the rows the others
+      # returned: keep going, commit what we got, and fail the job at the end
+      # so the red ✗ still shows up.
       - name: Scrape
+        id: scrape
+        continue-on-error: true
         run: npm run track
 
-      - name: Commit if the CSV changed
+      - name: Commit if the data changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if [[ -z "$(git status --porcelain docs/data/prices.csv)" ]]; then
+          if [[ -z "$(git status --porcelain docs/data/)" ]]; then
             echo "No new rows."
             exit 0
           fi
-          git add docs/data/prices.csv
+          git add docs/data/prices.csv docs/data/concessions.csv
           git commit -m "data: scrape $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
           # Two runs can overlap after a retry; rebase and retry rather than fail.
           for i in 1 2 3; do
             git push && exit 0
             echo "push failed (attempt $i), rebasing…"
-            git pull --rebase origin main
+            git pull --rebase origin "${GITHUB_REF_NAME}"
           done
+          exit 1
+
+      - name: Surface scrape failures
+        if: steps.scrape.outcome == 'failure'
+        run: |
+          echo "::error::One or more buildings failed to scrape — see the Scrape step. Data from the others was still committed."
           exit 1

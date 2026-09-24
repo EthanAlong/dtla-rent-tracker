@@ -18,16 +18,17 @@ import * as cheerio from "cheerio";
 import { fetchText, toInt, toISODate, squish } from "../lib/util.js";
 import { deriveFloor } from "../lib/floor.js";
 
-// data-cat -> bedroom count. Townhomes/Skyhomes are marketing buckets that mix
-// sizes, so we leave beds null and let sqft do the comparing.
+// data-cat -> bedroom count. 825 says "1-bed", Hope + Flower says "1-br" —
+// same CMS, different content editors. Townhomes/Skyhomes are marketing
+// buckets that mix sizes, so we leave beds null and let sqft do the comparing.
 const BEDS_BY_CAT = {
   studio: 0,
-  "1-bed": 1,
-  "1-bed-den": 1,
-  "jr-2-bed": 2,
-  "2-bed": 2,
-  "2-bed-den": 2,
-  "3-bed": 3,
+  "1-bed": 1, "1-br": 1,
+  "1-bed-den": 1, "1-br-den": 1,
+  "jr-2-bed": 2, "jr-2-br": 2,
+  "2-bed": 2, "2-br": 2,
+  "2-bed-den": 2, "2-br-den": 2,
+  "3-bed": 3, "3-br": 3,
 };
 
 export async function scrape(property) {

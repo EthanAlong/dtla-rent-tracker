@@ -1,6 +1,6 @@
 # dtla-rent-tracker
 
-Tracks asking rents at **825 South Hill** (the home building) plus four DTLA
+Tracks asking rents at **825 South Hill** (the home building) plus seven DTLA
 comps, so there's a price history to put on the table at renewal time.
 
 Successor to `ApartmentPriceTracking` (UDR / Westerly on Lincoln, built for a
@@ -30,9 +30,11 @@ ECharts dashboard: trend + dataZoom · $/sqft bar · sqft-vs-rent scatter · dif
 | Path | Purpose |
 |---|---|
 | `config/properties.json` | The building list. Adding a comp = adding an entry, not writing code (unless it's a new platform). |
-| `scraper/track.js` | Loops the enabled properties, appends rows, prints a summary. `node scraper/track.js <id>` scrapes one. |
-| `scraper/adapters/onni-craft.js` | 825 South Hill (Onni's in-house Craft CMS site). Reads `data-*` attrs off `.js-plan-row`. |
-| `scraper/adapters/sightmap.js` | Any building embedding an Engrain SightMap — Atelier, Eighth & Grand, Beaudry, Circa LA. Reads the schema.org JSON-LD off `sightmap.com/embed/<id>`. |
+| `scraper/track.js` | Loops the enabled properties, appends rows, prints a summary. `node scraper/track.js <id>` scrapes one. `DRY=1` scrapes without writing. |
+| `scraper/probe.js` | `node scraper/probe.js <url>` — tells you whether a candidate building can be tracked (SightMap id / Onni Craft / server-rendered / needs a browser) and prints concession banner text with a CSS selector. Read-only. |
+| `.github/workflows/probe.yml` | Runs the probe + a `DRY=1` scrape on every push that touches `scraper/` or the building list, and on demand. Use it when your own network can't reach the leasing sites. |
+| `scraper/adapters/onni-craft.js` | Onni's in-house Craft CMS sites — 825 South Hill, Hope + Flower. Reads `data-*` attrs off `.js-plan-row`. |
+| `scraper/adapters/sightmap.js` | Any building embedding an Engrain SightMap — Atelier, Eighth & Grand, Beaudry, Circa LA, THEA at Metropolis, Apex & Alina. Reads the schema.org JSON-LD off `sightmap.com/embed/<id>`. |
 | `scraper/lib/util.js` | fetch-with-retry, int/date coercion, CSV escaping. |
 | `scraper/lib/floor.js` | Floor number derived from the unit label, guarded by the building's storey count. |
 | `scraper/lib/concession.js` | Fetches each building's marketing banner (url + CSS selector from config) and parses "up to 2.5 months free" into months, scope, look-&-lease bonus, move-in deadline. |
@@ -68,9 +70,24 @@ ECharts dashboard: trend + dataZoom · $/sqft bar · sqft-vs-rent scatter · dif
   empty. Don't "fix" that by guessing a number.
 - **Color follows the building, not its rank.** `SERIES_ORDER` in the dashboard
   pins each property to a palette slot, so filtering never repaints the
-  survivors. Palette is the validated 5-slot categorical set (passes CVD and
-  lightness gates in both themes); the light theme's contrast warning is
-  covered by the table view + direct end labels.
+  survivors. The first 5 slots are the validated categorical set (passes CVD
+  and lightness gates in both themes); slots 6–10 exist so newly added
+  buildings get a colour of their own, and any id not in `SERIES_ORDER` is
+  appended to it at load time in first-seen order. Pin a new building
+  explicitly if you care which colour it gets.
+- **Two languages, one dictionary.** Every visible string in `docs/index.html`
+  lives in the `I18N` table (`zh` + `en`). Static markup uses
+  `data-i18n="key"` (innerHTML) / `data-i18n-ph` (placeholder); dynamic text
+  calls `t(key, vars)`. Add a key to **both** languages or the English side
+  silently falls back to Chinese. The choice is remembered in localStorage;
+  Chinese is the default.
+- **Concessions are folded in via one switch, not a separate metric.** The
+  filter bar's 折算进价格 toggle (`state.fold`) makes `rentOf(r)` return the
+  amortised effective rent instead of `rent_min`, and every chart, tile and
+  $/sqft goes through `rentOf`. Off, the unit table still shows the offer tag
+  and the effective figure next to the asking rent — that's the "show the
+  promotion inside the price" ask. The diff table always compares asking
+  rents, so a banner change doesn't spray a fake repricing across a building.
 - **Lease details never enter git.** The repo is public so Pages is free; the
   dashboard's 我的租约 form writes to `localStorage`. Don't "simplify" this back
   into a committed JSON file.
@@ -104,11 +121,12 @@ ECharts dashboard: trend + dataZoom · $/sqft bar · sqft-vs-rent scatter · dif
 
 ## What the data is and isn't
 
-Asking rents from public availability pages — **not** signed-lease rents, and
-**not** net of concessions. Several comps were running "up to 2.5 months free"
-during the first scrape; a $4,000 ask with 2 months free is an effective ~$3,333
-on a 12-month term. Concessions aren't captured yet (see backlog) — read the
-buildings' own pages before quoting a number in a negotiation.
+Asking rents from public availability pages — **not** signed-lease rents. The
+raw numbers are **not** net of concessions; the dashboard can fold the
+advertised concession in (a $4,000 ask with 2 months free on a 12-month term ≈
+$3,333/mo, and a look & lease credit is spread over the same term), but what
+it folds in is the banner's *maximum* — read the buildings' own pages before
+quoting a number in a negotiation.
 
 ## Common operations
 
@@ -123,24 +141,37 @@ cd docs && python3 -m http.server 8731    # → http://127.0.0.1:8731
 
 ### Adding a building
 
-1. Open its floorplans/availability page source and grep for
-   `sightmap.com/embed/`. If it's there, add a config entry with that
-   `sightmap_id` and `adapter: "sightmap"` — done, no code.
-2. Otherwise check whether prices are server-rendered (`curl | grep '\$[0-9]'`).
-   If yes, write a small adapter next to the existing two.
-3. If the page needs JS or sits behind Cloudflare (Perla on Broadway returns a
+1. `node scraper/probe.js https://its-site.com` (or push a change under
+   `scraper/` / the config and read the probe workflow's log). It reports a
+   `sightmap.com/embed/<id>` if there is one, whether it's an Onni Craft site,
+   how many prices are server-rendered, and any concession banner text with a
+   CSS selector for `config.concession`.
+2. SightMap id → add a config entry with that `sightmap_id` and
+   `adapter: "sightmap"` — done, no code. Onni site → `adapter: "onni-craft"`
+   with `url: <site>/availability`.
+3. Otherwise, if prices are server-rendered, write a small adapter next to the
+   existing two.
+4. If the page needs JS or sits behind Cloudflare (Perla on Broadway returns a
    403 challenge; the securecafe application flow does too), it needs a
    browser — decide whether the comp is worth that dependency.
+5. `DRY=1 node scraper/track.js <id>` to see the rows before the cron writes
+   them. The dashboard picks a new building up automatically (colour slot,
+   chips, lease form); pin it in `SERIES_ORDER` if you want a specific colour.
 
-## Current state (as of 2026-08-22)
+## Current state (as of 2026-09-24)
 
-- ✅ 5 buildings, 185 units per scrape, ~6s, no browser
+- ✅ 8 buildings (~355 units per scrape), no browser. Hope + Flower, THEA at
+  Metropolis and Apex & Alina were added 2026-09-24 after the probe workflow
+  confirmed their feeds. Apex & Alina has no `floors` on purpose (two
+  buildings on one map, 3-digit labels).
 - ✅ Dashboard: zoomable trend, $/sqft comparison, scatter, diff table, unit table, dark mode
 - ✅ Lease details live in browser localStorage, entered through the 我的租约
   form; the sqft filter then defaults to ±10% of that unit's size. **Never
   write the actual unit number, rent, or lease dates into a tracked file —
   this repo is public.** That includes docs, comments, and form placeholders.
-- ✅ Concessions tracked (all five buildings had an offer up on 2026-08-23)
+- ✅ Concessions tracked (all five buildings had an offer up on 2026-08-23),
+  shown per unit (offer tag + effective rent) and foldable into every chart
+- ✅ Dashboard in 中文 / English (header toggle, remembered per browser)
 - ✅ Days on market per unit, derived from our own scrape history (one-scrape gaps tolerated; `≥` marks units already listed before tracking began)
 - ✅ Live: https://github.com/EthanAlong/dtla-rent-tracker → https://ethanalong.github.io/dtla-rent-tracker/
 - ✅ Public repo (Pages on a private repo needs Pro), which is why the lease
@@ -156,7 +187,25 @@ cd docs && python3 -m http.server 8731    # → http://127.0.0.1:8731
    price. It lives inside the securecafe application flow
    (`oleapplication.aspx?stepname=RentalOptions`), which 403s a plain fetch —
    would need a browser session. High negotiation value, medium cost.
-2. **More comps.** Perla on Broadway (Cloudflare), Hope + Flower, Metropolis.
+2. **More comps.** Probe runs of 2026-09-24 (workflow runs 36038856169 and
+   36040177652) sorted the candidates:
+   - *Maybe, with work* — **Olympic by Windsor** (936 S Olive): the property
+     page server-renders per-floorplan "starting at" prices
+     (`.price-tile-container a.data-available-apartments span`), 36 figures on
+     `/properties/olympic-by-windsor/floorplans/`; whether unit-level prices
+     are in the HTML is unchecked. **AVEN** (1120 S Grand) embeds SightMap
+     `zlpo60e8pg4` but that embed carries no JSON-LD — a different SightMap
+     generation; would need its own parser. **The Emerson** has an offer
+     banner (`.property-flash-message__text h5`) but its only server-side
+     prices are a budget dropdown — units are JS-only.
+   - *Not rentals* — metropolislosangeles.com/availability lists condos for
+     sale (HOA + seven-figure prices); THEA is the rental tower there.
+   - *JS-only or 403 to a plain fetch* — Verdosa, Park Fifth, Onyx, Level,
+     Grace/Griffin on Spring, Wren, E on Grand. Need a browser.
+   - *Dead domains* — broadwaypalace.com and perlaonbroadway.com are parked.
+   - liveatapexalina.com timed out on the first probe and answered on the
+     second — if a building shows "no server-rendered prices" once, re-run
+     before writing it off.
 3. **Retention pruning** if the CSV crosses a few MB.
 4. **Weekly digest email** in the 90 days before the lease ends (the user
    declined notifications for now — revisit near renewal).

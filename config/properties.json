@@ -74,6 +74,45 @@
         "url": "https://circala.com/",
         "selector": ".home-cta-bar-txt"
       }
+    },
+    {
+      "id": "hope-and-flower",
+      "name": "Hope + Flower",
+      "address": "1201 S Hope St",
+      "note": "Onni sibling of 825 — same Craft CMS site, so the same adapter. 2019, two towers (43 + 31 floors), 666 units, South Park. Verified via the probe workflow 2026-09-24: 55 units on /availability.",
+      "url": "https://hopeflowerdtla.com/availability",
+      "adapter": "onni-craft",
+      "enabled": true,
+      "floors": 43,
+      "concession": {
+        "url": "https://hopeflowerdtla.com/",
+        "selector": ".popup--content .content p"
+      }
+    },
+    {
+      "id": "thea-at-metropolis",
+      "name": "THEA at Metropolis",
+      "address": "1000 W 8th St",
+      "note": "Greystar, 2021, 60 floors, 685 units — newest South Park/Financial District tower. Verified via the probe workflow 2026-09-24: SightMap embed with 19 units; labels are HOME <floor><line> (0505, 2216…), so `floors` is safe.",
+      "sightmap_id": "r5v51135wny",
+      "source_url": "https://theadtla.com/floor-plan/",
+      "adapter": "sightmap",
+      "enabled": true,
+      "concession": {
+        "url": "https://theadtla.com/",
+        "selector": ".modal-body p.heading"
+      },
+      "floors": 60
+    },
+    {
+      "id": "apex-and-alina",
+      "name": "Apex & Alina",
+      "address": "900 S Figueroa St / 700 W 9th St",
+      "note": "Holland Residential's two connected buildings one block from Circa, marketed as one community on one SightMap. Verified via the probe workflow 2026-09-24: 68 units. Labels are UNIT <n> with 3 digits (300…722) — could be <floor><line>, but with two buildings of different heights on one map that's unverified, so no `floors`. No concession banner was found on the marketing site; add one to `concession` if it appears.",
+      "sightmap_id": "gow3o5jqw2m",
+      "source_url": "https://liveatapexalina.com/floorplans",
+      "adapter": "sightmap",
+      "enabled": true
     }
   ]
 }
