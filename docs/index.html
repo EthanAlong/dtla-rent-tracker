@@ -22,6 +22,8 @@
     --bad:       #c0362f;
     --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a;
     --series-4: #eda100; --series-5: #e87ba4;
+    --series-6: #7b61d6; --series-7: #0e9bb0; --series-8: #a3782a;
+    --series-9: #c04f9c; --series-10: #5c8f2a;
     --muted-mark: #b9b6ae;
   }
   @media (prefers-color-scheme: dark) {
@@ -32,6 +34,8 @@
       --accent: #3987e5; --good: #4bb07a; --bad: #e66767;
       --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70;
       --series-4: #c98500; --series-5: #d55181;
+      --series-6: #8f7ae0; --series-7: #23a9bf; --series-8: #b98a3d;
+      --series-9: #cf65ad; --series-10: #74a63c;
       --muted-mark: #56554f;
     }
   }
@@ -42,6 +46,8 @@
     --accent: #3987e5; --good: #4bb07a; --bad: #e66767;
     --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70;
     --series-4: #c98500; --series-5: #d55181;
+    --series-6: #8f7ae0; --series-7: #23a9bf; --series-8: #b98a3d;
+    --series-9: #cf65ad; --series-10: #74a63c;
     --muted-mark: #56554f;
   }
 
@@ -57,8 +63,9 @@
   header { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 4px; }
   h1 { font-size: 21px; font-weight: 620; margin: 0; letter-spacing: -0.01em; }
   .sub { color: var(--text-3); font-size: 13px; }
+  .hdr-btns { margin-left: auto; display: flex; gap: 8px; }
   .theme-btn {
-    margin-left: auto; background: none; border: 1px solid var(--border);
+    background: none; border: 1px solid var(--border);
     color: var(--text-2); border-radius: 7px; padding: 5px 11px; font-size: 13px; cursor: pointer;
   }
   .theme-btn:hover { color: var(--text-1); border-color: var(--text-3); }
@@ -81,6 +88,7 @@
   .chip[aria-pressed="true"] { color: var(--text-1); border-color: currentColor; }
   .chip .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted-mark); flex: none; }
   .chip[aria-pressed="true"] .dot { background: var(--chip-color, var(--accent)); }
+  .chip.toggle[aria-pressed="true"] { background: color-mix(in srgb, var(--good) 12%, transparent); border-color: var(--good); color: var(--text-1); }
   select, input[type="number"], input[type="text"], input[type="date"], input:not([type]) {
     background: var(--surface-0); color: var(--text-1); border: 1px solid var(--border);
     border-radius: 7px; padding: 6px 9px; font: inherit; font-size: 13px;
@@ -117,6 +125,8 @@
   tr.home td { background: color-mix(in srgb, var(--series-1) 7%, transparent); }
   .swatch { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 7px; vertical-align: baseline; }
   .tag { font-size: 11.5px; padding: 2px 7px; border-radius: 5px; border: 1px solid var(--border); color: var(--text-2); }
+  .tag.conc { border-color: color-mix(in srgb, var(--good) 45%, transparent); color: var(--good); cursor: help; }
+  .strike { text-decoration: line-through; color: var(--text-3); font-size: 12px; margin-right: 5px; }
   .empty { color: var(--text-3); font-size: 13.5px; padding: 18px 0 24px; }
   footer { color: var(--text-3); font-size: 12.5px; margin-top: 26px; line-height: 1.7; }
   code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px;
@@ -127,21 +137,24 @@
 <div class="wrap">
   <header>
     <h1>DTLA Rent Tracker</h1>
-    <span class="sub" id="freshness">加载中…</span>
-    <button class="theme-btn" id="themeBtn" type="button">切换深色</button>
+    <span class="sub" id="freshness" data-i18n="loading">加载中…</span>
+    <div class="hdr-btns">
+      <button class="theme-btn" id="langBtn" type="button" title="Switch language / 切换语言">English</button>
+      <button class="theme-btn" id="themeBtn" type="button">切换深色</button>
+    </div>
   </header>
 
   <div class="filters">
     <div class="fgroup" style="flex:1 1 320px">
-      <span class="flabel">楼盘</span>
+      <span class="flabel" data-i18n="f.props">楼盘</span>
       <div class="chips" id="propChips"></div>
     </div>
     <div class="fgroup">
-      <span class="flabel">卧室</span>
-      <select id="bedsSel"><option value="">全部</option></select>
+      <span class="flabel" data-i18n="f.beds">卧室</span>
+      <select id="bedsSel"><option value="" data-i18n="all">全部</option></select>
     </div>
     <div class="fgroup">
-      <span class="flabel">面积 sqft</span>
+      <span class="flabel" data-i18n="f.sqft">面积 sqft</span>
       <div class="range">
         <input type="number" id="sqftMin" placeholder="min" step="25">
         <span class="sub">–</span>
@@ -149,34 +162,41 @@
       </div>
     </div>
     <div class="fgroup">
-      <span class="flabel">指标</span>
+      <span class="flabel" data-i18n="f.metric">指标</span>
       <select id="metricSel">
-        <option value="rent">月租金 ($)</option>
-        <option value="psf">单价 ($/sqft)</option>
-        <option value="eff">实际租金（摊薄优惠）</option>
+        <option value="rent" data-i18n="metric.rent">月租金 ($)</option>
+        <option value="psf" data-i18n="metric.psf">单价 ($/sqft)</option>
       </select>
+    </div>
+    <div class="fgroup">
+      <span class="flabel" data-i18n="f.conc">优惠</span>
+      <div class="chips">
+        <button type="button" class="chip toggle" id="concToggle" aria-pressed="false">
+          <span class="dot"></span><span data-i18n="conc.toggle">折算进价格（上限）</span>
+        </button>
+      </div>
     </div>
     <div class="fgroup" style="margin-left:auto">
       <span class="flabel">&nbsp;</span>
-      <button class="theme-btn" id="leaseBtn" type="button" style="margin:0">我的租约</button>
+      <button class="theme-btn" id="leaseBtn" type="button" style="margin:0" data-i18n="lease.btn">我的租约</button>
     </div>
   </div>
 
   <!-- Lease details live in this browser only (localStorage) — never in the
        repo, so the repo can stay public without publishing where you live. -->
   <form class="filters lease" id="leaseForm" hidden>
-    <div class="fgroup"><span class="flabel">楼盘</span><select id="mePropSel"></select></div>
-    <div class="fgroup"><span class="flabel">Unit</span><input id="meUnit" style="width:88px" placeholder="门牌号"></div>
-    <div class="fgroup"><span class="flabel">Floorplan</span><input id="mePlan" style="width:88px" placeholder="如 N1"></div>
-    <div class="fgroup"><span class="flabel">户型</span><input id="meBedLabel" style="width:110px" placeholder="如 1 Bed"></div>
-    <div class="fgroup"><span class="flabel">面积 sqft</span><input type="number" id="meSqft" style="width:92px" placeholder="面积"></div>
-    <div class="fgroup"><span class="flabel">现在月租</span><input type="number" id="meRent" style="width:104px" placeholder="月租"></div>
-    <div class="fgroup"><span class="flabel">租约到期</span><input type="date" id="meEnds"></div>
+    <div class="fgroup"><span class="flabel" data-i18n="f.props">楼盘</span><select id="mePropSel"></select></div>
+    <div class="fgroup"><span class="flabel">Unit</span><input id="meUnit" style="width:88px" data-i18n-ph="ph.unit" placeholder="门牌号"></div>
+    <div class="fgroup"><span class="flabel">Floorplan</span><input id="mePlan" style="width:88px" data-i18n-ph="ph.plan" placeholder="如 N1"></div>
+    <div class="fgroup"><span class="flabel" data-i18n="lease.layout">户型</span><input id="meBedLabel" style="width:110px" data-i18n-ph="ph.layout" placeholder="如 1 Bed"></div>
+    <div class="fgroup"><span class="flabel" data-i18n="f.sqft">面积 sqft</span><input type="number" id="meSqft" style="width:92px" data-i18n-ph="ph.sqft" placeholder="面积"></div>
+    <div class="fgroup"><span class="flabel" data-i18n="lease.rent">现在月租</span><input type="number" id="meRent" style="width:104px" data-i18n-ph="ph.rent" placeholder="月租"></div>
+    <div class="fgroup"><span class="flabel" data-i18n="lease.ends">租约到期</span><input type="date" id="meEnds"></div>
     <div class="fgroup" style="flex-direction:row;gap:8px;align-items:flex-end">
-      <button class="theme-btn" type="submit" style="margin:0">保存</button>
-      <button class="theme-btn" type="button" id="meClear" style="margin:0">清除</button>
+      <button class="theme-btn" type="submit" style="margin:0" data-i18n="save">保存</button>
+      <button class="theme-btn" type="button" id="meClear" style="margin:0" data-i18n="clear">清除</button>
     </div>
-    <p class="hint" style="flex-basis:100%;margin:2px 0 0;color:var(--text-3);font-size:12.5px">
+    <p class="hint" style="flex-basis:100%;margin:2px 0 0;color:var(--text-3);font-size:12.5px" data-i18n="lease.note">
       只存在这台浏览器里（localStorage），不会提交到仓库、也不会上传到任何地方。
     </p>
   </form>
@@ -184,46 +204,46 @@
   <div class="tiles" id="tiles"></div>
 
   <div class="card" id="concCard" hidden>
-    <h2>各楼盘当前优惠</h2>
-    <p class="hint">广告原文照录。这些都是<strong>上限</strong>（“up to”“select homes”），不是每套都给——引用前请自己跟租赁办确认。</p>
+    <h2 data-i18n="conc.title">各楼盘当前优惠</h2>
+    <p class="hint" data-i18n="conc.hint">广告原文照录。这些都是<strong>上限</strong>（“up to”“select homes”），不是每套都给——引用前请自己跟租赁办确认。</p>
     <div class="scroll-x"><table id="concTable"></table></div>
   </div>
 
   <div class="card">
-    <h2>挂牌价历史</h2>
-    <p class="hint" id="trendHint">每栋楼在筛选条件下的<strong>中位挂牌价</strong>。滚轮缩放、拖动平移，下方滑块选区间。</p>
+    <h2 data-i18n="trend.title">挂牌价历史</h2>
+    <p class="hint" id="trendHint"></p>
     <div class="chart" id="trendChart"></div>
   </div>
 
   <div class="two-col">
     <div class="card">
-      <h2>当前单价对比</h2>
-      <p class="hint">最新一次抓取的中位 $/sqft。</p>
+      <h2 data-i18n="psf.title">当前单价对比</h2>
+      <p class="hint" id="psfHint"></p>
       <div class="chart short" id="psfChart"></div>
     </div>
     <div class="card">
-      <h2>面积 vs 租金</h2>
-      <p class="hint">最新一次抓取的每个在租 unit，看自家楼在市场上的位置。</p>
+      <h2 data-i18n="scatter.title">面积 vs 租金</h2>
+      <p class="hint" data-i18n="scatter.hint">最新一次抓取的每个在租 unit，看自家楼在市场上的位置。</p>
       <div class="chart short" id="scatterChart"></div>
     </div>
   </div>
 
   <div class="card">
-    <h2>最近一次变动</h2>
-    <p class="hint">最新一次抓取 vs 上一次：调价、新上架、已租出。</p>
+    <h2 data-i18n="diff.title">最近一次变动</h2>
+    <p class="hint" data-i18n="diff.hint">最新一次抓取 vs 上一次：调价、新上架、已租出。</p>
     <div class="scroll-x"><table id="diffTable"></table></div>
-    <div class="empty" id="diffEmpty" hidden>还只有一次抓取记录，等下一次跑完就有对比了。</div>
+    <div class="empty" id="diffEmpty" hidden></div>
   </div>
 
   <div class="card">
-    <h2>当前在租房源</h2>
-    <p class="hint">最新一次抓取的全部房源，点表头排序。</p>
+    <h2 data-i18n="units.title">当前在租房源</h2>
+    <p class="hint" data-i18n="units.hint">最新一次抓取的全部房源，点表头排序。“折后”＝把当时该楼广告优惠（上限）摊到整个租期后的月租。</p>
     <div class="scroll-x"><table id="unitTable"></table></div>
   </div>
 
-  <footer>
+  <footer data-i18n="footer">
     数据每天抓 2 次，直接来自各楼盘官网的公开在租列表（825 South Hill 显示的是不同租期的价格区间，图表取区间下限＝最长租期价；SightMap 楼盘显示基础租金，另有 all-in 含杂费价）。
-    这是挂牌价（asking rent），不是成交价。优惠（免租月）单独抓在 <code>data/concessions.csv</code> 里，是一份变更日志——只在广告文案变化时记一行，所以能看出某栋楼是<em>什么时候</em>开始加码的。切到“实际租金（摊薄优惠）”指标即可把优惠折算进价格。
+    这是挂牌价（asking rent），不是成交价。优惠（免租月）单独抓在 <code>data/concessions.csv</code> 里，是一份变更日志——只在广告文案变化时记一行，所以能看出某栋楼是<em>什么时候</em>开始加码的。打开“折算进价格”开关即可把优惠折算进所有图表。
   </footer>
 </div>
 
@@ -233,18 +253,151 @@ const CSV_URL = "./data/prices.csv?t=" + Math.floor(Date.now() / 60000);
 // docs/me.json is still honoured as a local-only fallback.
 const ME_URL  = "./me.json?t=" + Math.floor(Date.now() / 60000);
 const ME_KEY  = "dtla-rent-tracker:lease";
+const LANG_KEY = "dtla-rent-tracker:lang";
+const CONC_KEY = "dtla-rent-tracker:fold-concessions";
 const CONC_URL = "./data/concessions.csv?t=" + Math.floor(Date.now() / 60000);
 
+/* ---------- i18n ---------- */
+// Every visible string lives here. Static markup carries data-i18n="key"
+// (innerHTML) or data-i18n-ph="key" (placeholder); dynamic text calls t().
+// {name} placeholders are substituted from the vars object.
+const I18N = {
+  zh: {
+    loading: "加载中…",
+    "theme.dark": "切换深色", "theme.light": "切换浅色", "lang.btn": "English",
+    "f.props": "楼盘", "f.beds": "卧室", "f.sqft": "面积 sqft", "f.metric": "指标", "f.conc": "优惠",
+    all: "全部", studio: "Studio", bed: "{n} Bed",
+    "metric.rent": "月租金 ($)", "metric.psf": "单价 ($/sqft)",
+    "conc.toggle": "折算进价格（上限）",
+    "lease.btn": "我的租约", "lease.fill": "填一下我的租约 →",
+    "lease.layout": "户型", "lease.rent": "现在月租", "lease.ends": "租约到期",
+    "ph.unit": "门牌号", "ph.plan": "如 N1", "ph.layout": "如 1 Bed", "ph.sqft": "面积", "ph.rent": "月租",
+    save: "保存", clear: "清除",
+    "lease.note": "只存在这台浏览器里（localStorage），不会提交到仓库、也不会上传到任何地方。",
+    "conc.title": "各楼盘当前优惠",
+    "conc.hint": "广告原文照录。这些都是<strong>上限</strong>（“up to”“select homes”），不是每套都给——引用前请自己跟租赁办确认。打开顶部“折算进价格”开关后，所有图表和表格都按这里的折扣摊薄。",
+    "conc.th": ["楼盘", "广告原文", "折合免租", "摊薄后", "适用范围", "截止"],
+    "conc.months": "{n} 个月", "conc.cut": "-{pct}% (按 {term} 个月)",
+    "conc.scope.all": "全部房源", "conc.scope.select": "部分房源（未公开是哪些）",
+    "conc.stale": "⚠ 抓不到优惠横幅了（选择器可能失效），但该楼盘页面仍在宣传免租——需要人工去看一眼",
+    "conc.staleShort": "⚠ 抓取异常，以下为最后一次已知优惠",
+    "conc.tag": "≤{n} 个月免", "conc.tagExact": "{n} 个月免", "conc.lookLease": " + ${n} look & lease",
+    "conc.tip": "{raw}\n\n按 {term} 个月租期摊薄：{ask} → {eff}/月（广告上限，实际以租赁办为准）",
+    "trend.title": "挂牌价历史",
+    "trend.hint.rent": "每栋楼在筛选条件下的<strong>中位挂牌价</strong>。滚轮缩放、拖动平移，下方滑块选区间。",
+    "trend.hint.psf": "每栋楼在筛选条件下的<strong>中位 $/sqft</strong>。滚轮缩放、拖动平移，下方滑块选区间。",
+    "trend.hint.fold": " <strong>已折算优惠</strong>：按当时广告优惠的上限摊薄到整个租期——广告写“up to”“select homes”，所以这是最乐观的一版。",
+    "psf.title": "当前单价对比", "psf.hint": "最新一次抓取的中位 $/sqft。", "psf.hintFold": "最新一次抓取的中位 $/sqft，已折算优惠（上限）。",
+    "psf.tip": "{name}<br>中位 {v} /sqft · {n} 套",
+    "scatter.title": "面积 vs 租金", "scatter.hint": "最新一次抓取的每个在租 unit，看自家楼在市场上的位置。",
+    "scatter.comps": "竞品楼盘", "scatter.home": "自家楼", me: "我",
+    "scatter.tipAsk": "挂牌 {ask}", "scatter.tipEff": "折后 {eff}",
+    "diff.title": "最近一次变动", "diff.hint": "最新一次抓取 vs 上一次（按挂牌价）：调价、新上架、已租出。",
+    "diff.one": "还只有一次抓取记录，等下一次跑完就有对比了。", "diff.none": "这次抓取和上次相比没有变化。",
+    "diff.th": ["变动", "楼盘 / Unit", "户型", "sqft", "之前", "现在", "变化"],
+    "diff.new": "新上架", "diff.price": "调价", "diff.gone": "已租出/下架",
+    "units.title": "当前在租房源",
+    "units.hint": "最新一次抓取的全部房源，点表头排序。“折后”＝把当时该楼广告优惠（上限）摊到整个租期后的月租。",
+    "col.property_name": "楼盘", "col.unit": "Unit", "col.floor": "楼层", "col.bed_label": "户型", "col.sqft": "sqft",
+    "col.rent_min": "挂牌价", "col._conc": "优惠", "col._eff": "折后", "col._spread": "区间上限", "col._psf": "$/sqft",
+    "col.available_date": "可入住", "col._dom": "挂牌天数",
+    "dom.lt1": "<1 天", "dom.days": "{n} 天",
+    "tile.homeMed": "自家楼{metric}", "tile.homeMedFold": "自家楼{metric}（折算优惠）",
+    "metric.label.rent": "中位挂牌价", "metric.label.psf": "中位 $/sqft",
+    "tile.noPrev": "上次抓取无对比数据", "tile.flat": "较上次抓取持平", "tile.delta": "{arrow} {v} ({pct}%) 较上次抓取",
+    "tile.mine": "我现在付的", "tile.above": "比同楼中位高 {v}", "tile.below": "比同楼中位低 {v}",
+    "tile.plan": "plan {p}",
+    "tile.homeCount": "自家楼在租套数", "tile.homeCountD": "符合筛选条件 · 全楼共 {n} 套在租",
+    "tile.compMed": "竞品中位", "tile.dearer": "自家楼贵 {v}", "tile.cheaper": "自家楼便宜 {v}",
+    "tile.domBand": "同尺寸房源已挂", "tile.domHome": "自家楼房源已挂",
+    "tile.domD": "中位 · {stale}", "tile.stale": "{n} 套挂满 30 天以上", "tile.noStale": "暂无挂满 30 天的",
+    "tile.leaseEnds": "距租约到期", "tile.leaseD": "{date} · 一般提前 60–90 天开始谈",
+    "trend.myLine": "我现在付 {v}",
+    freshness: "{n} 次抓取 · {first} 起 · 最近 {last}",
+    footer: "数据每天抓 2 次，直接来自各楼盘官网的公开在租列表（825 South Hill 显示的是不同租期的价格区间，图表取区间下限＝最长租期价；SightMap 楼盘显示基础租金，另有 all-in 含杂费价）。这是挂牌价（asking rent），不是成交价。优惠（免租月）单独抓在 <code>data/concessions.csv</code> 里，是一份变更日志——只在广告文案变化时记一行，所以能看出某栋楼是<em>什么时候</em>开始加码的。打开“折算进价格”开关即可把优惠折算进所有图表。",
+  },
+  en: {
+    loading: "Loading…",
+    "theme.dark": "Dark mode", "theme.light": "Light mode", "lang.btn": "中文",
+    "f.props": "Building", "f.beds": "Bedrooms", "f.sqft": "Size (sqft)", "f.metric": "Metric", "f.conc": "Concessions",
+    all: "All", studio: "Studio", bed: "{n} Bed",
+    "metric.rent": "Monthly rent ($)", "metric.psf": "Price per sqft",
+    "conc.toggle": "Fold into prices (upper bound)",
+    "lease.btn": "My lease", "lease.fill": "Enter my lease →",
+    "lease.layout": "Layout", "lease.rent": "Current rent", "lease.ends": "Lease ends",
+    "ph.unit": "unit no.", "ph.plan": "e.g. N1", "ph.layout": "e.g. 1 Bed", "ph.sqft": "sqft", "ph.rent": "$/month",
+    save: "Save", clear: "Clear",
+    "lease.note": "Stored in this browser only (localStorage) — never committed to the repo or uploaded anywhere.",
+    "conc.title": "Current concessions by building",
+    "conc.hint": "Banner text quoted verbatim. Every figure is an <strong>upper bound</strong> (“up to”, “select homes”) — not every unit gets it, so confirm with the leasing office before quoting. With the “Fold into prices” switch on, every chart and table is discounted by these numbers.",
+    "conc.th": ["Building", "Advertised offer", "Months free", "Discount", "Applies to", "Move in by"],
+    "conc.months": "{n} mo", "conc.cut": "-{pct}% (on a {term}-mo term)",
+    "conc.scope.all": "All units", "conc.scope.select": "Select units (not disclosed which)",
+    "conc.stale": "⚠ The offer banner can no longer be read (selector probably broke), but the site still advertises free rent — check it by hand",
+    "conc.staleShort": "⚠ Scrape issue — last known offer shown",
+    "conc.tag": "≤{n} mo free", "conc.tagExact": "{n} mo free", "conc.lookLease": " + ${n} look & lease",
+    "conc.tip": "{raw}\n\nAmortised over a {term}-month term: {ask} → {eff}/mo (advertised maximum; the leasing office decides)",
+    "trend.title": "Asking rent history",
+    "trend.hint.rent": "<strong>Median asking rent</strong> per building under the current filters. Scroll to zoom, drag to pan, slider below to pick a window.",
+    "trend.hint.psf": "<strong>Median $/sqft</strong> per building under the current filters. Scroll to zoom, drag to pan, slider below to pick a window.",
+    "trend.hint.fold": " <strong>Concessions folded in</strong>: each building's advertised maximum, amortised over the lease term — the banners say “up to” and “select homes”, so this is the most optimistic reading.",
+    "psf.title": "Price per sqft today", "psf.hint": "Median $/sqft in the latest scrape.", "psf.hintFold": "Median $/sqft in the latest scrape, concessions folded in (upper bound).",
+    "psf.tip": "{name}<br>median {v} /sqft · {n} units",
+    "scatter.title": "Size vs rent", "scatter.hint": "Every listed unit in the latest scrape — where the home building sits in the market.",
+    "scatter.comps": "Comps", "scatter.home": "Home building", me: "Me",
+    "scatter.tipAsk": "asking {ask}", "scatter.tipEff": "effective {eff}",
+    "diff.title": "Latest changes", "diff.hint": "Latest scrape vs the one before (asking rent): price changes, new listings, leased.",
+    "diff.one": "Only one scrape so far — the comparison appears after the next run.", "diff.none": "Nothing changed since the previous scrape.",
+    "diff.th": ["Change", "Building / Unit", "Layout", "sqft", "Before", "Now", "Δ"],
+    "diff.new": "New", "diff.price": "Repriced", "diff.gone": "Leased / removed",
+    "units.title": "Units on the market",
+    "units.hint": "Every unit in the latest scrape; click a header to sort. “Effective” = asking rent with that building's advertised concession (upper bound) amortised over the lease term.",
+    "col.property_name": "Building", "col.unit": "Unit", "col.floor": "Floor", "col.bed_label": "Layout", "col.sqft": "sqft",
+    "col.rent_min": "Asking", "col._conc": "Offer", "col._eff": "Effective", "col._spread": "Range top", "col._psf": "$/sqft",
+    "col.available_date": "Available", "col._dom": "Days listed",
+    "dom.lt1": "<1 day", "dom.days": "{n} d",
+    "tile.homeMed": "Home {metric}", "tile.homeMedFold": "Home {metric} (concessions folded)",
+    "metric.label.rent": "median asking", "metric.label.psf": "median $/sqft",
+    "tile.noPrev": "No previous scrape to compare", "tile.flat": "Flat vs previous scrape", "tile.delta": "{arrow} {v} ({pct}%) vs previous scrape",
+    "tile.mine": "What I pay", "tile.above": "{v} above the building median", "tile.below": "{v} below the building median",
+    "tile.plan": "plan {p}",
+    "tile.homeCount": "Home units listed", "tile.homeCountD": "matching filters · {n} listed building-wide",
+    "tile.compMed": "Comps median", "tile.dearer": "Home is {v} dearer", "tile.cheaper": "Home is {v} cheaper",
+    "tile.domBand": "Similar units listed for", "tile.domHome": "Home units listed for",
+    "tile.domD": "median · {stale}", "tile.stale": "{n} listed 30+ days", "tile.noStale": "none listed 30+ days",
+    "tile.leaseEnds": "Lease ends in", "tile.leaseD": "{date} · negotiations usually start 60–90 days out",
+    "trend.myLine": "I pay {v}",
+    freshness: "{n} scrapes · since {first} · latest {last}",
+    footer: "Scraped twice a day straight from each building's public availability page (825 South Hill lists a price range across lease terms; charts use the low end = longest term. SightMap buildings list base rent, with an all-in figure including fees kept separately). These are asking rents, not signed leases. Concessions (months free) are logged separately in <code>data/concessions.csv</code> as a change log — one row whenever the banner text changes, so you can see <em>when</em> a building stepped up its offer. Turn on “Fold into prices” to discount every chart by them.",
+  },
+};
+const state = {
+  rows: [], conc: new Map(), dom: new Map(), me: null, props: [], active: new Set(),
+  beds: "", sqftMin: null, sqftMax: null, metric: "rent", fold: false,
+  sort: { key: "rent_min", dir: 1 }, lang: "zh",
+};
+const t = (key, vars) => {
+  let s = (I18N[state.lang] && I18N[state.lang][key]) ?? I18N.zh[key] ?? key;
+  if (Array.isArray(s)) return s;
+  if (vars) Object.keys(vars).forEach((k) => { s = s.split("{" + k + "}").join(vars[k]); });
+  return s;
+};
+const locale = () => state.lang === "zh" ? "zh-CN" : "en-US";
+function applyI18n() {
+  document.documentElement.lang = locale();
+  document.querySelectorAll("[data-i18n]").forEach((el) => { el.innerHTML = t(el.dataset.i18n); });
+  document.querySelectorAll("[data-i18n-ph]").forEach((el) => { el.placeholder = t(el.dataset.i18nPh); });
+  document.getElementById("langBtn").textContent = t("lang.btn");
+}
+
 // Color follows the entity: this order is fixed, so filtering a building out
-// never repaints the survivors.
+// never repaints the survivors. Buildings added later get the next free slot.
 const SERIES_ORDER = ["825-south-hill", "atelier", "eighth-and-grand", "beaudry", "circa-la"];
 const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const colorFor = (id) => {
   const i = SERIES_ORDER.indexOf(id);
-  return cssVar("--series-" + (i >= 0 ? i + 1 : 1));
+  return cssVar("--series-" + (i >= 0 ? (i % 10) + 1 : 1));
 };
-
-const state = { rows: [], conc: new Map(), dom: new Map(), me: null, props: [], active: new Set(), beds: "", sqftMin: null, sqftMax: null, metric: "rent", sort: { key: "rent_min", dir: 1 } };
 let charts = {};
 
 /* ---------- CSV ---------- */
@@ -332,12 +485,42 @@ function scopeApplies(scope, r) {
          (r.bed_label || "").toLowerCase().includes(needle);
 }
 
-function effectiveRent(r) {
+// The concession that applies to this unit (at its scrape time), or null.
+// A banner with no parsable free-rent number and no look & lease credit still
+// counts as "an offer exists" for the table tag, but discounts nothing.
+function unitConcession(r) {
   const c = concessionAt(r.property_id, r.timestamp);
-  if (!c || !c.months_free || !scopeApplies(c.scope, r)) return r.rent_min;
-  const term = c.min_lease_months || 12;
-  return term > 0 ? (r.rent_min * Math.max(0, term - c.months_free)) / term : r.rent_min;
+  if (!c || !scopeApplies(c.scope, r)) return null;
+  return c;
 }
+// Advertised discount amortised over the lease term (the banner's own minimum
+// term, else 12 months). Months free reduce the rent paid; a look & lease
+// credit is a one-off, spread over the same term. Always an upper bound.
+function effectiveRent(r) {
+  const c = unitConcession(r);
+  if (!c || r.rent_min == null) return r.rent_min;
+  const term = c.min_lease_months || 12;
+  const paidMonths = Math.max(0, term - (c.months_free || 0));
+  const credit = c.look_lease_usd || 0;
+  return Math.max(0, (r.rent_min * paidMonths - credit) / term);
+}
+// Is the effective rent actually different from asking for this unit?
+const hasDiscount = (r) => { const c = unitConcession(r); return !!(c && (c.months_free || c.look_lease_usd)); };
+// The rent figure every chart and tile uses: asking, or concession-adjusted
+// when the switch is on.
+const rentOf = (r) => state.fold ? effectiveRent(r) : r.rent_min;
+
+function concTag(r) {
+  const c = unitConcession(r);
+  if (!c) return "";
+  const parts = [];
+  if (c.months_free) parts.push(t(c.up_to ? "conc.tag" : "conc.tagExact", { n: c.months_free }));
+  if (c.look_lease_usd) parts.push(parts.length ? t("conc.lookLease", { n: c.look_lease_usd.toLocaleString("en-US") }) : "$" + c.look_lease_usd.toLocaleString("en-US") + " L&L");
+  const label = parts.length ? parts.join("") : "★";
+  const tip = t("conc.tip", { raw: c.raw_text, term: c.min_lease_months || 12, ask: money(r.rent_min), eff: money(effectiveRent(r)) });
+  return '<span class="tag conc" title="' + esc(tip) + '">' + esc(label) + "</span>";
+}
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 
 /* ---------- helpers ---------- */
 const money = (n) => n == null ? "—" : "$" + Math.round(n).toLocaleString("en-US");
@@ -348,11 +531,10 @@ function median(arr) {
   const m = a.length >> 1;
   return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2;
 }
-const metricOf = (r) => state.metric === "psf" ? (r.sqft ? r.rent_min / r.sqft : null)
-  : state.metric === "eff" ? effectiveRent(r)
-  : r.rent_min;
+const metricOf = (r) => state.metric === "psf" ? (r.sqft ? rentOf(r) / r.sqft : null) : rentOf(r);
 const fmtMetric = (v) => state.metric === "psf" ? psf(v) : money(v);
-const metricLabel = () => ({ rent: "中位挂牌价", psf: "中位 $/sqft", eff: "中位实际租金" })[state.metric];
+const metricLabel = () => t("metric.label." + state.metric);
+const bedLabel = (b) => b === 0 ? t("studio") : t("bed", { n: b });
 function matches(r) {
   if (!state.active.has(r.property_id)) return false;
   if (state.beds !== "" && String(r.beds) !== state.beds) return false;
@@ -362,6 +544,8 @@ function matches(r) {
 }
 const snapshots = () => [...new Set(state.rows.map((r) => r.timestamp))].sort();
 const unitKey = (r) => r.property_id + "|" + r.unit;
+const homeIdOf = () => (state.me || {}).property_id || SERIES_ORDER[0];
+const nameOf = (id) => (state.rows.find((r) => r.property_id === id) || {}).property_name || id;
 
 // Days on market: how long a unit has been continuously listed, measured from
 // our own scrape history. A one-scrape gap is tolerated (sites blip); anything
@@ -395,21 +579,25 @@ function computeDom() {
 }
 // "≥" only means something once there's at least a day of history behind it.
 const fmtDom = (d) => d == null ? "—"
-  : d.days < 1 ? "<1 天"
-  : (d.censored ? "≥" : "") + Math.round(d.days) + " 天";
+  : d.days < 1 ? t("dom.lt1")
+  : (d.censored ? "≥" : "") + t("dom.days", { n: Math.round(d.days) });
 
 /* ---------- filters UI ---------- */
 function buildFilters() {
   const seen = new Map();
   state.rows.forEach((r) => { if (!seen.has(r.property_id)) seen.set(r.property_id, r.property_name); });
   state.props = SERIES_ORDER.filter((id) => seen.has(id)).concat([...seen.keys()].filter((id) => !SERIES_ORDER.includes(id)));
-  state.active = new Set(state.props);
+  // Buildings not pinned in SERIES_ORDER get a stable slot after the pinned ones.
+  state.props.forEach((id) => { if (!SERIES_ORDER.includes(id)) SERIES_ORDER.push(id); });
+  const wasActive = state.active.size ? state.active : null;
+  state.active = new Set(wasActive ? state.props.filter((id) => wasActive.has(id)) : state.props);
+  if (!state.active.size) state.active = new Set(state.props);
 
   const box = document.getElementById("propChips");
   box.innerHTML = "";
   state.props.forEach((id) => {
     const b = document.createElement("button");
-    b.type = "button"; b.className = "chip"; b.setAttribute("aria-pressed", "true");
+    b.type = "button"; b.className = "chip"; b.setAttribute("aria-pressed", String(state.active.has(id)));
     b.style.setProperty("--chip-color", colorFor(id));
     b.innerHTML = '<span class="dot"></span>' + seen.get(id) + (state.me && state.me.property_id === id ? " ★" : "");
     b.onclick = () => {
@@ -423,10 +611,12 @@ function buildFilters() {
   });
 
   const bedsSel = document.getElementById("bedsSel");
+  [...bedsSel.options].slice(1).forEach((o) => o.remove());
   [...new Set(state.rows.map((r) => r.beds).filter((b) => b != null))].sort((a, b) => a - b)
-    .forEach((b) => bedsSel.add(new Option(b === 0 ? "Studio" : b + " Bed", String(b))));
-  if (state.me && state.me.beds != null) { bedsSel.value = String(state.me.beds); state.beds = String(state.me.beds); }
-  if (state.me && state.me.sqft) {
+    .forEach((b) => bedsSel.add(new Option(bedLabel(b), String(b))));
+  if (state.beds !== "") bedsSel.value = state.beds;
+  else if (state.me && state.me.beds != null) { bedsSel.value = String(state.me.beds); state.beds = String(state.me.beds); }
+  if (state.me && state.me.sqft && state.sqftMin == null && state.sqftMax == null) {
     const round25 = (x) => Math.round(x / 25) * 25;
     state.sqftMin = round25(state.me.sqft * 0.9);
     state.sqftMax = round25(state.me.sqft * 1.1);
@@ -435,10 +625,21 @@ function buildFilters() {
   }
 
   bedsSel.onchange = (e) => { state.beds = e.target.value; renderAll(); };
-  document.getElementById("metricSel").onchange = (e) => { state.metric = e.target.value; renderAll(); };
+  const metricSel = document.getElementById("metricSel");
+  metricSel.value = state.metric;
+  metricSel.onchange = (e) => { state.metric = e.target.value; renderAll(); };
   const num = (v) => v === "" ? null : Number(v);
   document.getElementById("sqftMin").oninput = (e) => { state.sqftMin = num(e.target.value); renderAll(); };
   document.getElementById("sqftMax").oninput = (e) => { state.sqftMax = num(e.target.value); renderAll(); };
+
+  const fold = document.getElementById("concToggle");
+  fold.setAttribute("aria-pressed", String(state.fold));
+  fold.onclick = () => {
+    state.fold = !state.fold;
+    fold.setAttribute("aria-pressed", String(state.fold));
+    try { localStorage.setItem(CONC_KEY, state.fold ? "1" : "0"); } catch {}
+    renderAll();
+  };
 }
 
 /* ---------- tiles ---------- */
@@ -448,7 +649,7 @@ function renderTiles() {
   const cur = state.rows.filter((r) => r.timestamp === last && matches(r));
   const before = prev ? state.rows.filter((r) => r.timestamp === prev && matches(r)) : [];
   const me = state.me || {};
-  const homeId = me.property_id || SERIES_ORDER[0];
+  const homeId = homeIdOf();
   const homeCur = cur.filter((r) => r.property_id === homeId);
   const compCur = cur.filter((r) => r.property_id !== homeId);
 
@@ -458,32 +659,33 @@ function renderTiles() {
 
   const tiles = [];
   const delta = (now, was) => {
-    if (now == null || was == null || was === 0) return '<div class="d">上次抓取无对比数据</div>';
+    if (now == null || was == null || was === 0) return '<div class="d">' + t("tile.noPrev") + "</div>";
     const d = now - was, pct = (d / was) * 100;
-    if (Math.abs(d) < 0.005) return '<div class="d">较上次抓取持平</div>';
+    if (Math.abs(d) < 0.005) return '<div class="d">' + t("tile.flat") + "</div>";
     const cls = d > 0 ? "up" : "down";
-    return '<div class="d ' + cls + '">' + (d > 0 ? "▲ " : "▼ ") + fmtMetric(Math.abs(d)) + " (" + pct.toFixed(1) + "%) 较上次抓取</div>";
+    return '<div class="d ' + cls + '">' + t("tile.delta", { arrow: d > 0 ? "▲" : "▼", v: fmtMetric(Math.abs(d)), pct: pct.toFixed(1) }) + "</div>";
   };
 
-  tiles.push('<div class="tile"><div class="k">自家楼' + metricLabel() + '</div><div class="v">' + fmtMetric(homeMed) + "</div>" + delta(homeMed, homeMedPrev) + "</div>");
+  tiles.push('<div class="tile"><div class="k">' + t(state.fold ? "tile.homeMedFold" : "tile.homeMed", { metric: metricLabel() }) +
+    '</div><div class="v">' + fmtMetric(homeMed) + "</div>" + delta(homeMed, homeMedPrev) + "</div>");
 
   if (me.current_rent) {
     const mine = state.metric === "psf" && me.sqft ? me.current_rent / me.sqft : me.current_rent;
     const gap = homeMed != null ? mine - homeMed : null;
     const cls = gap > 0 ? "up" : "down";
-    tiles.push('<div class="tile"><div class="k">我现在付的</div><div class="v">' + fmtMetric(mine) + "</div>" +
-      (gap == null ? "" : '<div class="d ' + cls + '">' + (gap > 0 ? "比同楼中位高 " : "比同楼中位低 ") + fmtMetric(Math.abs(gap)) + "</div>") +
-      '<div class="d" style="color:var(--text-3)">' + [me.unit ? "#" + me.unit : "", me.floorplan ? "plan " + me.floorplan : "",
+    tiles.push('<div class="tile"><div class="k">' + t("tile.mine") + '</div><div class="v">' + fmtMetric(mine) + "</div>" +
+      (gap == null ? "" : '<div class="d ' + cls + '">' + t(gap > 0 ? "tile.above" : "tile.below", { v: fmtMetric(Math.abs(gap)) }) + "</div>") +
+      '<div class="d" style="color:var(--text-3)">' + [me.unit ? "#" + me.unit : "", me.floorplan ? t("tile.plan", { p: me.floorplan }) : "",
         me.bed_label || "", me.sqft ? me.sqft + " sqft" : ""].filter(Boolean).join(" · ") + "</div></div>");
   }
 
-  tiles.push('<div class="tile"><div class="k">自家楼在租套数</div><div class="v">' + homeCur.length +
-    '</div><div class="d">符合筛选条件 · 全楼共 ' + state.rows.filter((r) => r.timestamp === last && r.property_id === homeId).length + " 套在租</div></div>");
+  tiles.push('<div class="tile"><div class="k">' + t("tile.homeCount") + '</div><div class="v">' + homeCur.length +
+    '</div><div class="d">' + t("tile.homeCountD", { n: state.rows.filter((r) => r.timestamp === last && r.property_id === homeId).length }) + "</div></div>");
 
   if (compMed != null && homeMed != null) {
     const gap = homeMed - compMed;
-    tiles.push('<div class="tile"><div class="k">竞品中位</div><div class="v">' + fmtMetric(compMed) +
-      '</div><div class="d ' + (gap > 0 ? "up" : "down") + '">自家楼' + (gap > 0 ? "贵 " : "便宜 ") + fmtMetric(Math.abs(gap)) + "</div></div>");
+    tiles.push('<div class="tile"><div class="k">' + t("tile.compMed") + '</div><div class="v">' + fmtMetric(compMed) +
+      '</div><div class="d ' + (gap > 0 ? "up" : "down") + '">' + t(gap > 0 ? "tile.dearer" : "tile.cheaper", { v: fmtMetric(Math.abs(gap)) }) + "</div></div>");
   }
 
   const homeDom = homeCur.map((r) => state.dom.get(unitKey(r))).filter(Boolean);
@@ -492,15 +694,15 @@ function renderTiles() {
     const anyCensored = homeDom.some((d) => d.censored);
     const stale = homeDom.filter((d) => d.days >= 30).length;
     const banded = state.sqftMin != null || state.sqftMax != null || state.beds !== "";
-    tiles.push('<div class="tile"><div class="k">' + (banded ? "同尺寸房源已挂" : "自家楼房源已挂") + '</div><div class="v">' +
-      fmtDom({ days: med, censored: anyCensored }) + '</div><div class="d">中位 · ' +
-      (stale ? stale + " 套挂满 30 天以上" : "暂无挂满 30 天的") + "</div></div>");
+    tiles.push('<div class="tile"><div class="k">' + t(banded ? "tile.domBand" : "tile.domHome") + '</div><div class="v">' +
+      fmtDom({ days: med, censored: anyCensored }) + '</div><div class="d">' +
+      t("tile.domD", { stale: stale ? t("tile.stale", { n: stale }) : t("tile.noStale") }) + "</div></div>");
   }
 
   if (me.lease_ends) {
     const days = Math.round((new Date(me.lease_ends) - new Date()) / 86400000);
-    tiles.push('<div class="tile"><div class="k">距租约到期</div><div class="v">' + days + ' 天</div><div class="d">' +
-      me.lease_ends + " · 一般提前 60–90 天开始谈</div></div>");
+    tiles.push('<div class="tile"><div class="k">' + t("tile.leaseEnds") + '</div><div class="v">' + t("dom.days", { n: days }) + '</div><div class="d">' +
+      t("tile.leaseD", { date: me.lease_ends }) + "</div></div>");
   }
   document.getElementById("tiles").innerHTML = tiles.join("");
 }
@@ -527,12 +729,8 @@ function tooltipStyle() {
 
 function renderTrend() {
   const snaps = snapshots();
-  document.getElementById("trendHint").innerHTML = {
-    rent: "每栋楼在筛选条件下的<strong>中位挂牌价</strong>。滚轮缩放、拖动平移，下方滑块选区间。",
-    psf: "每栋楼在筛选条件下的<strong>中位 $/sqft</strong>。滚轮缩放、拖动平移，下方滑块选区间。",
-    eff: "挂牌价按当时广告优惠的<strong>上限</strong>摊薄到整个租期后的中位数——广告写“up to”“select homes”，所以这是最乐观的一版，实际大概率拿不到这么多。",
-  }[state.metric];
-  const homeId = (state.me || {}).property_id || SERIES_ORDER[0];
+  document.getElementById("trendHint").innerHTML = t("trend.hint." + state.metric) + (state.fold ? t("trend.hint.fold") : "");
+  const homeId = homeIdOf();
   const shown = state.props.filter((id) => state.active.has(id));
 
   const series = shown.map((id) => {
@@ -542,7 +740,7 @@ function renderTrend() {
     });
     const isHome = id === homeId;
     return {
-      name: state.rows.find((r) => r.property_id === id).property_name,
+      name: nameOf(id),
       type: "line", data, connectNulls: false,
       color: colorFor(id),
       lineStyle: { width: 2 },
@@ -566,7 +764,7 @@ function renderTrend() {
     series[0].markLine = {
       silent: true, symbol: "none",
       lineStyle: { color: cssVar("--text-3"), width: 1.5, type: "dashed" },
-      label: { formatter: "我现在付 " + fmtMetric(myLine), color: cssVar("--text-2"), fontSize: 11.5, position: "insideStartTop" },
+      label: { formatter: t("trend.myLine", { v: fmtMetric(myLine) }), color: cssVar("--text-2"), fontSize: 11.5, position: "insideStartTop" },
       data: [{ yAxis: myLine }],
     };
   }
@@ -601,11 +799,11 @@ function renderTrend() {
 
 function renderPsf() {
   const last = snapshots().at(-1);
-  const homeId = (state.me || {}).property_id || SERIES_ORDER[0];
+  const homeId = homeIdOf();
+  document.getElementById("psfHint").textContent = t(state.fold ? "psf.hintFold" : "psf.hint");
   const rows = state.props.filter((id) => state.active.has(id)).map((id) => {
     const units = state.rows.filter((r) => r.timestamp === last && r.property_id === id && matches(r));
-    return { id, name: (state.rows.find((r) => r.property_id === id) || {}).property_name,
-      v: median(units.map((r) => r.sqft ? r.rent_min / r.sqft : null)), n: units.length };
+    return { id, name: nameOf(id), v: median(units.map((r) => r.sqft ? rentOf(r) / r.sqft : null)), n: units.length };
   }).filter((d) => d.v != null).sort((a, b) => a.v - b.v);
 
   // Emphasis, not a value ramp: home building carries the accent, comps recede.
@@ -613,7 +811,7 @@ function renderPsf() {
     animationDuration: 300,
     grid: { left: 8, right: 58, top: 12, bottom: 8, containLabel: true },
     tooltip: Object.assign({ trigger: "item",
-      formatter: (p) => p.name + "<br>中位 " + psf(p.value) + " /sqft · " + rows[p.dataIndex].n + " 套" }, tooltipStyle()),
+      formatter: (p) => t("psf.tip", { name: p.name, v: psf(p.value), n: rows[p.dataIndex].n }) }, tooltipStyle()),
     xAxis: Object.assign({}, baseAxisStyle(), { type: "value", axisLabel: { color: cssVar("--text-3"), fontSize: 11.5, formatter: (v) => "$" + v } }),
     yAxis: Object.assign({}, baseAxisStyle(), { type: "category", data: rows.map((d) => d.name), splitLine: { show: false } }),
     series: [{
@@ -628,9 +826,10 @@ function renderPsf() {
 
 function renderScatter() {
   const last = snapshots().at(-1);
-  const homeId = (state.me || {}).property_id || SERIES_ORDER[0];
+  const homeId = homeIdOf();
   const cur = state.rows.filter((r) => r.timestamp === last && matches(r));
-  const pt = (r) => [r.sqft, r.rent_min, r.property_name, r.unit, r.bed_label];
+  // [sqft, plotted rent, name, unit, layout, asking, effective]
+  const pt = (r) => [r.sqft, rentOf(r), r.property_name, r.unit, r.bed_label, r.rent_min, hasDiscount(r) ? effectiveRent(r) : null];
   const comps = cur.filter((r) => r.property_id !== homeId && r.sqft).map(pt);
   const home = cur.filter((r) => r.property_id === homeId && r.sqft).map(pt);
   const me = state.me || {};
@@ -640,20 +839,25 @@ function renderScatter() {
     grid: { left: 8, right: 18, top: 34, bottom: 8, containLabel: true },
     legend: { top: 0, left: 0, itemGap: 16, textStyle: { color: cssVar("--text-2"), fontSize: 12.5 } },
     tooltip: Object.assign({ trigger: "item",
-      formatter: (p) => p.value[2] + " #" + p.value[3] + "<br>" + p.value[4] + " · " + p.value[0] + " sqft<br>" +
-        money(p.value[1]) + " · " + psf(p.value[1] / p.value[0]) + "/sqft" }, tooltipStyle()),
+      formatter: (p) => {
+        const v = p.value;
+        const lines = [v[2] + " #" + v[3], v[4] + " · " + v[0] + " sqft",
+          t("scatter.tipAsk", { ask: money(v[5]) }) + (v[6] != null ? " · " + t("scatter.tipEff", { eff: money(v[6]) }) : ""),
+          psf(v[1] / v[0]) + "/sqft"];
+        return lines.join("<br>");
+      } }, tooltipStyle()),
     xAxis: Object.assign({}, baseAxisStyle(), { type: "value", scale: true,
       axisLabel: { color: cssVar("--text-3"), fontSize: 11.5, formatter: (v) => v + " sf" } }),
     yAxis: Object.assign({}, baseAxisStyle(), { type: "value", scale: true,
       axisLabel: { color: cssVar("--text-3"), fontSize: 11.5, formatter: (v) => "$" + (v / 1000).toFixed(1) + "k" } }),
     series: [
-      { name: "竞品楼盘", type: "scatter", data: comps, symbolSize: 9,
+      { name: t("scatter.comps"), type: "scatter", data: comps, symbolSize: 9,
         itemStyle: { color: cssVar("--muted-mark"), opacity: .85 } },
-      { name: (state.rows.find((r) => r.property_id === homeId) || {}).property_name || "自家楼",
+      { name: nameOf(homeId) || t("scatter.home"),
         type: "scatter", data: home, symbolSize: 11, z: 3,
         itemStyle: { color: colorFor(homeId), borderColor: cssVar("--surface-1"), borderWidth: 2 },
         markPoint: me.sqft && me.current_rent ? {
-          symbol: "pin", symbolSize: 46, data: [{ name: "我", coord: [me.sqft, me.current_rent], value: "我" }],
+          symbol: "pin", symbolSize: 46, data: [{ name: t("me"), coord: [me.sqft, me.current_rent], value: t("me") }],
           itemStyle: { color: cssVar("--text-1") }, label: { color: cssVar("--surface-1"), fontSize: 11 },
         } : undefined },
     ],
@@ -667,7 +871,7 @@ function renderConcessions() {
     .filter((id) => state.active.has(id))
     .map((id) => {
       const st = concessionState(id, last);
-      return { id, name: (state.rows.find((r) => r.property_id === id) || {}).property_name || id, c: st.offer, check: st.check };
+      return { id, name: nameOf(id), c: st.offer, check: st.check };
     })
     .filter((d) => d.c || d.check);
 
@@ -676,23 +880,23 @@ function renderConcessions() {
   if (!rows.length) return;
 
   document.getElementById("concTable").innerHTML =
-    "<thead><tr><th>楼盘</th><th>广告原文</th><th>折合免租</th><th>摊薄后</th><th>适用范围</th><th>截止</th></tr></thead><tbody>" +
+    "<thead><tr>" + t("conc.th").map((h) => "<th>" + h + "</th>").join("") + "</tr></thead><tbody>" +
     rows.map(({ id, name, c, check }) => {
       if (!c) {
         return "<tr><td class=\"name\"><span class=\"swatch\" style=\"background:" + colorFor(id) + "\"></span>" + name + "</td>" +
-          '<td colspan="5" class="up" style="text-align:left;white-space:normal">⚠ 抓不到优惠横幅了（选择器可能失效），但该楼盘页面仍在宣传免租——需要人工去看一眼</td></tr>';
+          '<td colspan="5" class="up" style="text-align:left;white-space:normal">' + t("conc.stale") + "</td></tr>";
       }
       const term = c.min_lease_months || 12;
       const cut = c.months_free ? c.months_free / term : 0;
-      const scope = c.scope ? (c.scope.includes("select") ? "部分房源（未公开是哪些）" : c.scope) : "全部房源";
-      return "<tr" + (id === ((state.me || {}).property_id || SERIES_ORDER[0]) ? ' class="home"' : "") + ">" +
+      const scope = c.scope ? (c.scope.includes("select") ? t("conc.scope.select") : c.scope) : t("conc.scope.all");
+      return "<tr" + (id === homeIdOf() ? ' class="home"' : "") + ">" +
         '<td class="name"><span class="swatch" style="background:' + colorFor(id) + '"></span>' + name +
-          (check ? '<div class="up" style="font-size:11.5px">⚠ 抓取异常，以下为最后一次已知优惠</div>' : "") + "</td>" +
-        '<td class="name" style="white-space:normal;max-width:420px;font-size:12.5px;color:var(--text-2)">' + c.raw_text +
-          (c.look_lease_usd ? "" : "") + "</td>" +
-        "<td>" + (c.months_free ? (c.up_to ? "≤" : "") + c.months_free + " 个月" : "—") + "</td>" +
-        '<td class="' + (cut ? "down" : "") + '">' + (cut ? "-" + (cut * 100).toFixed(1) + "% (按 " + term + " 个月)" : "—") + "</td>" +
-        '<td style="text-align:left">' + scope + "</td>" +
+          (check ? '<div class="up" style="font-size:11.5px">' + t("conc.staleShort") + "</div>" : "") + "</td>" +
+        '<td class="name" style="white-space:normal;max-width:420px;font-size:12.5px;color:var(--text-2)">' + esc(c.raw_text) + "</td>" +
+        "<td>" + (c.months_free ? (c.up_to ? "≤" : "") + t("conc.months", { n: c.months_free }) : "—") + "</td>" +
+        '<td class="' + (cut ? "down" : "") + '">' + (cut ? t("conc.cut", { pct: (cut * 100).toFixed(1), term }) : "—") +
+          (c.look_lease_usd ? '<div style="font-size:11.5px">+ $' + c.look_lease_usd.toLocaleString("en-US") + " look &amp; lease</div>" : "") + "</td>" +
+        '<td style="text-align:left">' + esc(scope) + "</td>" +
         "<td>" + (c.move_in_by || "—") + "</td></tr>";
     }).join("") + "</tbody>";
 }
@@ -702,57 +906,61 @@ function renderDiff() {
   const last = snaps.at(-1), prev = snaps.at(-2);
   const el = document.getElementById("diffTable");
   const empty = document.getElementById("diffEmpty");
-  if (!prev) { el.innerHTML = ""; empty.hidden = false; return; }
+  if (!prev) { el.innerHTML = ""; empty.textContent = t("diff.one"); empty.hidden = false; return; }
   empty.hidden = true;
 
-  const key = (r) => r.property_id + "|" + r.unit;
-  const now = new Map(state.rows.filter((r) => r.timestamp === last && matches(r)).map((r) => [key(r), r]));
-  const was = new Map(state.rows.filter((r) => r.timestamp === prev && matches(r)).map((r) => [key(r), r]));
+  const now = new Map(state.rows.filter((r) => r.timestamp === last && matches(r)).map((r) => [unitKey(r), r]));
+  const was = new Map(state.rows.filter((r) => r.timestamp === prev && matches(r)).map((r) => [unitKey(r), r]));
   const changes = [];
   now.forEach((r, k) => {
     const b = was.get(k);
-    if (!b) changes.push({ kind: "新上架", r, delta: null });
-    else if (b.rent_min !== r.rent_min) changes.push({ kind: "调价", r, delta: r.rent_min - b.rent_min, from: b.rent_min });
+    if (!b) changes.push({ kind: "diff.new", r, delta: null });
+    else if (b.rent_min !== r.rent_min) changes.push({ kind: "diff.price", r, delta: r.rent_min - b.rent_min, from: b.rent_min });
   });
-  was.forEach((r, k) => { if (!now.has(k)) changes.push({ kind: "已租出/下架", r, delta: null, from: r.rent_min, gone: true }); });
+  was.forEach((r, k) => { if (!now.has(k)) changes.push({ kind: "diff.gone", r, delta: null, from: r.rent_min, gone: true }); });
   changes.sort((a, b) => Math.abs(b.delta || 0) - Math.abs(a.delta || 0));
 
   if (!changes.length) {
     el.innerHTML = "";
-    empty.textContent = "这次抓取和上次相比没有变化。";
+    empty.textContent = t("diff.none");
     empty.hidden = false;
     return;
   }
-  el.innerHTML = "<thead><tr><th>变动</th><th>楼盘 / Unit</th><th>户型</th><th>sqft</th><th>之前</th><th>现在</th><th>变化</th></tr></thead><tbody>" +
+  el.innerHTML = "<thead><tr>" + t("diff.th").map((h) => "<th>" + h + "</th>").join("") + "</tr></thead><tbody>" +
     changes.map(({ kind, r, delta, from, gone }) => {
       const cls = delta == null ? "" : delta > 0 ? "up" : "down";
-      return "<tr" + (r.property_id === ((state.me || {}).property_id || SERIES_ORDER[0]) ? ' class="home"' : "") + ">" +
-        '<td style="text-align:left"><span class="tag">' + kind + "</span></td>" +
+      const nowCell = gone ? "—" : money(r.rent_min) + (hasDiscount(r) ? ' <span class="down" style="font-size:12px">→ ' + money(effectiveRent(r)) + "</span>" : "");
+      return "<tr" + (r.property_id === homeIdOf() ? ' class="home"' : "") + ">" +
+        '<td style="text-align:left"><span class="tag">' + t(kind) + "</span></td>" +
         '<td class="name"><span class="swatch" style="background:' + colorFor(r.property_id) + '"></span>' + r.property_name + " #" + r.unit + "</td>" +
         "<td>" + (r.bed_label || "—") + "</td><td>" + (r.sqft || "—") + "</td>" +
-        "<td>" + (from != null ? money(from) : "—") + "</td><td>" + (gone ? "—" : money(r.rent_min)) + "</td>" +
+        "<td>" + (from != null ? money(from) : "—") + "</td><td>" + nowCell + "</td>" +
         '<td class="' + cls + '">' + (delta == null ? "—" : (delta > 0 ? "▲ " : "▼ ") + money(Math.abs(delta))) + "</td></tr>";
     }).join("") + "</tbody>";
 }
 
 const COLS = [
-  { key: "property_name", label: "楼盘", type: "s" },
-  { key: "unit", label: "Unit", type: "s" },
-  { key: "floor", label: "楼层", type: "n" },
-  { key: "bed_label", label: "户型", type: "s" },
-  { key: "sqft", label: "sqft", type: "n" },
-  { key: "rent_min", label: "挂牌价", type: "n", fmt: money },
-  { key: "_spread", label: "区间上限", type: "n", fmt: money },
-  { key: "_psf", label: "$/sqft", type: "n", fmt: psf },
-  { key: "available_date", label: "可入住", type: "s" },
-  { key: "_dom", label: "挂牌天数", type: "n", fmt: (v, r) => fmtDom(state.dom.get(unitKey(r))) },
+  { key: "property_name", type: "s" },
+  { key: "unit", type: "s" },
+  { key: "floor", type: "n" },
+  { key: "bed_label", type: "s" },
+  { key: "sqft", type: "n" },
+  { key: "rent_min", type: "n", fmt: money },
+  { key: "_conc", type: "s", fmt: (v, r) => concTag(r) || "—" },
+  { key: "_eff", type: "n", fmt: (v, r) => v == null ? "—" : '<span class="down">' + money(v) + "</span>" },
+  { key: "_spread", type: "n", fmt: money },
+  { key: "_psf", type: "n", fmt: psf },
+  { key: "available_date", type: "s" },
+  { key: "_dom", type: "n", fmt: (v, r) => fmtDom(state.dom.get(unitKey(r))) },
 ];
 function renderTable() {
   const last = snapshots().at(-1);
-  const homeId = (state.me || {}).property_id || SERIES_ORDER[0];
+  const homeId = homeIdOf();
   const rows = state.rows.filter((r) => r.timestamp === last && matches(r))
     .map((r) => Object.assign({
-      _psf: r.sqft ? r.rent_min / r.sqft : null,
+      _psf: r.sqft ? rentOf(r) / r.sqft : null,
+      _eff: hasDiscount(r) ? effectiveRent(r) : null,
+      _conc: unitConcession(r) ? (unitConcession(r).months_free || 0) : null,
       _spread: r.rent_max && r.rent_max !== r.rent_min ? r.rent_max : null,
       _dom: (state.dom.get(unitKey(r)) || {}).days ?? null,
     }, r));
@@ -766,7 +974,7 @@ function renderTable() {
 
   const el = document.getElementById("unitTable");
   el.innerHTML = "<thead><tr>" + COLS.map((c) =>
-    "<th data-k=\"" + c.key + "\">" + c.label + (key === c.key ? (dir === 1 ? " ↑" : " ↓") : "") + "</th>").join("") +
+    "<th data-k=\"" + c.key + "\">" + t("col." + c.key) + (key === c.key ? (dir === 1 ? " ↑" : " ↓") : "") + "</th>").join("") +
     "</tr></thead><tbody>" + rows.map((r) =>
       "<tr" + (r.property_id === homeId ? ' class="home"' : "") + ">" + COLS.map((c, i) => {
         let v = r[c.key];
@@ -778,7 +986,7 @@ function renderTable() {
   el.querySelectorAll("th").forEach((th) => {
     th.onclick = () => {
       const k = th.dataset.k;
-      state.sort = { key: k, dir: state.sort.key === k ? -state.sort.dir : (COLS.find((c) => c.key === k).type === "n" ? 1 : 1) };
+      state.sort = { key: k, dir: state.sort.key === k ? -state.sort.dir : 1 };
       renderTable();
     };
   });
@@ -800,7 +1008,7 @@ function initLeaseForm() {
     rent: document.getElementById("meRent"), ends: document.getElementById("meEnds"),
   };
   propSel.innerHTML = "";
-  state.props.forEach((id) => propSel.add(new Option((state.rows.find((r) => r.property_id === id) || {}).property_name || id, id)));
+  state.props.forEach((id) => propSel.add(new Option(nameOf(id), id)));
 
   const me = state.me || {};
   if (me.property_id) propSel.value = me.property_id;
@@ -808,8 +1016,11 @@ function initLeaseForm() {
   f.bedLabel.value = me.bed_label || ""; f.sqft.value = me.sqft || "";
   f.rent.value = me.current_rent || ""; f.ends.value = me.lease_ends || "";
 
+  const setBtn = () => { btn.textContent = t(state.me ? "lease.btn" : "lease.fill"); };
+  setBtn();
   btn.onclick = () => { form.hidden = !form.hidden; };
-  if (!state.me) { btn.textContent = "填一下我的租约 →"; form.hidden = false; }
+  if (!state.me) form.hidden = false;
+  document.addEventListener("langchange", setBtn);
 
   form.onsubmit = (e) => {
     e.preventDefault();
@@ -825,7 +1036,7 @@ function initLeaseForm() {
     };
     saveMe(next);
     state.me = next;
-    btn.textContent = "我的租约";
+    setBtn();
     form.hidden = true;
     // Re-seed the sqft band from the new unit size.
     if (next.sqft) {
@@ -842,7 +1053,7 @@ function initLeaseForm() {
     try { localStorage.removeItem(ME_KEY); } catch {}
     state.me = null;
     form.reset();
-    btn.textContent = "填一下我的租约 →";
+    setBtn();
     renderAll();
   };
 }
@@ -850,24 +1061,48 @@ function initLeaseForm() {
 /* ---------- boot ---------- */
 function renderAll() { renderTiles(); renderConcessions(); renderTrend(); renderPsf(); renderScatter(); renderDiff(); renderTable(); }
 
+function renderFreshness() {
+  const snaps = snapshots();
+  if (!snaps.length) return;
+  const first = new Date(snaps[0]), last = new Date(snaps.at(-1));
+  document.getElementById("freshness").textContent = t("freshness", {
+    n: snaps.length,
+    first: first.toLocaleDateString(locale()),
+    last: last.toLocaleString(locale(), { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }),
+  });
+}
+
+function initLang() {
+  let saved = null;
+  try { saved = localStorage.getItem(LANG_KEY); } catch {}
+  // Chinese stays the default (it's what the site has always been); the toggle
+  // is remembered per browser.
+  state.lang = saved === "en" ? "en" : "zh";
+  applyI18n();
+  document.getElementById("langBtn").onclick = () => {
+    state.lang = state.lang === "zh" ? "en" : "zh";
+    try { localStorage.setItem(LANG_KEY, state.lang); } catch {}
+    applyI18n();
+    themeLabel();
+    renderFreshness();
+    buildFilters();
+    document.dispatchEvent(new Event("langchange"));
+    if (state.rows.length) renderAll();
+  };
+}
+
+const isDark = () => document.documentElement.getAttribute("data-theme") === "dark" ||
+  (!document.documentElement.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+function themeLabel() { document.getElementById("themeBtn").textContent = t(isDark() ? "theme.light" : "theme.dark"); }
 function initTheme() {
   const saved = (() => { try { return localStorage.getItem("theme"); } catch { return null; } })();
   if (saved) document.documentElement.setAttribute("data-theme", saved);
-  const btn = document.getElementById("themeBtn");
-  const label = () => {
-    const dark = document.documentElement.getAttribute("data-theme") === "dark" ||
-      (!document.documentElement.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
-    btn.textContent = dark ? "切换浅色" : "切换深色";
-    return dark;
-  };
-  label();
-  btn.onclick = () => {
-    const dark = document.documentElement.getAttribute("data-theme") === "dark" ||
-      (!document.documentElement.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
-    const next = dark ? "light" : "dark";
+  themeLabel();
+  document.getElementById("themeBtn").onclick = () => {
+    const next = isDark() ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", next);
     try { localStorage.setItem("theme", next); } catch {}
-    label();
+    themeLabel();
     Object.values(charts).forEach((c) => c.dispose());
     initCharts();
     renderAll();
@@ -882,8 +1117,10 @@ function initCharts() {
 }
 
 (async function main() {
+  initLang();
   initTheme();
   initCharts();
+  try { state.fold = localStorage.getItem(CONC_KEY) === "1"; } catch {}
   addEventListener("resize", () => Object.values(charts).forEach((c) => c.resize()));
 
   const [csv, concCsv, fileMe] = await Promise.all([
@@ -897,12 +1134,7 @@ function initCharts() {
   const me = loadMe() || (fileMe && fileMe.property_id ? fileMe : null);
   state.me = me && me.property_id ? me : null;
 
-  const snaps = snapshots();
-  const first = new Date(snaps[0]), last = new Date(snaps.at(-1));
-  document.getElementById("freshness").textContent =
-    snaps.length + " 次抓取 · " + first.toLocaleDateString("zh-CN") + " 起 · 最近 " +
-    last.toLocaleString("zh-CN", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" });
-
+  renderFreshness();
   buildFilters();
   initLeaseForm();
   renderAll();
