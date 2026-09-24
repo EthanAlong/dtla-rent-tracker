@@ -42,7 +42,7 @@ ECharts dashboard: trend + dataZoom · $/sqft bar · sqft-vs-rent scatter · dif
 | `docs/index.html` | Single-file dashboard. ECharts from CDN. |
 | `docs/me.json` | **Gitignored.** Optional local-only copy of your lease. The published dashboard reads the lease from browser `localStorage` (edited via the 我的租约 form) so the repo can stay public without publishing your unit number and rent. |
 | `docs/data/prices.csv` | Append-only history. |
-| `.github/workflows/track.yml` | Cron 2x/day, commits the CSV back. |
+| `.github/workflows/track.yml` | Cron 2x/day, commits the CSV back. Also runs once immediately when the building list (or the workflow itself) changes on `main`. |
 
 ## Key design decisions — don't undo by accident
 
