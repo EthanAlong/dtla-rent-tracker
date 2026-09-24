@@ -30,7 +30,9 @@ ECharts dashboard: trend + dataZoom · $/sqft bar · sqft-vs-rent scatter · dif
 | Path | Purpose |
 |---|---|
 | `config/properties.json` | The building list. Adding a comp = adding an entry, not writing code (unless it's a new platform). |
-| `scraper/track.js` | Loops the enabled properties, appends rows, prints a summary. `node scraper/track.js <id>` scrapes one. |
+| `scraper/track.js` | Loops the enabled properties, appends rows, prints a summary. `node scraper/track.js <id>` scrapes one. `DRY=1` scrapes without writing. |
+| `scraper/probe.js` | `node scraper/probe.js <url>` — tells you whether a candidate building can be tracked (SightMap id / Onni Craft / server-rendered / needs a browser) and prints concession banner text with a CSS selector. Read-only. |
+| `.github/workflows/probe.yml` | Runs the probe + a `DRY=1` scrape on every push that touches `scraper/` or the building list, and on demand. Use it when your own network can't reach the leasing sites. |
 | `scraper/adapters/onni-craft.js` | 825 South Hill (Onni's in-house Craft CMS site). Reads `data-*` attrs off `.js-plan-row`. |
 | `scraper/adapters/sightmap.js` | Any building embedding an Engrain SightMap — Atelier, Eighth & Grand, Beaudry, Circa LA. Reads the schema.org JSON-LD off `sightmap.com/embed/<id>`. |
 | `scraper/lib/util.js` | fetch-with-retry, int/date coercion, CSV escaping. |
@@ -68,9 +70,24 @@ ECharts dashboard: trend + dataZoom · $/sqft bar · sqft-vs-rent scatter · dif
   empty. Don't "fix" that by guessing a number.
 - **Color follows the building, not its rank.** `SERIES_ORDER` in the dashboard
   pins each property to a palette slot, so filtering never repaints the
-  survivors. Palette is the validated 5-slot categorical set (passes CVD and
-  lightness gates in both themes); the light theme's contrast warning is
-  covered by the table view + direct end labels.
+  survivors. The first 5 slots are the validated categorical set (passes CVD
+  and lightness gates in both themes); slots 6–10 exist so newly added
+  buildings get a colour of their own, and any id not in `SERIES_ORDER` is
+  appended to it at load time in first-seen order. Pin a new building
+  explicitly if you care which colour it gets.
+- **Two languages, one dictionary.** Every visible string in `docs/index.html`
+  lives in the `I18N` table (`zh` + `en`). Static markup uses
+  `data-i18n="key"` (innerHTML) / `data-i18n-ph` (placeholder); dynamic text
+  calls `t(key, vars)`. Add a key to **both** languages or the English side
+  silently falls back to Chinese. The choice is remembered in localStorage;
+  Chinese is the default.
+- **Concessions are folded in via one switch, not a separate metric.** The
+  filter bar's 折算进价格 toggle (`state.fold`) makes `rentOf(r)` return the
+  amortised effective rent instead of `rent_min`, and every chart, tile and
+  $/sqft goes through `rentOf`. Off, the unit table still shows the offer tag
+  and the effective figure next to the asking rent — that's the "show the
+  promotion inside the price" ask. The diff table always compares asking
+  rents, so a banner change doesn't spray a fake repricing across a building.
 - **Lease details never enter git.** The repo is public so Pages is free; the
   dashboard's 我的租约 form writes to `localStorage`. Don't "simplify" this back
   into a committed JSON file.
@@ -104,11 +121,12 @@ ECharts dashboard: trend + dataZoom · $/sqft bar · sqft-vs-rent scatter · dif
 
 ## What the data is and isn't
 
-Asking rents from public availability pages — **not** signed-lease rents, and
-**not** net of concessions. Several comps were running "up to 2.5 months free"
-during the first scrape; a $4,000 ask with 2 months free is an effective ~$3,333
-on a 12-month term. Concessions aren't captured yet (see backlog) — read the
-buildings' own pages before quoting a number in a negotiation.
+Asking rents from public availability pages — **not** signed-lease rents. The
+raw numbers are **not** net of concessions; the dashboard can fold the
+advertised concession in (a $4,000 ask with 2 months free on a 12-month term ≈
+$3,333/mo, and a look & lease credit is spread over the same term), but what
+it folds in is the banner's *maximum* — read the buildings' own pages before
+quoting a number in a negotiation.
 
 ## Common operations
 
@@ -123,14 +141,22 @@ cd docs && python3 -m http.server 8731    # → http://127.0.0.1:8731
 
 ### Adding a building
 
-1. Open its floorplans/availability page source and grep for
-   `sightmap.com/embed/`. If it's there, add a config entry with that
-   `sightmap_id` and `adapter: "sightmap"` — done, no code.
-2. Otherwise check whether prices are server-rendered (`curl | grep '\$[0-9]'`).
-   If yes, write a small adapter next to the existing two.
-3. If the page needs JS or sits behind Cloudflare (Perla on Broadway returns a
+1. `node scraper/probe.js https://its-site.com` (or push a change under
+   `scraper/` / the config and read the probe workflow's log). It reports a
+   `sightmap.com/embed/<id>` if there is one, whether it's an Onni Craft site,
+   how many prices are server-rendered, and any concession banner text with a
+   CSS selector for `config.concession`.
+2. SightMap id → add a config entry with that `sightmap_id` and
+   `adapter: "sightmap"` — done, no code. Onni site → `adapter: "onni-craft"`
+   with `url: <site>/availability`.
+3. Otherwise, if prices are server-rendered, write a small adapter next to the
+   existing two.
+4. If the page needs JS or sits behind Cloudflare (Perla on Broadway returns a
    403 challenge; the securecafe application flow does too), it needs a
    browser — decide whether the comp is worth that dependency.
+5. `DRY=1 node scraper/track.js <id>` to see the rows before the cron writes
+   them. The dashboard picks a new building up automatically (colour slot,
+   chips, lease form); pin it in `SERIES_ORDER` if you want a specific colour.
 
 ## Current state (as of 2026-08-22)
 
@@ -140,7 +166,9 @@ cd docs && python3 -m http.server 8731    # → http://127.0.0.1:8731
   form; the sqft filter then defaults to ±10% of that unit's size. **Never
   write the actual unit number, rent, or lease dates into a tracked file —
   this repo is public.** That includes docs, comments, and form placeholders.
-- ✅ Concessions tracked (all five buildings had an offer up on 2026-08-23)
+- ✅ Concessions tracked (all five buildings had an offer up on 2026-08-23),
+  shown per unit (offer tag + effective rent) and foldable into every chart
+- ✅ Dashboard in 中文 / English (header toggle, remembered per browser)
 - ✅ Days on market per unit, derived from our own scrape history (one-scrape gaps tolerated; `≥` marks units already listed before tracking began)
 - ✅ Live: https://github.com/EthanAlong/dtla-rent-tracker → https://ethanalong.github.io/dtla-rent-tracker/
 - ✅ Public repo (Pages on a private repo needs Pro), which is why the lease
