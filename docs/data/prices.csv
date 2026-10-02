@@ -19010,3 +19010,377 @@ timestamp,property_id,property_name,unit,floor,floorplan,plan_cat,bed_label,beds
 2026-10-02T02:19:24.968Z,apex-and-alina,Apex & Alina,3001,,,2-bed,2 Bed,2,2.5,1874,7321,7321,7321,available_on,2026-10-02,,
 2026-10-02T02:19:24.968Z,apex-and-alina,Apex & Alina,3002,,,2-bed,2 Bed,2,2.5,1833,7689,7689,7689,available_on,2026-10-02,,
 2026-10-02T02:19:24.968Z,apex-and-alina,Apex & Alina,3005,,,2-bed,2 Bed,2,2.5,2261,7490,7490,7490,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,201,2,A2,2-bed-den,2 Bed + Den,2,,1090,4042,5148,,available,,29417540,2413008
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,301,3,A2,2-bed-den,2 Bed + Den,2,,1090,4042,5148,,available,,29417543,2413008
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,501,5,A2,2-bed-den,2 Bed + Den,2,,1090,4056,5136,,available_on,2026-12-05,29417549,2413008
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,522,5,D,2-bed,2 Bed,2,,1030,3932,5081,,available_on,2026-10-09,29417553,2413016
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,607,6,TH2,townhomes,Townhomes,,,1385,5793,7765,,available,,29417562,2413022
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,2305,23,J,2-bed,2 Bed,2,,991,4172,5300,,available_on,2026-10-31,29417149,2413023
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,2905,29,J,2-bed,2 Bed,2,,991,4292,5452,,available,,29417155,2413023
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,4605,46,J,2-bed,2 Bed,2,,991,4512,5731,,available,,29417168,2413023
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,3012,30,K,1-bed,1 Bed,1,,670,3182,4070,,available,,29417188,2413027
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,3412,34,K,1-bed,1 Bed,1,,670,3165,4049,,available,,29417189,2413027
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,4312,43,K,1-bed,1 Bed,1,,670,3213,4110,,available,,29417198,2413027
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,2401,24,K1,1-bed,1 Bed,1,,716,3097,3962,,available_on,2026-11-01,29417213,2413028
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,2501,25,K1,1-bed,1 Bed,1,,716,3117,3987,,available_on,2026-10-17,29417214,2413028
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,2901,29,K1,1-bed,1 Bed,1,,716,3197,4089,,available,,29417218,2413028
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,4603,46,M,2-bed-den,2 Bed + Den,2,,1099,4831,6136,,available_on,2026-11-03,29417262,2413032
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,1909,19,M1,2-bed-den,2 Bed + Den,2,,1109,4311,5490,,available_on,2026-10-31,29417270,2413033
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,2309,23,M1,2-bed-den,2 Bed + Den,2,,1109,4381,5579,,available,,29417274,2413033
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,2204,22,N,jr-2-bed,Jr. 2 Bed,2,,792,3246,4111,,available,,29417302,2413034
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,3704,37,N,jr-2-bed,Jr. 2 Bed,2,,792,3486,4415,,available,,29417313,2413034
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,4104,41,N,jr-2-bed,Jr. 2 Bed,2,,792,3581,4520,,available_on,2026-11-23,29417316,2413034
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,4602,46,O,1-bed,1 Bed,1,,538,2960,3779,,available_on,2026-11-07,29417390,2413037
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,3707,37,O1,1-bed,1 Bed,1,,560,2785,3555,,available_on,2026-11-08,29417440,2413039
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,3907,39,O1,1-bed,1 Bed,1,,560,2815,3585,,available_on,2026-10-20,29417442,2413039
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,2006,20,O3,1-bed,1 Bed,1,,562,2540,3242,,available_on,2026-11-17,29417457,2522879
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,2406,24,O3,1-bed,1 Bed,1,,562,2605,3318,,available,,29417461,2522879
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,3606,36,O3,1-bed,1 Bed,1,,562,2770,3536,,available_on,2026-11-15,29417470,2522879
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,4905,49,SKY1,skyhomes,Skyhomes,,,1775,6601,8453,,available_on,2026-11-07,29417481,2413045
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,4706,47,SKY3,skyhomes,Skyhomes,,,1365,5426,6910,,available_on,2026-10-08,38827826,2413047
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,4806,48,SKY3,skyhomes,Skyhomes,,,1364,5451,6980,,available_on,2026-11-14,29417488,2413047
+2026-10-02T19:20:09.738Z,825-south-hill,825 South Hill,5003,50,SKY6,skyhomes,Skyhomes,,,1124,5346,6845,,available_on,2026-11-22,29417502,2413050
+2026-10-02T19:20:09.738Z,atelier,Atelier,0608,6,,1-bed,1 Bed,1,1,778,3218,3218,3235,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,0609,6,,1-bed,1 Bed,1,1,685,3133,3133,3150,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,0707,7,,1-bed,1 Bed,1,1,778,3258,3258,3275,available_on,2026-10-22,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,0911,9,,1-bed,1 Bed,1,1,559,2933,2933,2950,available_on,2026-11-04,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,0913,9,,2-bed,2 Bed,2,2,1043,4388,4388,4405,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,1402,14,,1-bed,1 Bed,1,1,622,3308,3308,3325,available_on,2026-11-07,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,1407,14,,1-bed,1 Bed,1,1,778,3408,3408,3425,available_on,2026-10-05,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,1411,14,,1-bed,1 Bed,1,1,559,3013,3013,3030,available_on,2026-11-13,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,1702,17,,1-bed,1 Bed,1,1,622,3443,3443,3460,available_on,2026-11-10,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,1807,18,,1-bed,1 Bed,1,1,778,3563,3563,3580,available_on,2026-12-26,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,2006,20,,1-bed,1 Bed,1,1,829,4048,4048,4065,available_on,2026-12-07,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,2102,21,,1-bed,1 Bed,1,1,622,3523,3523,3540,available_on,2026-11-28,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,2206,22,,1-bed,1 Bed,1,1,829,4088,4088,4105,available_on,2026-11-19,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,2207,22,,1-bed,1 Bed,1,1,778,3643,3643,3660,available_on,2026-11-18,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,2307,23,,1-bed,1 Bed,1,1,778,3663,3663,3680,available_on,2026-10-17,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,2404,24,,1-bed,1 Bed,1,1,829,4128,4128,4145,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,2411,24,,2-bed,2 Bed,2,2,1043,4793,4793,4810,available_on,2026-11-05,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,2501,25,,2-bed,2 Bed,2,2.5,1377,6610,6610,6627,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,2502,25,,2-bed,2 Bed,2,2.5,1514,7655,7655,7672,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,2602,26,,2-bed,2 Bed,2,2.5,1514,7675,7675,7692,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,3001,30,,2-bed,2 Bed,2,2.5,1377,6800,6800,6817,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,3202,32,,2-bed,2 Bed,2,2.5,1514,7935,7935,7952,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,PH01,,,2-bed,2 Bed,2,2.5,1470,9082,9082,9099,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,atelier,Atelier,PH08,,,3-bed,3 Bed,3,3,1731,9358,9358,9375,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-2003,,,1-bed,1 Bed,1,1,762,2574,2574,2593,available_on,2026-10-09,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-2017,,,1-bed,1 Bed,1,1,762,2514,2514,2533,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-2034,,,2-bed,2 Bed,2,1,905,3071,3071,3090,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-2037,,,1-bed,1 Bed,1,1,762,2514,2514,2533,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-2041,,,1-bed,1 Bed,1,1,762,2514,2514,2533,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-2102,,,studio,Studio,0,1,527,2118,2118,2137,available_on,2026-10-17,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-2112,,,studio,Studio,0,1,520,2063,2063,2082,available_on,2026-10-11,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-2114,,,studio,Studio,0,1,540,2148,2148,2167,available_on,2026-12-28,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-2152,,,studio,Studio,0,1,540,2123,2123,2142,available_on,2026-10-16,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-2161,,,2-bed,2 Bed,2,2,1109,3320,3320,3339,available_on,2026-10-10,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-3028,,,1-bed,1 Bed,1,1,779,2684,2684,2703,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-3042,,,1-bed,1 Bed,1,1,578,2230,2230,2249,available_on,2026-12-26,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-4114,,,studio,Studio,0,1,520,2203,2203,2222,available_on,2026-10-15,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-4120,,,studio,Studio,0,1,520,2163,2163,2182,available_on,2026-10-18,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-4167,,,1-bed,1 Bed,1,1,578,2410,2410,2429,available_on,2026-10-16,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-5005,,,1-bed,1 Bed,1,1,762,2924,2924,2943,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-5029,,,1-bed,1 Bed,1,1,880,2899,2899,2918,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-5034,,,2-bed,2 Bed,2,2,1046,3330,3330,3349,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-5035,,,1-bed,1 Bed,1,1,880,2924,2924,2943,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-5039,,,1-bed,1 Bed,1,1,762,2889,2889,2908,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-5058,,,studio,Studio,0,1,520,2213,2213,2232,available_on,2026-10-07,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-5060,,,studio,Studio,0,1,520,2218,2218,2237,available_on,2026-10-03,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-5062,,,1-bed,1 Bed,1,1,713,2749,2749,2768,available_on,2026-11-08,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-5085,,,1-bed,1 Bed,1,1,578,2510,2510,2529,available_on,2026-11-23,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-5094,,,1-bed,1 Bed,1,1,715,2764,2764,2783,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-5135,,,1-bed,1 Bed,1,1,578,2460,2460,2479,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-5153,,,2-bed,2 Bed,2,2,1278,3975,3975,3994,available_on,2026-10-31,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-5162,,,studio,Studio,0,1,520,2213,2213,2232,available_on,2026-10-30,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-5164,,,studio,Studio,0,1,520,2213,2213,2232,available_on,2026-10-22,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-5169,,,1-bed,1 Bed,1,1,578,2460,2460,2479,available_on,2026-10-04,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-6002,,,1-bed,1 Bed,1,1,639,2564,2564,2583,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-6024,,,1-bed,1 Bed,1,1,791,2794,2794,2813,available_on,2026-11-07,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-6031,,,1-bed,1 Bed,1,1,762,2919,2919,2938,available_on,2026-12-06,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-6032,,,1-bed,1 Bed,1,1,779,2814,2814,2833,available_on,2026-11-04,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-6035,,,1-bed,1 Bed,1,1,762,2844,2844,2863,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-6041,,,1-bed,1 Bed,1,1,762,2914,2914,2933,available_on,2026-12-07,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-6049,,,2-bed,2 Bed,2,2,1016,3650,3650,3669,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-6057,,,2-bed,2 Bed,2,2,1211,3650,3650,3669,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-6066,,,1-bed,1 Bed,1,1,762,2839,2839,2858,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-6085,,,1-bed,1 Bed,1,1,578,2560,2560,2579,available_on,2026-11-23,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-6088,,,studio,Studio,0,1,538,2183,2183,2202,available_on,2026-12-07,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-6094,,,1-bed,1 Bed,1,1,715,2889,2889,2908,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-6152,,,studio,Studio,0,1,540,2348,2348,2367,available_on,2026-11-01,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-6154,,,studio,Studio,0,1,520,2263,2263,2282,available_on,2026-11-07,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-6166,,,1-bed,1 Bed,1,1,822,2889,2889,2908,available_on,2026-11-07,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-7059,,,1-bed,1 Bed,1,1,578,2385,2385,2404,available_on,2026-11-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-7066,,,1-bed,1 Bed,1,1,762,2889,2889,2908,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-7071,,,1-bed,1 Bed,1,1,840,2904,2904,2923,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-7076,,,1-bed,1 Bed,1,1,777,2474,2474,2493,available_on,2026-10-22,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-7145,,,2-bed,2 Bed,2,2,1099,4095,4095,4114,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-7150,,,1-bed,1 Bed,1,1,711,2614,2614,2633,available_on,2026-12-07,,
+2026-10-02T19:20:09.738Z,eighth-and-grand,Eighth & Grand,0-7167,,,1-bed,1 Bed,1,1,578,2610,2610,2629,available_on,2026-10-07,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-0403,4,,1-bed,1 Bed,1,1,627,2647,2647,2663,available_on,2026-11-14,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-0514,5,,1-bed,1 Bed,1,1,794,3896,3896,3912,available_on,2026-10-31,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-0701,7,,1-bed,1 Bed,1,1.5,818,4358,4358,4374,available_on,2026-11-07,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-0808,8,,2-bed,2 Bed,2,2,1200,5284,5284,5300,available_on,2026-11-24,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-0814,8,,1-bed,1 Bed,1,1,802,3926,3926,3942,available_on,2026-11-06,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-1101,11,,1-bed,1 Bed,1,1.5,818,4548,4548,4564,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-1104,11,,1-bed,1 Bed,1,1.5,875,3898,3898,3914,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-1204,12,,1-bed,1 Bed,1,1.5,875,3963,3963,3979,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-1210,12,,1-bed,1 Bed,1,1,594,2842,2842,2858,available_on,2026-12-01,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-1401,14,,1-bed,1 Bed,1,1.5,818,4623,4623,4639,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-1407,14,,studio,Studio,0,1,550,2755,2755,2771,available_on,2026-11-07,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-1416,14,,2-bed,2 Bed,2,2,1192,5544,5544,5560,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-1502,15,,studio,Studio,0,1,539,2695,2695,2711,available_on,2026-10-05,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-1513,15,,2-bed,2 Bed,2,2,1172,4879,4879,4895,available_on,2026-12-04,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-1602,16,,studio,Studio,0,1,539,2705,2705,2721,available_on,2026-10-09,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-1603,16,,1-bed,1 Bed,1,1,627,3012,3012,3028,available_on,2026-12-23,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-1610,16,,1-bed,1 Bed,1,1,594,2872,2872,2888,available_on,2026-12-29,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-1804,18,,1-bed,1 Bed,1,1.5,875,4013,4013,4029,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-1806,18,,1-bed,1 Bed,1,1,868,4131,4131,4147,available_on,2026-11-10,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-1814,18,,1-bed,1 Bed,1,1,802,4016,4016,4032,available_on,2026-12-03,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-1816,18,,2-bed,2 Bed,2,2,1192,5584,5584,5600,available_on,2026-10-22,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-2008,20,,2-bed,2 Bed,2,2,1200,5959,5959,5975,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-2014,20,,1-bed,1 Bed,1,1,817,4086,4086,4102,available_on,2026-10-23,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-2101,21,,1-bed,1 Bed,1,1.5,818,4693,4693,4709,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-2114,21,,1-bed,1 Bed,1,1,817,4096,4096,4112,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-2202,22,,studio,Studio,0,1,539,2765,2765,2781,available_on,2026-12-11,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-2204,22,,1-bed,1 Bed,1,1.5,891,4018,4018,4034,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-2208,22,,2-bed,2 Bed,2,2,1200,5979,5979,5995,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-2313,23,,2-bed,2 Bed,2,2,1192,5309,5309,5325,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-2316,23,,2-bed,2 Bed,2,2,1192,5634,5634,5650,available_on,2026-11-19,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-2401,24,,1-bed,1 Bed,1,1.5,818,4723,4723,4739,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-2413,24,,2-bed,2 Bed,2,2,1192,5319,5319,5335,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-2501,25,,1-bed,1 Bed,1,1.5,818,4733,4733,4749,available_on,2026-11-05,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-2601,26,,1-bed,1 Bed,1,1.5,818,4743,4743,4759,available_on,2026-11-07,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-2801,28,,1-bed,1 Bed,1,1.5,818,4763,4763,4779,available_on,2026-11-09,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-2805,28,,1-bed,1 Bed,1,1,939,4371,4371,4387,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-2910,29,,1-bed,1 Bed,1,1,594,3002,3002,3018,available_on,2026-10-03,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-2915,29,,1-bed,1 Bed,1,1,568,3067,3067,3083,available_on,2026-11-23,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-3003,30,,1-bed,1 Bed,1,1,627,3152,3152,3168,available_on,2026-11-29,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-3008,30,,2-bed,2 Bed,2,2,1200,6149,6149,6165,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-3104,31,,1-bed,1 Bed,1,1.5,891,4108,4108,4124,available_on,2026-11-27,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-3205,32,,1-bed,1 Bed,1,1,939,4411,4411,4427,available_on,2026-10-14,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-3406,34,,1-bed,1 Bed,1,1,882,4316,4316,4332,available_on,2026-10-16,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-3501,35,,1-bed,1 Bed,1,1.5,818,4933,4933,4949,available_on,2026-10-18,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-3513,35,,2-bed,2 Bed,2,2,1192,5529,5529,5545,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-3514,35,,1-bed,1 Bed,1,1,817,4386,4386,4402,available_on,2026-11-18,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-3709,37,,1-bed,1 Bed,1,1,860,5156,5156,5172,available_on,2026-10-24,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-3713,37,,2-bed,2 Bed,2,2,1192,5474,5474,5490,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-3804,38,,1-bed,1 Bed,1,1.5,891,4203,4203,4219,available_on,2026-10-03,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-3816,38,,2-bed,2 Bed,2,2,1192,5809,5809,5825,available_on,2026-11-12,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-4005,40,,1-bed,1 Bed,1,1,939,4516,4516,4532,available_on,2026-12-21,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-4006,40,,1-bed,1 Bed,1,1,882,4401,4401,4417,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-4108,41,,2-bed,2 Bed,2,2,1200,6284,6284,6300,available_on,2026-11-16,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-4116,41,,2-bed,2 Bed,2,2,1192,5839,5839,5855,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-4206,42,,1-bed,1 Bed,1,1,882,4421,4421,4437,available_on,2026-11-24,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-4408,44,,2-bed,2 Bed,2,2,1200,6314,6314,6330,available_on,2026-12-04,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-4413,44,,2-bed,2 Bed,2,2,1192,5544,5544,5560,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-4416,44,,2-bed,2 Bed,2,2,1192,5869,5869,5885,available_on,2026-12-04,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-4514,45,,1-bed,1 Bed,1,1,817,4361,4361,4377,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-4614,46,,1-bed,1 Bed,1,1,817,4421,4421,4437,available_on,2026-11-13,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-4615,46,,1-bed,1 Bed,1,1,568,3262,3262,3278,available_on,2026-11-15,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-4707,47,,studio,Studio,0,1,550,3200,3200,3216,available_on,2026-10-17,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-4714,47,,1-bed,1 Bed,1,1,817,4431,4431,4447,available_on,2026-10-08,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-5211,52,,2-bed,2 Bed,2,2.5,1358,7120,7120,7136,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-5403,54,,1-bed,1 Bed,1,1.5,1087,4975,4975,4991,available_on,2026-11-23,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-5405,54,,3-bed,3 Bed,3,2.5,1734,9051,9051,9067,available_on,2026-10-05,,
+2026-10-02T19:20:09.738Z,beaudry,Beaudry,B-5603,56,,1-bed,1 Bed,1,1.5,1087,5565,5565,5581,available_on,2026-11-06,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W3226,32,,2-bed,2 Bed,2,2,1285,4877,4877,4928,available_on,2026-10-07,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W2710,27,,1-bed,1 Bed,1,1,685,3182,3182,3233,available_on,2026-10-10,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W2712,27,,2-bed,2 Bed,2,2.5,1762,5970,5970,6021,available_on,2026-11-09,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W2726,27,,2-bed,2 Bed,2,2,1285,4777,4777,4828,available_on,2026-11-04,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W2626,26,,2-bed,2 Bed,2,2,1285,4757,4757,4808,available_on,2026-10-07,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W2412,24,,2-bed,2 Bed,2,2.5,1762,5910,5910,5961,available_on,2026-10-10,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W2204,22,,1-bed,1 Bed,1,1,763,3368,3368,3419,available_on,2026-10-16,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W2116,21,,1-bed,1 Bed,1,1,868,3696,3696,3747,available_on,2026-10-09,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W2004,20,,1-bed,1 Bed,1,1,763,3328,3328,3379,available_on,2026-10-07,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W2006,20,,1-bed,1 Bed,1,1,745,3258,3258,3309,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W1906,19,,1-bed,1 Bed,1,1,745,3238,3238,3289,available_on,2026-10-20,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W1724,17,,2-bed,2 Bed,2,2,1463,4852,4852,4903,available_on,2026-10-28,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W1506,15,,1-bed,1 Bed,1,1,745,3098,3098,3149,available_on,2026-11-04,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W1418,14,,1-bed,1 Bed,1,1,923,3746,3746,3797,available_on,2026-10-06,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W1102,11,,1-bed,1 Bed,1,1,627,2724,2724,2775,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W1124,11,,2-bed,2 Bed,2,2,1463,4677,4677,4728,available_on,2026-12-07,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W924,9,,2-bed,2 Bed,2,2,1463,4647,4647,4698,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E3211,32,,2-bed,2 Bed,2,2.5,1762,5795,5795,5846,available_on,2026-10-28,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E3013,30,,2-bed,2 Bed,2,2.5,1898,6275,6275,6326,available_on,2026-11-09,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E2921,29,,1-bed,1 Bed,1,1,871,3636,3636,3687,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E2623,26,,2-bed,2 Bed,2,2,1463,5062,5062,5113,available_on,2026-10-11,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E2501,25,,1-bed,1 Bed,1,1,627,2682,2682,2733,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E2217,22,,1-bed,1 Bed,1,1,923,3831,3831,3882,available_on,2026-10-19,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E2225,22,,2-bed,2 Bed,2,2,1285,4652,4652,4703,available_on,2026-12-01,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E2109,21,,1-bed,1 Bed,1,1,685,2887,2887,2938,available_on,2026-10-28,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E2015,20,,1-bed,1 Bed,1,1,868,3526,3526,3577,available_on,2026-10-29,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E1917,19,,1-bed,1 Bed,1,1,923,3771,3771,3822,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E1817,18,,1-bed,1 Bed,1,1,923,3701,3701,3752,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E1623,16,,2-bed,2 Bed,2,2,1463,4817,4817,4868,available_on,2026-10-28,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E1405,14,,1-bed,1 Bed,1,1,745,2888,2888,2939,available_on,2026-11-09,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E1421,14,,1-bed,1 Bed,1,1,871,3261,3261,3312,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E1211,12,,2-bed,2 Bed,2,2.5,1762,5325,5325,5376,available_on,2026-10-24,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E1105,11,,1-bed,1 Bed,1,1,745,3468,3468,3519,available_on,2026-10-13,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E1017,10,,1-bed,1 Bed,1,1,923,3739,3739,3790,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E825,8,,2-bed,2 Bed,2,2,1285,4551,4551,4602,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E2117,21,,1-bed,1 Bed,1,1,923,3811,3811,3862,available_on,2026-10-10,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E3301,33,,3-bed,3 Bed,3,4.5,3984,19324,19324,19375,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E3305,33,,2-bed,2 Bed,2,2,1338,5920,5920,5971,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E3309,33,,2-bed,2 Bed,2,2.5,2087,8874,8874,8925,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W3302,33,,3-bed,3 Bed,3,4.5,3842,22363,22363,22414,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W3312,33,,3-bed,3 Bed,3,3.5,2900,16886,16886,16937,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E3411,34,,3-bed,3 Bed,3,3.5,2878,13222,13222,13273,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W3402,34,,3-bed,3 Bed,3,4.5,3842,22455,22455,22506,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W3406,34,,2-bed,2 Bed,2,2,1338,7201,7201,7252,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E3501,35,,3-bed,3 Bed,3,4.5,3984,22248,22248,22299,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E3505,35,,2-bed,2 Bed,2,2,1338,6134,6134,6185,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,E3511,35,,3-bed,3 Bed,3,3.5,2878,14726,14726,14777,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W3502,35,,3-bed,3 Bed,3,4.5,3842,23165,23165,23216,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W3508,35,,2-bed,2 Bed,2,2,1524,8045,8045,8096,available_on,2026-10-31,,
+2026-10-02T19:20:09.738Z,circa-la,Circa LA,W3512,35,,3-bed,3 Bed,3,3.5,2900,17253,17253,17304,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1519,15,A,studio,Studio,0,,507,2555,3357,,available_on,2026-11-08,30308687,3122756
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1619,16,A,studio,Studio,0,,507,2565,3302,,available_on,2026-10-29,30308713,3122756
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2019,20,A,studio,Studio,0,,507,2535,3336,,available,,50655458,3122756
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2021,20,A3,studio,Studio,0,,525,2625,3380,,available_on,2026-10-15,50720678,3122758
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1518,15,B4,1-br,1 BR,1,,599,2735,3599,,available_on,2026-10-12,30308686,3122809
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1618,16,B4,1-br,1 BR,1,,599,2745,3612,,available,,30308712,3122809
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2618,26,B4,1-br,1 BR,1,,599,3010,3961,,available_on,2026-10-09,30308930,3122809
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2918,29,B4,1-br,1 BR,1,,599,2956,3891,,spot special!,,30309008,3122809
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1115,11,B5,1-br,1 BR,1,,602,2720,3434,,available_on,2026-11-11,30308631,3122767
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2615,26,B5,1-br,1 BR,1,,602,3020,3974,,available_on,2026-10-25,30308927,3122767
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,3504,35,B6,1-br,1 BR,1,,609,3165,3996,,spot special!,,30309088,3122819
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2510,25,B9,1-br,1 BR,1,,618,3020,3974,,available_on,2026-10-27,30308896,3122821
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,3110,31,B9,1-br,1 BR,1,,618,2970,3909,,available,,30309038,3122821
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1006,10,B11,1-br,1 BR,1,,621,2820,3711,,available_on,2026-10-27,30308596,3122822
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2506,25,B11,1-br,1 BR,1,,621,3025,3819,,available_on,2026-11-28,30308892,3122822
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,3306,33,B11,1-br,1 BR,1,,621,3026,3983,,available,,30309065,3122822
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1616,16,B12,1-br,1 BR,1,,622,2825,3717,,available_on,2026-10-25,30308710,3122823
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2516,25,B12,1-br,1 BR,1,,622,3008,3959,,available,,30308902,3122823
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2616,26,B12,1-br,1 BR,1,,622,3090,3901,,available_on,2026-11-17,30308928,3122823
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,3016,30,B12,1-br,1 BR,1,,622,3180,4184,,available_on,2026-10-25,30309024,3122823
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2007,20,B18,1-br,1 BR,1,,507,3124,4111,,available,,50655459,3122768
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2207,22,B18,1-br,1 BR,1,,658,2905,3822,,available_on,2026-10-09,30308815,3122768
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2807,28,B18,1-br,1 BR,1,,658,3135,4125,,spot special,,30308971,3122768
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1711,17,B22,1-br,1 BR,1,,686,2940,3869,,available_on,2026-10-19,30308731,3122771
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2011,20,B22,1-br,1 BR,1,,507,3044,4005,,available,,50655460,3122771
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2700,27,B23,1-br,1 BR,1,,692,2984,3927,,available,,30308938,3122825
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,3100,31,B23,1-br,1 BR,1,,692,3058,4024,,available,,30309028,3122825
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,3400,34,B23,1-br,1 BR,1,,692,3110,4093,,available,,30309074,3122825
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,3422,34,B23,1-br,1 BR,1,,692,3110,4093,,available,,30309085,3122825
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2901,29,B27,1-br,1 BR,1,,704,3310,4356,,available,,30308991,3122773
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1227,12,C,1-br-den,1 BR + DEN,1,,789,3249,4095,,available_on,2026-11-02,30308667,3122776
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1927,19,C,1-br-den,1 BR + DEN,1,,789,3215,4052,,available_on,2026-10-07,30309230,3122776
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2827,28,C,1-br-den,1 BR + DEN,1,,789,3490,4399,,available,,30308989,3122776
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,700,7,D1,2-br,2 BR,2,,881,3400,4440,,available,,30308546,3122827
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2020,20,D3,2-br,2 BR,2,,956,3581,4676,,available_on,2026-10-06,30308794,3122831
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2520,25,D3,2-br,2 BR,2,,956,3681,4648,,available_on,2026-11-08,30308906,3122831
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2820,28,D3,2-br,2 BR,2,,956,3741,4885,,available,,30308984,3122831
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,3520,35,D3,2-br,2 BR,2,,956,3941,4976,,available_on,2026-11-05,30309096,3122831
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1225,12,D4,2-br,2 BR,2,,961,3571,4663,,available,,30308666,3122778
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1625,16,D4,2-br,2 BR,2,,961,3606,4709,,available,,30308718,3122778
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2425,24,D4,2-br,2 BR,2,,961,3451,4506,,available,,30308884,3122778
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2525,25,D4,2-br,2 BR,2,,961,3443,4496,,available,,30308910,3122778
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2825,28,D4,2-br,2 BR,2,,961,3730,4870,,available,,30308988,3122778
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2925,29,D4,2-br,2 BR,2,,961,3690,4818,,available,,30309014,3122778
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,502,5,D5,2-br,2 BR,2,,969,3436,4487,,available_on,2026-10-30,30308528,3122832
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1503,15,D6,2-br,2 BR,2,,979,3681,4806,,available_on,2026-10-04,30308671,3122779
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1703,17,D6,2-br,2 BR,2,,979,3701,4833,,available,,30308723,3122779
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2103,21,D6,2-br,2 BR,2,,979,3400,4440,,available,,30309232,3122779
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2803,28,D6,2-br,2 BR,2,,979,3812,4978,,available,,30308967,3122779
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1502,15,D7,2-br,2 BR,2,,984,3636,4591,,available_on,2026-11-03,30308670,3122833
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1802,18,D7,2-br,2 BR,2,,984,3666,4621,,available_on,2026-12-07,30308748,3122833
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1508,15,D9,2-br,2 BR,2,,995,3581,4514,,available_on,2026-12-04,30308676,3122834
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2608,26,D9,2-br,2 BR,2,,995,3461,4519,,spot special!,,30308920,3122834
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,2808,28,D9,2-br,2 BR,2,,995,3789,4947,,available,,30308972,3122834
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1609,16,D11,2-br,2 BR,2,,1002,3696,4826,,available,,30308703,3122780
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1514,15,D14,2-br,2 BR,2,,1028,3646,4761,,available,,30308682,3122838
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,3014,30,D14,2-br,2 BR,2,,1028,3916,5113,,available_on,2026-10-08,30309023,3122838
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1617,16,D15,2-br,2 BR,2,,1032,3493,4561,,available,,30308711,3122781
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,1717,17,D15,2-br,2 BR,2,,1032,3726,4865,,available_on,2026-10-04,30308737,3122781
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,3101,31,F2,2-br-den,2 BR + DEN,2,,1367,6591,8307,,available_on,2026-12-05,30309029,3122788
+2026-10-02T19:20:09.738Z,hope-and-flower,Hope + Flower,3800,38,F3,2-br-den,2 BR + DEN,2,,1462,6239,7953,,available,,30309122,3122845
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,0505,5,,2-bed,2 Bed,2,2.5,1602,5579,5579,5593,available_on,2026-10-08,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,0608,6,,2-bed,2 Bed,2,2,1343,5364,5364,5378,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,0625,6,,2-bed,2 Bed,2,2,1344,5493,5493,5507,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,0725,7,,2-bed,2 Bed,2,2,1344,5503,5503,5517,available_on,2026-12-05,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,0925,9,,2-bed,2 Bed,2,2,1344,5058,5058,5072,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,1008,10,,2-bed,2 Bed,2,2,1343,5064,5064,5078,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,1022,10,,studio,Studio,0,1,620,2922,2922,2936,available_on,2026-12-20,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,2111,21,,2-bed,2 Bed,2,2,1170,4590,4590,4604,available_on,2026-12-06,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,2322,23,,studio,Studio,0,1,620,3362,3362,3376,available_on,2026-10-15,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,2326,23,,1-bed,1 Bed,1,1,864,3676,3676,3690,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,2508,25,,2-bed,2 Bed,2,2,1343,5364,5364,5378,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,2516,25,,1-bed,1 Bed,1,1.5,1026,4101,4101,4115,available_on,2026-11-06,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,2911,29,,2-bed,2 Bed,2,2,1170,5040,5040,5054,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,3010,30,,3-bed,3 Bed,3,2.5,1626,5793,5793,5807,available_on,2026-10-28,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,3211,32,,2-bed,2 Bed,2,2,1170,5110,5110,5124,available_on,2026-10-31,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,3410,34,,3-bed,3 Bed,3,2.5,1626,5803,5803,5817,available_on,2026-10-25,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,4011,40,,2-bed,2 Bed,2,2,1170,5195,5195,5209,available_on,2026-10-04,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,4108,41,,2-bed,2 Bed,2,2,1323,5437,5437,5451,available_on,2026-11-17,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,4311,43,,2-bed,2 Bed,2,2,1170,5255,5255,5269,available_on,2026-10-21,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,4801,48,,1-bed,1 Bed,1,1.5,1001,4210,4210,4224,available_on,2026-11-06,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,4908,49,,2-bed,2 Bed,2,2,1323,5597,5597,5611,available_on,2026-10-18,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,5107,51,,1-bed,1 Bed,1,1,822,3687,3687,3701,available_on,2026-10-31,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,5110,51,,3-bed,3 Bed,3,2.5,1626,6138,6138,6152,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,5508,55,,2-bed,2 Bed,2,2,1323,5817,5817,5831,available_on,2026-11-03,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,5801,58,,3-bed,3 Bed,3,2.5,3317,19999,19999,20013,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,5805,58,,4-bed,4 Bed,4,2.5,3487,21790,21790,21804,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,5901,59,,3-bed,3 Bed,3,2.5,3317,22500,22500,22514,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,thea-at-metropolis,THEA at Metropolis,5902,59,,3-bed,3 Bed,3,2.5,2834,16999,16999,17013,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,300,,,1-bed,1 Bed,1,1,1179,3504,3504,3504,available_on,2026-10-23,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,320,,,2-bed,2 Bed,2,2,1418,4349,4349,4349,available_on,2026-11-13,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,418,,,2-bed,2 Bed,2,2,1115,3874,3874,3874,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,618,,,2-bed,2 Bed,2,2,1133,3974,3974,3974,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,708,,,2-bed,2 Bed,2,2,1125,4127,4127,4127,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,722,,,1-bed,1 Bed,1,1,635,2877,2877,2877,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,809,,,1-bed,1 Bed,1,1,746,2829,2829,2829,available_on,2026-10-22,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,818,,,2-bed,2 Bed,2,2,1133,3860,3860,3860,available_on,2026-10-24,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,1118,,,2-bed,2 Bed,2,2,1133,4199,4199,4199,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,1508,,,2-bed,2 Bed,2,2,1125,4154,4154,4154,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,1511,,,1-bed,1 Bed,1,1,662,2904,2904,2904,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,1609,,,1-bed,1 Bed,1,1,746,3025,3025,3025,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,1718,,,2-bed,2 Bed,2,2,1133,4292,4292,4292,available_on,2026-10-20,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,1722,,,1-bed,1 Bed,1,1,635,3073,3073,3073,available_on,2026-10-16,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,1800,,,1-bed,1 Bed,1,1,482,2457,2457,2457,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,1808,,,2-bed,2 Bed,2,2,1125,3982,3982,3982,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,1820,,,2-bed,2 Bed,2,2,1141,4503,4503,4503,available_on,2026-10-13,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,1908,,,2-bed,2 Bed,2,2,1104,3941,3941,3941,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,1917,,,studio,Studio,0,1,609,2523,2523,2523,available_on,2026-11-15,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2111,,,1-bed,1 Bed,1,1,531,3042,3042,3042,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2119,,,2-bed,2 Bed,2,2,1073,4264,4264,4264,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2209,,,1-bed,1 Bed,1,1,608,3073,3073,3073,available_on,2026-10-03,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2213,,,1-bed,1 Bed,1,1,560,2924,2924,2924,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2220,,,2-bed,2 Bed,2,2,1146,4619,4619,4619,available_on,2026-10-25,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2313,,,1-bed,1 Bed,1,1,560,2924,2924,2924,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2317,,,studio,Studio,0,1,578,2725,2725,2725,available_on,2026-10-10,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2409,,,1-bed,1 Bed,1,1,608,2974,2974,2974,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2500,,,1-bed,1 Bed,1,1,482,2514,2514,2514,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2511,,,1-bed,1 Bed,1,1,531,2803,2803,2803,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2515,,,1-bed,1 Bed,1,1,589,3022,3022,3022,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2720,,,2-bed,2 Bed,2,2,1146,4619,4619,4619,available_on,2026-10-22,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,3013,,,1-bed,1 Bed,1,1,560,3154,3154,3154,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,3015,,,2-bed,2 Bed,2,2,1061,4390,4390,4390,available_on,2026-10-17,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,0301,,,1-bed,1 Bed,1,1,711,2695,2695,2695,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,0304,,,1-bed,1 Bed,1,1,745,2740,2740,2740,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,0506,,,1-bed,1 Bed,1,1,808,2558,2558,2558,available_on,2026-10-07,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,0708,,,1-bed,1 Bed,1,1,746,2689,2689,2689,available_on,2026-10-07,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,0801,,,2-bed,2 Bed,2,2,1173,3663,3663,3663,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,0811,,,2-bed,2 Bed,2,2,1153,3659,3659,3659,available_on,2026-10-20,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,0902,,,2-bed,2 Bed,2,2,1167,3722,3722,3722,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,0906,,,1-bed,1 Bed,1,1,808,2853,2853,2853,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,0909,,,1-bed,1 Bed,1,2,911,3020,3020,3020,available_on,2026-10-19,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,0912,,,2-bed,2 Bed,2,2,1166,3722,3722,3722,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,1103,,,1-bed,1 Bed,1,2,913,3018,3018,3018,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,1501,,,2-bed,2 Bed,2,2,1173,3813,3813,3813,available_on,2026-10-26,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,1806,,,1-bed,1 Bed,1,1,804,2900,2900,2900,available_on,2026-10-07,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,1809,,,1-bed,1 Bed,1,2,911,3110,3110,3110,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,1906,,,1-bed,1 Bed,1,1,804,2900,2900,2900,available_on,2026-11-03,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2203,,,1-bed,1 Bed,1,2,826,3280,3280,3280,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2211,,,2-bed,2 Bed,2,2,1272,4259,4259,4259,available_on,2026-10-07,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2301,,,2-bed,2 Bed,2,2,1277,4521,4521,4521,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2306,,,1-bed,1 Bed,1,1,970,3421,3421,3421,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2311,,,2-bed,2 Bed,2,2,1272,4794,4794,4794,available_on,2026-10-06,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2401,,,2-bed,2 Bed,2,2,1277,4491,4491,4491,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2406,,,1-bed,1 Bed,1,1,970,3365,3365,3365,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2503,,,1-bed,1 Bed,1,2,826,3140,3140,3140,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2504,,,1-bed,1 Bed,1,1.5,950,3657,3657,3657,available_on,2026-11-15,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2508,,,1-bed,1 Bed,1,1,1161,3654,3654,3654,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,2510,,,2-bed,2 Bed,2,2,1365,4720,4720,4720,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,3001,,,2-bed,2 Bed,2,2.5,1874,7321,7321,7321,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,3002,,,2-bed,2 Bed,2,2.5,1833,7689,7689,7689,available_on,2026-10-02,,
+2026-10-02T19:20:09.738Z,apex-and-alina,Apex & Alina,3005,,,2-bed,2 Bed,2,2.5,2261,7490,7490,7490,available_on,2026-10-02,,
