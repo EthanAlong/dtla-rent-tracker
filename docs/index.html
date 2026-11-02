@@ -1089,6 +1089,7 @@ function initLang() {
     try { localStorage.setItem(LANG_KEY, state.lang); } catch {}
     applyI18n();
     themeLabel();
+    if (charts) { Object.values(charts).forEach((c) => c.dispose()); initCharts(); }
     renderFreshness();
     buildFilters();
     document.dispatchEvent(new Event("langchange"));
@@ -1113,11 +1114,16 @@ function initTheme() {
     renderAll();
   };
 }
+// ECharts picks its built-in locale (month names on the time axis, toolbox
+// text) once, at init — and without an explicit one it reads <html lang> as
+// it was when the script loaded, i.e. zh-CN. So pass it, and re-init on a
+// language switch the same way the theme toggle does.
 function initCharts() {
+  const opts = { locale: state.lang === "zh" ? "ZH" : "EN" };
   charts = {
-    trend: echarts.init(document.getElementById("trendChart")),
-    psf: echarts.init(document.getElementById("psfChart")),
-    scatter: echarts.init(document.getElementById("scatterChart")),
+    trend: echarts.init(document.getElementById("trendChart"), null, opts),
+    psf: echarts.init(document.getElementById("psfChart"), null, opts),
+    scatter: echarts.init(document.getElementById("scatterChart"), null, opts),
   };
 }
 
