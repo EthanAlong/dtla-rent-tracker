@@ -178,6 +178,11 @@ cd docs && python3 -m http.server 8731    # → http://127.0.0.1:8731
   lives in localStorage rather than in a committed file
 - ✅ CI verified end to end: a `workflow_dispatch` run scraped, committed with
   `[skip ci]`, and Pages redeployed
+- ✅ 2026-11-05: SightMap restructured its JSON-LD (offers moved from a
+  parallel `offers.offers[]` array onto each unit), so all six SightMap
+  buildings scraped 0 units for two runs (11-05 03:33Z and 21:06Z). The adapter now
+  reads both shapes, and throws if units are listed with no offers, so the
+  next format change shows up as a FAILED line rather than "0 units".
 - ⏳ Only a few scrapes of history so far — the trend chart and days-on-market
   numbers get interesting after a couple of weeks
 

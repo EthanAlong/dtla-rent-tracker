@@ -3,11 +3,14 @@
 //
 // The embed page at https://sightmap.com/embed/<id> ships a schema.org
 // JSON-LD blob with EVERY available unit — richer than what the host site
-// renders. Two arrays, joined on unit name:
+// renders. Since 2026-11-05 each unit carries its own offer:
 //
-//   about.containsPlace[] -> {name:"APT 0614", numberOfBedrooms, numberOfBathroomsTotal, floorSize}
-//   offers.offers[]       -> {name:"APT 0614", availabilityStarts, price (all-in),
-//                             priceSpecification.priceComponent[] -> {name:"Rent", price: 2100}, fees...}
+//   containsPlace[] -> {name:"APT 0614", numberOfBedrooms, numberOfBathroomsTotal, floorSize,
+//                       offers: {availabilityStarts, price (all-in),
+//                                priceSpecification.priceComponent[] -> {name:"Rent", price: 2100}, fees...}}
+//
+// Before that, units and offers were two parallel arrays (about.containsPlace[]
+// + offers.offers[]) joined on unit name. unitOffers() accepts both.
 //
 // `price` is all-in (base rent + renter's insurance + utility admin fees + pet
 // rent). We store the "Rent" component as rent_min/rent_max so it's
@@ -32,13 +35,14 @@ export function parse(html, property = {}) {
   if (!m) throw new Error(`${property.id}: no JSON-LD on the SightMap embed`);
 
   const doc = JSON.parse(m[1]);
-  const offers = doc?.offers?.offers ?? [];
-  const specs = new Map(
-    (doc?.about?.containsPlace ?? []).map((u) => [u.name, u]),
-  );
+  const pairs = unitOffers(doc);
+  if (!pairs.length && (doc?.containsPlace ?? doc?.about?.containsPlace ?? []).length) {
+    // Units are listed but none carried an offer we recognise: the JSON-LD
+    // moved again. Fail loudly rather than report "0 units available".
+    throw new Error(`${property.id}: SightMap JSON-LD lists units but no offers (format changed?)`);
+  }
 
-  return offers.map((o) => {
-    const spec = specs.get(o.name) || {};
+  return pairs.map(([spec, o]) => {
     const components = Object.fromEntries(
       (o.priceSpecification?.priceComponent ?? []).map((c) => [c.name, c.price]),
     );
@@ -69,4 +73,23 @@ export function parse(html, property = {}) {
       fp_id: "",
     };
   }).filter((r) => r.rent_min);
+}
+
+// SightMap has shipped two JSON-LD shapes; return [spec, offer] pairs for either.
+//
+//   v1 (until 2026-11-04): a wrapper with two parallel arrays joined on unit name
+//        about.containsPlace[] + offers.offers[]
+//   v2 (from 2026-11-05): an ApartmentComplex whose units each carry their offer
+//        containsPlace[] -> {@type:["Apartment","Product"], name, ..., offers:{price, priceSpecification}}
+function unitOffers(doc) {
+  if (Array.isArray(doc?.offers?.offers)) {
+    const specs = new Map((doc?.about?.containsPlace ?? []).map((u) => [u.name, u]));
+    return doc.offers.offers.map((o) => [specs.get(o.name) || {}, o]);
+  }
+  const places = doc?.containsPlace ?? doc?.about?.containsPlace ?? [];
+  return places.flatMap((u) => {
+    const list = Array.isArray(u.offers) ? u.offers : u.offers ? [u.offers] : [];
+    // Offer carries no name in v2; the unit label lives on the place.
+    return list.map((o) => [u, { ...o, name: o.name ?? u.name }]);
+  });
 }
