@@ -43807,3 +43807,76 @@ timestamp,property_id,property_name,unit,floor,floorplan,plan_cat,bed_label,beds
 2026-11-05T03:33:17.895Z,hope-and-flower,Hope + Flower,2503,25,D6,2-br,2 BR,2,,979,4208,5314,,available,,30308889,3122779
 2026-11-05T03:33:17.895Z,hope-and-flower,Hope + Flower,2603,26,D6,2-br,2 BR,2,,979,4228,5330,,available_on,2027-01-02,30308915,3122779
 2026-11-05T03:33:17.895Z,hope-and-flower,Hope + Flower,3101,31,F2,2-br-den,2 BR + DEN,2,,1367,5977,7534,,available_on,2026-12-05,30309029,3122788
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,201,2,A2,2-bed-den,2 Bed + Den,2,,1090,3637,4632,,available,,29417540,2413008
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,301,3,A2,2-bed-den,2 Bed + Den,2,,1090,3637,4632,,available,,29417543,2413008
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,501,5,A2,2-bed-den,2 Bed + Den,2,,1090,4066,5165,,available_on,2026-12-05,29417549,2413008
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,522,5,D,2-bed,2 Bed,2,,1030,4221,5444,,available,,29417553,2413016
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,607,6,TH2,townhomes,Townhomes,,,1385,5185,6990,,available,,29417562,2413022
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,2305,23,J,2-bed,2 Bed,2,,991,4021,5108,,available,,29417149,2413023
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,2905,29,J,2-bed,2 Bed,2,,991,3975,5049,,available,,29417155,2413023
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,4005,40,J,2-bed,2 Bed,2,,991,4296,5457,,available,,29417163,2413023
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,3011,30,J1,2-bed,2 Bed,2,,988,4371,5536,,available_on,2026-12-09,29417125,2413026
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,1812,18,K,1-bed,1 Bed,1,,670,2903,3697,,available_on,2026-11-30,29417176,2413027
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,2401,24,K1,1-bed,1 Bed,1,,716,3173,4041,,available,,29417213,2413028
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,3401,34,K1,1-bed,1 Bed,1,,716,3353,4270,,available_on,2027-01-03,29417220,2413028
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,3701,37,K1,1-bed,1 Bed,1,,716,3398,4328,,available_on,2026-11-11,29417223,2413028
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,2609,26,M1,2-bed-den,2 Bed + Den,2,,1109,4451,5669,,available_on,2026-11-22,29417277,2413033
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,3704,37,N,jr-2-bed,Jr. 2 Bed,2,,792,3346,4223,,available,,29417313,2413034
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,4104,41,N,jr-2-bed,Jr. 2 Bed,2,,792,3655,4613,,available_on,2026-11-23,29417316,2413034
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,1904,19,N2,1-bed-den,1 Bed + Den,1,,792,3352,4230,,available_on,2026-11-07,29417352,2413036
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,4602,46,O,1-bed,1 Bed,1,,538,2840,3625,,available_on,2026-11-22,29417390,2413037
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,2007,20,O1,1-bed,1 Bed,1,,560,2435,3101,,available_on,2026-12-13,29417426,2413039
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,3707,37,O1,1-bed,1 Bed,1,,560,2665,3402,,available_on,2026-11-07,29417440,2413039
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,3907,39,O1,1-bed,1 Bed,1,,560,2695,3440,,available,,29417442,2413039
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,4207,42,O1,1-bed,1 Bed,1,,560,2765,3530,,available,,29417445,2413039
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,2408,24,O2,1-bed,1 Bed,1,,536,2435,3108,,available_on,2026-11-14,29417368,2413044
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,1706,17,O3,1-bed,1 Bed,1,,562,2435,3101,,available_on,2026-12-03,29417454,2522879
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,1806,18,O3,1-bed,1 Bed,1,,562,2435,3108,,available,,29417455,2522879
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,3606,36,O3,1-bed,1 Bed,1,,562,2650,3383,,available_on,2026-11-15,29417470,2522879
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,3706,37,O3,1-bed,1 Bed,1,,562,2665,3402,,spot special!,,29417471,2522879
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,3906,39,O3,1-bed,1 Bed,1,,562,2695,3432,,available_on,2027-01-12,29417473,2522879
+2026-11-05T21:05:36.712Z,825-south-hill,825 South Hill,5003,50,SKY6,skyhomes,Skyhomes,,,1124,5645,7189,,available_on,2026-11-22,29417502,2413050
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,1519,15,A,studio,Studio,0,,507,2250,2861,,available_on,2027-01-31,30308687,3122756
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2023,20,A2,studio,Studio,0,,522,2395,3147,,available,,50824831,3122757
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2923,29,A2,studio,Studio,0,,522,2735,3447,,available_on,2026-12-08,30309013,3122757
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2021,20,A3,studio,Studio,0,,525,2335,3068,,available,,50720678,3122758
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2621,26,A3,studio,Studio,0,,525,2470,3246,,available,,30308933,3122758
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2618,26,B4,1-br,1 BR,1,,599,2882,3639,,available,,30308930,3122809
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,1115,11,B5,1-br,1 BR,1,,602,2651,3347,,available_on,2026-11-08,30308631,3122767
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2015,20,B5,1-br,1 BR,1,,602,2806,3542,,available_on,2026-11-09,50824832,3122767
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2615,26,B5,1-br,1 BR,1,,602,2951,3726,,available,,30308927,3122767
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,3504,35,B6,1-br,1 BR,1,,609,3096,3909,,spot special!,,30309088,3122819
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2510,25,B9,1-br,1 BR,1,,618,2951,3719,,available_on,2027-01-24,30308896,3122821
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,1006,10,B11,1-br,1 BR,1,,621,2751,3473,,available,,30308596,3122822
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2006,20,B11,1-br,1 BR,1,,621,2846,3593,,available,,30308787,3122822
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2306,23,B11,1-br,1 BR,1,,621,2916,3675,,available_on,2026-12-07,30308840,3122822
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2506,25,B11,1-br,1 BR,1,,621,2956,3732,,available_on,2026-11-28,30308892,3122822
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,3206,32,B11,1-br,1 BR,1,,621,3111,3921,,available_on,2026-12-26,30309053,3122822
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,1616,16,B12,1-br,1 BR,1,,622,2756,3479,,available,,30308710,3122823
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2016,20,B12,1-br,1 BR,1,,622,2806,3536,,available_on,2026-12-07,30308792,3122823
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2616,26,B12,1-br,1 BR,1,,622,3021,3814,,available_on,2026-11-17,30308928,3122823
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,3016,30,B12,1-br,1 BR,1,,622,3111,3928,,available,,30309024,3122823
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,1107,11,B18,1-br,1 BR,1,,658,2676,3373,,available_on,2026-12-06,30308623,3122768
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2007,20,B18,1-br,1 BR,1,,507,2796,3530,,available,,50655459,3122768
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2207,22,B18,1-br,1 BR,1,,658,2779,3509,,available,,30308815,3122768
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2807,28,B18,1-br,1 BR,1,,658,2882,3639,,spot special,,30308971,3122768
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,1822,18,B23,1-br,1 BR,1,,692,2781,3505,,available_on,2027-01-27,30308768,3122825
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,3200,32,B23,1-br,1 BR,1,,692,3076,3877,,available_on,2026-12-21,30309047,3122825
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,3400,34,B23,1-br,1 BR,1,,692,2942,3714,,available,,30309074,3122825
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,3422,34,B23,1-br,1 BR,1,,692,2912,3677,,available,,30309085,3122825
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,1601,16,B27,1-br,1 BR,1,,704,2866,3612,,available_on,2026-12-12,30308695,3122773
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2001,20,B27,1-br,1 BR,1,,704,2931,3700,,available,,50824834,3122773
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2901,29,B27,1-br,1 BR,1,,704,3046,3846,,available,,30308991,3122773
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,1120,11,D3,2-br,2 BR,2,,956,3599,4544,,available,,30308636,3122831
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2820,28,D3,2-br,2 BR,2,,956,3834,4840,,available,,30308984,3122831
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,3520,35,D3,2-br,2 BR,2,,956,4278,5402,,available,,30309096,3122831
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,1025,10,D4,2-br,2 BR,2,,961,3898,4914,,available_on,2026-12-22,30308614,3122778
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,1225,12,D4,2-br,2 BR,2,,961,3568,4505,,available,,30308666,3122778
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,1625,16,D4,2-br,2 BR,2,,961,3707,4680,,available,,30308718,3122778
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2825,28,D4,2-br,2 BR,2,,961,4067,5136,,available,,30308988,3122778
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,402,4,D5,2-br,2 BR,2,,969,3500,4419,,available,,30308521,3122832
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,502,5,D5,2-br,2 BR,2,,969,3773,4764,,available,,30308528,3122832
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,1803,18,D6,2-br,2 BR,2,,979,4048,5112,,available,,30308749,3122779
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2503,25,D6,2-br,2 BR,2,,979,4208,5314,,available,,30308889,3122779
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,2603,26,D6,2-br,2 BR,2,,979,4228,5330,,available_on,2027-01-02,30308915,3122779
+2026-11-05T21:05:36.712Z,hope-and-flower,Hope + Flower,3101,31,F2,2-br-den,2 BR + DEN,2,,1367,5942,7490,,available_on,2026-12-05,30309029,3122788
