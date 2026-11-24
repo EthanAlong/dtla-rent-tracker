@@ -31,3 +31,6 @@ timestamp,property_id,property_name,status,raw_text,months_free,up_to,scope,look
 2026-11-23T03:47:37.364Z,atelier,Atelier,active,"Up to 2 Months Free Base Rent + $1,000 Look & Lease Offer!* Move-in by 11/30/26, 12-18-month lease term. *Restrictions apply. Contact leasing team for details.",2,true,,1000,2026-11-30,12,https://rent.brookfieldproperties.com/property/atelier/
 2026-11-23T03:47:37.364Z,eighth-and-grand,Eighth & Grand,active,"Up to 2 Months Free Base Rent!* Apply by 11/30/26, 12+ month lease term. *Restrictions Apply. Contact leasing team for details.",2,true,,,,12,https://rent.brookfieldproperties.com/property/eighth-and-grand/
 2026-11-23T03:47:37.364Z,beaudry,Beaudry,active,"Up to 2 Months Free Base Rent!* Apply by 11/30/26, 12-16-month lease. *Restrictions apply. Contact leasing team for details.",2,true,,,,,https://rent.brookfieldproperties.com/property/beaudry/
+2026-11-24T01:41:14.983Z,atelier,Atelier,ended,,,false,,,,,https://rent.brookfieldproperties.com/property/atelier/
+2026-11-24T01:41:14.983Z,eighth-and-grand,Eighth & Grand,ended,,,false,,,,,https://rent.brookfieldproperties.com/property/eighth-and-grand/
+2026-11-24T01:41:14.983Z,beaudry,Beaudry,ended,,,false,,,,,https://rent.brookfieldproperties.com/property/beaudry/
